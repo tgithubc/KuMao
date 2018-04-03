@@ -1,0 +1,33 @@
+<resources>
+
+    <declare-styleable name="BottomTabStyle">
+        <!--文字大小-->
+        <attr name="bottom_tab_item_text_size" format="dimension"/>
+        <!--文字选中颜色-->
+        <attr name="bottom_tab_item_text_selected_color" format="color"/>
+        <!--文字默认颜色-->
+        <attr name="bottom_tab_item_text_normal_color" format="color"/>
+
+        <!--icon大小-->
+        <attr name="bottom_tab_item_icon_size" format="dimension"/>
+
+        <!--消息角标背景颜色-->
+        <attr name="bottom_tab_item_message_bkg_color" format="color"/>
+        <!--消息角标文字大小-->
+        <attr name="bottom_tab_item_message_text_size" format="dimension"/>
+        <!--消息角标文字颜色-->
+        <attr name="bottom_tab_item_message_tip_text_color" format="color"/>
+
+        <!--红点提示大小-->
+        <attr name="bottom_tab_item_red_dot_size" format="dimension"/>
+
+        <!--中间扩展布局-->
+        <attr name="bottom_tab_center_view" format="reference"/>
+        <!--中间扩展布局留宽-->
+        <attr name="bottom_tab_center_view_width" format="dimension"/>
+        <!--中间扩展布局左右padding-->
+        <attr name="bottom_tab_center_view_padding_lr" format="dimension"/>
+    </declare-styleable>
+
+
+</resources>
