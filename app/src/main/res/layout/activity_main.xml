@@ -4,13 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#77737373"
     tools:context="com.tgithubc.kumao.MainActivity">
+
+    <com.tgithubc.kumao.widget.NoScrollViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_tab_layout"/>
 
     <com.tgithubc.kumao.widget.bottomtab.BottomTabLayout
         android:id="@+id/bottom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#38e6e6e6"
         android:layout_alignParentBottom="true"/>
+
+    <FrameLayout
+        android:id="@+id/fragment_container_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.tgithubc.kumao.widget.musicnote.MusicalNoteLayout
+        android:id="@+id/music_note_layout"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_above="@id/bottom_tab_layout"
+        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

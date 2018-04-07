@@ -13,6 +13,8 @@ import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.tgithubc.kumao.util.DPPXUtil;
+
 /**
  * Created by tc :)
  */
@@ -198,17 +200,18 @@ public class BottomTabItemView extends View {
         if (mUnReadMessage > 0) {
             Bitmap bkg;
             String number = mUnReadMessage > 99 ? "99+" : String.valueOf(mUnReadMessage);
+            int textDp = DPPXUtil.px2dip(getContext(), mMessageTextSize);
             // 背景比文字大一点就行
             int width;
-            int height = dip2px(px2dip(mMessageTextSize) + 4.0f);
+            int height = DPPXUtil.dip2px(getContext(), textDp + 4.0f);
             if (number.length() == 1) {
                 width = height;
                 bkg = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
             } else if (number.length() == 2) {
-                width = dip2px(px2dip(mMessageTextSize) + 8.0f);
+                width = DPPXUtil.dip2px(getContext(), textDp + 8.0f);
                 bkg = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             } else {
-                width = dip2px(px2dip(mMessageTextSize) + 10.0f);
+                width = DPPXUtil.dip2px(getContext(), textDp + 10.0f);
                 bkg = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             }
             mMessageCanvas.setBitmap(bkg);
@@ -433,15 +436,5 @@ public class BottomTabItemView extends View {
      */
     public int getUnReadMessage() {
         return mUnReadMessage;
-    }
-
-    public int px2dip(float pxValue) {
-        final float scale = getContext().getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
-    }
-
-    public int dip2px(float dipValue) {
-        final float scale = getContext().getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
     }
 }

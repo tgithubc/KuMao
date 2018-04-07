@@ -29,5 +29,14 @@
         <attr name="bottom_tab_center_view_padding_lr" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="CircleMusicView">
+        <attr name="circle_music_view_progress_width" format="dimension" />
+        <attr name="circle_music_view_progress_slot_color" format="color" />
+        <attr name="circle_music_view_progress_buffer_color" format="color" />
+        <attr name="circle_music_view_progress_color" format="color" />
+    </declare-styleable>
 
+    <declare-styleable name="MusicalNoteLayout">
+        <attr name="circle_music_view_size" format="dimension" />
+    </declare-styleable>
 </resources>

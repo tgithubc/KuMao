@@ -392,10 +392,12 @@ public class BottomTabLayout extends ViewGroup {
                         .setMessageBkgColor(mMessageBkgColor)
                         .setMessageTextSize(mMessageTextSize)
                         .setMessageTextColor(mMessageTextColor)
-                        .setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // 临时记住上一次点击的
+                        .setOnClickListener(view -> {
+                            if (mCurrentIndex == finalI) {
+                                if (mListener != null) {
+                                    mListener.onTabReselected(finalI);
+                                }
+                            } else {// 临时记住上一次点击的
                                 int preIndex = mCurrentIndex;
                                 // 再把新位置赋给current
                                 mCurrentIndex = finalI;
@@ -408,9 +410,9 @@ public class BottomTabLayout extends ViewGroup {
                                         mViewPager.setCurrentItem(mCurrentIndex, false);
                                     }
                                 }
-                                // 点击隐藏当前tab的红点
-                                hideRedDot(mCurrentIndex);
                             }
+                            // 点击隐藏当前tab的红点
+                            hideRedDot(mCurrentIndex);
                         });
                 addView(tab);
             }
@@ -419,12 +421,9 @@ public class BottomTabLayout extends ViewGroup {
             if (isShowCenterView) {
                 mCenterView = LayoutInflater.from(getContext()).inflate(mCenterViewRes,
                         (ViewGroup) getParent(), false);
-                mCenterView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (mListener != null) {
-                            mListener.onCenterViewClicked(mCenterView);
-                        }
+                mCenterView.setOnClickListener(view -> {
+                    if (mListener != null) {
+                        mListener.onCenterViewClicked(mCenterView);
                     }
                 });
                 addView(mCenterView, mTabs.size() / 2);
