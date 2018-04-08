@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.tgithubc.kumao.R;
 
-
 public class SwipeBackFragment extends Fragment implements SwipeBackFragmentBase {
 
     private SwipeBackLayout mSwipeBackLayout;

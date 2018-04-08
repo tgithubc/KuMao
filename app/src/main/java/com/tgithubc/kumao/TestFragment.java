@@ -38,7 +38,7 @@ public class TestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
-        ((TextView)view.findViewById(R.id.text)).setText(mContent);
+        ((TextView) view.findViewById(R.id.text)).setText(mContent);
         return view;
     }
 }
