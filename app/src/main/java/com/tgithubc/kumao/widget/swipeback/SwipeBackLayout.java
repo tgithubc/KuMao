@@ -1,6 +1,7 @@
 package com.tgithubc.kumao.widget.swipeback;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -9,9 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -147,8 +150,18 @@ public class SwipeBackLayout extends FrameLayout {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwipeBackLayout, defStyle,
                 R.style.SwipeBackLayout);
-        // TODO 屏幕宽度
-        setEdgeSize(a.getDimensionPixelSize(R.styleable.SwipeBackLayout_edge_size, 1080));
+
+        int edgeSize = a.getDimensionPixelSize(R.styleable.SwipeBackLayout_edge_size, 0);
+
+        if (edgeSize > 0) {
+            setEdgeSize(edgeSize);
+        } else {
+            WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            DisplayMetrics metrics = new DisplayMetrics();
+            manager.getDefaultDisplay().getMetrics(metrics);
+            setEdgeSize(metrics.widthPixels);
+        }
+
         int mode = EDGE_FLAGS[a.getInt(R.styleable.SwipeBackLayout_edge_flag, 0)];
         setEdgeTrackingEnabled(mode);
 
