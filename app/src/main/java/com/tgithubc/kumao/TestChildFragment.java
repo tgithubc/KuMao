@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.tgithubc.kumao.base.BaseFragment;
+import com.tgithubc.kumao.fragment.FragmentOperation;
 
 /**
  * Created by tc :)
@@ -40,6 +41,11 @@ public class TestChildFragment extends BaseFragment {
 
     @Override
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
-        ((TextView) view.findViewById(R.id.text)).setText(mContent);
+        TextView textView = view.findViewById(R.id.text);
+        textView.setText(mContent);
+        textView.setOnClickListener(view1 -> {
+            TestChildFragment childFragment = TestChildFragment.newInstance("from :" + mContent);
+            FragmentOperation.getInstance().showSubFragment(childFragment);
+        });
     }
 }

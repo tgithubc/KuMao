@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.tgithubc.kumao.R;
+import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.widget.NoScrollViewPager;
 
 import java.util.LinkedList;
@@ -589,35 +591,45 @@ public class SwipeBackLayout extends FrameLayout {
             }
 
             if (mScrollPercent >= 1 && mFragment != null && mFragment.isResumed()) {
-                mFragment.swipeToCloseFragment();
-                mFragment = null;
-                /*
-                topFragment
-                // 如果当前左滑的时候top和这里要关闭的Fragmen引用不一致不能关闭，得回滚状态到0
+                Fragment topFragment = FragmentOperation.getInstance().getTopFragment();
+                // 如果当前左滑的时候top和这里要关闭的Fragment引用不一致不能关闭，得回滚状态到0
                 if (topFragment != null && mFragment.getTag().equals(topFragment.getTag())) {
                     mFragment.swipeToCloseFragment();
                     mFragment = null;
                 } else {
-                    // 有可能视觉效果上会再滑回来，也好过滑出自己的view却关掉别的Fragmen导致自己关不掉
+                    // 有可能视觉效果上会再滑回来，也好过滑出自己的view却关掉别的Fragment导致自己关不掉
                     mDragHelper.smoothSlideViewTo(mContentView, 0, 0);
                     isShowLowerLayer = false;
-                }*/
+                }
             }
+
             // 主页面的时候不能处理viewpager的显示隐藏
-            /*if (isMainLayerShow()) {*/
-            if (mScrollPercent <= 0 && isShowLowerLayer) {
-                // gone
-                isShowLowerLayer = false;
-            } else if (mScrollPercent > 0 && !isShowLowerLayer) {
-                // visible
-                    /*if (preFragment == null) {
-                        // viewpager visible
+            if (!FragmentOperation.getInstance().isMainLayerShow()) {
+                Fragment preFragment = FragmentOperation.getInstance().getPreFragment();
+                if (mScrollPercent <= 0 && isShowLowerLayer) {
+                    // gone
+                    if (preFragment == null) {
+                        // viewpager gone 得想个办法解藕出去了
                     } else {
-                        // preFragment getView visible
-                    }*/
-                isShowLowerLayer = true;
+                        View view = preFragment.getView();
+                        if (view != null) {
+                            view.setVisibility(View.GONE);
+                        }
+                    }
+                    isShowLowerLayer = false;
+                } else if (mScrollPercent > 0 && !isShowLowerLayer) {
+                    // visible
+                    if (preFragment == null) {
+                        // viewpager visible 得想个办法解藕出去了
+                    } else {
+                        View view = preFragment.getView();
+                        if (view != null) {
+                            view.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    isShowLowerLayer = true;
+                }
             }
-            /*}*/
         }
 
         @Override
