@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.tgithubc.kumao.fragment.FragmentOperation;
+import com.tgithubc.kumao.fragment.OnFragmentStackChangeListener;
 import com.tgithubc.kumao.module.HomePageAdapter;
 import com.tgithubc.kumao.widget.bottomtab.BottomTabItemView;
 import com.tgithubc.kumao.widget.bottomtab.BottomTabLayout;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnFragmentStackChangeListener {
 
     private HomePageAdapter mAdapter;
 
@@ -23,7 +25,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FragmentOperation.getInstance().bind(R.id.fragment_container_id, this);
         initView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FragmentOperation.getInstance().unBind();
     }
 
     private void initView() {
@@ -54,6 +63,29 @@ public class MainActivity extends AppCompatActivity {
         BottomTabItemView itemView = new BottomTabItemView(this);
         itemView.initialize(text, normalDrawable, checkedDrawable);
         return itemView;
+    }
+
+    @Override
+    public void onPushFragment(Fragment top) {
+        // full no note
+        // sub note
+    }
+
+    @Override
+    public void onPopFragment(Fragment top) {
+        // full no note
+        // sub note
+    }
+
+    @Override
+    public void onShowMainLayer() {
+        // no note
+        // show viewpager
+    }
+
+    @Override
+    public void onHideMainLayer(boolean isHide) {
+        // hide viewpager
     }
 
     private class BottomTabClickListener implements OnTabSelectedListener {

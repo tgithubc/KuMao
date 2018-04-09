@@ -7,18 +7,17 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.tgithubc.kumao.base.BaseFragment;
-import com.tgithubc.kumao.fragment.FragmentOperation;
 
 /**
  * Created by tc :)
  */
-public class TestFragment extends BaseFragment {
+public class TestChildFragment extends BaseFragment {
 
     private static final String KEY_CONTENT = "KEY_CONTENT";
     private String mContent;
 
-    public static TestFragment newInstance(String content) {
-        TestFragment fragment = new TestFragment();
+    public static TestChildFragment newInstance(String content) {
+        TestChildFragment fragment = new TestChildFragment();
         Bundle bundle = new Bundle();
         bundle.putString(KEY_CONTENT, content);
         fragment.setArguments(bundle);
@@ -36,15 +35,11 @@ public class TestFragment extends BaseFragment {
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_test;
+        return R.layout.fragment_test_child;
     }
 
     @Override
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
         ((TextView) view.findViewById(R.id.text)).setText(mContent);
-        view.findViewById(R.id.button).setOnClickListener(view1 -> {
-            TestChildFragment childFragment = TestChildFragment.newInstance("from :" + mContent);
-            FragmentOperation.getInstance().showSubFragment(childFragment);
-        });
     }
 }

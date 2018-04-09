@@ -2,11 +2,14 @@ package com.tgithubc.kumao.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.nukc.stateview.StateView;
+import com.tgithubc.kumao.fragment.FragmentOperation;
+import com.tgithubc.kumao.fragment.FragmentType;
 import com.tgithubc.kumao.widget.swipeback.SwipeBackFragment;
 
 
@@ -16,6 +19,7 @@ import com.tgithubc.kumao.widget.swipeback.SwipeBackFragment;
 public abstract class BaseFragment extends SwipeBackFragment {
 
     private StateView mStateLayout;
+    private int mFragmentType = FragmentType.TYPE_NONE;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -72,7 +76,36 @@ public abstract class BaseFragment extends SwipeBackFragment {
         }
     }
 
+    @Override
+    public void swipeToCloseFragment() {
+        super.swipeToCloseFragment();
+        Fragment top = FragmentOperation.getInstance().getTopFragment();
+        if (this == top) {
+            FragmentOperation.getInstance().pop();
+        }
+    }
+
+    @Override
+    public boolean isNeedSwipeBack() {
+        // 默认viewpager里面的子tab都不添加左滑层级，
+        // 同时所有sub的和full的默认可以左滑，
+        // 不需要的话自己复写返回false
+        return mFragmentType != FragmentType.TYPE_NONE;
+    }
+
+    public void setFragmentType(@FragmentType int type) {
+        this.mFragmentType = type;
+    }
+
+    @FragmentType
+    public int getFragmentType() {
+        return mFragmentType;
+    }
+
     public void onRetry() {
+    }
+
+    public void onNewIntent(Bundle bundle) {
     }
 
     public abstract int getLayoutId();
