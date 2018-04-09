@@ -47,7 +47,7 @@ public abstract class BasePresenter<V extends IView> {
         public static <V> V newInstance(Class<? extends IView> clazz) {
             return (V) Proxy.newProxyInstance(
                     clazz.getClassLoader(),
-                    clazz.getInterfaces(),
+                    new Class[]{IView.class},
                     new ViewProxy());
         }
 
