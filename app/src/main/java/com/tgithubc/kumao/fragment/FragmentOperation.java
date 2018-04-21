@@ -195,9 +195,9 @@ public class FragmentOperation {
                     transaction.show(showFragment)
                             .remove(target.second)
                             .commitAllowingStateLoss();
+                    mStack.remove(target);
                     safeShowFragmentView(showFragment);
                     showFragment.onResume();
-                    mStack.remove(target);
                 }
             } else {
                 showFragment = target.second;
@@ -234,9 +234,9 @@ public class FragmentOperation {
                 transaction.show(showFragment)
                         .remove(getTopFragment())
                         .commitAllowingStateLoss();
+                mStack.removeLast();
                 safeShowFragmentView(showFragment);
                 showFragment.onResume();
-                mStack.removeLast();
                 if (mListener != null) {
                     mListener.onPopFragment(getTopFragment());
                 }
@@ -438,8 +438,11 @@ public class FragmentOperation {
         if (parameter.isPopCurrent) {
             transaction.remove(preFragment);
             mStack.remove(mStack.getLast());
-        } else if (parameter.isHideBottomLayer && parameter.enterAnimation == 0) {
-            transaction.hide(preFragment);
+        } else if (parameter.isHideBottomLayer) {
+            // 有入场动画不隐藏前一个fragment
+            if (parameter.enterAnimation == 0) {
+                transaction.hide(preFragment);
+            }
             preFragment.onPause();
         }
         // 把存在的实例都干掉,如果有的话
@@ -481,8 +484,11 @@ public class FragmentOperation {
         if (parameter.isPopCurrent) {
             transaction.remove(preFragment);
             mStack.remove(mStack.getLast());
-        } else if (parameter.isHideBottomLayer && parameter.enterAnimation == 0) {
-            transaction.hide(preFragment);
+        } else if (parameter.isHideBottomLayer) {
+            // 有入场动画不隐藏前一个fragment
+            if (parameter.enterAnimation == 0) {
+                transaction.hide(preFragment);
+            }
             preFragment.onPause();
         }
         transaction.commitAllowingStateLoss();
