@@ -1,7 +1,7 @@
 package com.tgithubc.kumao.widget.swipeback;
 
 import android.content.Context;
-import android.content.res.Resources;
+
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -21,6 +21,8 @@ import android.widget.RelativeLayout;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.fragment.FragmentOperation;
+import com.tgithubc.kumao.message.MessageBus;
+import com.tgithubc.kumao.observer.IKuMaoObserver.ISwipeBackObserver;
 import com.tgithubc.kumao.widget.NoScrollViewPager;
 
 import java.util.LinkedList;
@@ -622,7 +624,8 @@ public class SwipeBackLayout extends FrameLayout {
                 if (mScrollPercent <= 0 && isShowLowerLayer) {
                     // gone
                     if (preFragment == null) {
-                        // viewpager gone 得想个办法解藕出去了
+                        // viewpager gone
+                        MessageBus.instance().getDefault(ISwipeBackObserver.class).onMainViewPagerVisible(false);
                     } else {
                         View view = preFragment.getView();
                         if (view != null) {
@@ -633,7 +636,8 @@ public class SwipeBackLayout extends FrameLayout {
                 } else if (mScrollPercent > 0 && !isShowLowerLayer) {
                     // visible
                     if (preFragment == null) {
-                        // viewpager visible 得想个办法解藕出去了
+                        // viewpager visible
+                        MessageBus.instance().getDefault(ISwipeBackObserver.class).onMainViewPagerVisible(true);
                     } else {
                         View view = preFragment.getView();
                         if (view != null) {

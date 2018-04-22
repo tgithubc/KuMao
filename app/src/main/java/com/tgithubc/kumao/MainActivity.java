@@ -8,7 +8,10 @@ import android.view.View;
 
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.fragment.OnFragmentStackChangeListener;
+import com.tgithubc.kumao.message.IObserver;
+import com.tgithubc.kumao.message.MessageBus;
 import com.tgithubc.kumao.module.HomePageAdapter;
+import com.tgithubc.kumao.observer.IKuMaoObserver.ISwipeBackObserver;
 import com.tgithubc.kumao.widget.bottomtab.BottomTabItemView;
 import com.tgithubc.kumao.widget.bottomtab.BottomTabLayout;
 import com.tgithubc.kumao.widget.bottomtab.OnTabSelectedListener;
@@ -16,10 +19,12 @@ import com.tgithubc.kumao.widget.bottomtab.OnTabSelectedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity implements OnFragmentStackChangeListener {
 
     private HomePageAdapter mAdapter;
+    private ViewPager mViewPager;
+
+    private IObserver mSwipeBackObserver = (ISwipeBackObserver) this::setViewPagerVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +32,18 @@ public class MainActivity extends AppCompatActivity implements OnFragmentStackCh
         setContentView(R.layout.activity_main);
         FragmentOperation.getInstance().bind(R.id.fragment_container_id, this);
         initView();
+        registerMessage();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unRegisterMessage();
         FragmentOperation.getInstance().unBind();
     }
 
     private void initView() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
         BottomTabLayout tabLayout = (BottomTabLayout) findViewById(R.id.bottom_tab_layout);
         tabLayout.createAdapter()
                 .addTab(newTab("我的", R.mipmap.mine_normal, R.mipmap.mine_selected))
@@ -52,9 +59,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentStackCh
         fragments.add(TestFragment.newInstance("榜单"));
         fragments.add(TestFragment.newInstance("设置"));
         mAdapter = new HomePageAdapter(getSupportFragmentManager(), fragments);
-        viewPager.setAdapter(mAdapter);
-        viewPager.setOffscreenPageLimit(4);
-        tabLayout.bindViewPage(viewPager);
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(4);
+        tabLayout.bindViewPage(mViewPager);
         tabLayout.setSelected(1);
         tabLayout.addOnTabSelectedListener(new BottomTabClickListener());
     }
@@ -64,6 +71,19 @@ public class MainActivity extends AppCompatActivity implements OnFragmentStackCh
         itemView.initialize(text, normalDrawable, checkedDrawable);
         return itemView;
     }
+
+    private void registerMessage() {
+        MessageBus.instance().register(mSwipeBackObserver);
+    }
+
+    private void unRegisterMessage() {
+        MessageBus.instance().unRegister(mSwipeBackObserver);
+    }
+
+    private void setViewPagerVisible(boolean isVisible) {
+        mViewPager.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
+
 
     @Override
     public void onPushFragment(Fragment top) {
@@ -81,11 +101,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentStackCh
     public void onShowMainLayer() {
         // no note
         // show viewpager
+        setViewPagerVisible(true);
     }
 
     @Override
     public void onHideMainLayer(boolean isHide) {
         // hide viewpager
+        setViewPagerVisible(!isHide);
     }
 
     private class BottomTabClickListener implements OnTabSelectedListener {
