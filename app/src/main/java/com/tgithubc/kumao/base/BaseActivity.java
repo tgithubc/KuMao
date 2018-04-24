@@ -17,7 +17,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 如果需要动态改变，发给消息过来只要这个activity才能用helper处理
+        // 如果需要动态改变，需要发个消息过来，只有这个activity才能用mHelper处理动态改变沉浸式文字不同颜色
         mHelper = new ImmersedStatusBarHelper();
         mHelper.immersedStatusBar(this);
     }
