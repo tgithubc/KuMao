@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.message.MessageBus;
-import com.tgithubc.kumao.observer.IKuMaoObserver.ISwipeBackObserver;
+import com.tgithubc.kumao.observer.IKuMaoObserver.IFragmentSwipeBackObserver;
 import com.tgithubc.kumao.widget.NoScrollViewPager;
 
 import java.util.LinkedList;
@@ -625,7 +625,7 @@ public class SwipeBackLayout extends FrameLayout {
                     // gone
                     if (preFragment == null) {
                         // viewpager gone
-                        MessageBus.instance().getDefault(ISwipeBackObserver.class).onMainViewPagerVisible(false);
+                        MessageBus.instance().getDefault(IFragmentSwipeBackObserver.class).onMainViewPagerVisible(false);
                     } else {
                         View view = preFragment.getView();
                         if (view != null) {
@@ -637,7 +637,7 @@ public class SwipeBackLayout extends FrameLayout {
                     // visible
                     if (preFragment == null) {
                         // viewpager visible
-                        MessageBus.instance().getDefault(ISwipeBackObserver.class).onMainViewPagerVisible(true);
+                        MessageBus.instance().getDefault(IFragmentSwipeBackObserver.class).onMainViewPagerVisible(true);
                     } else {
                         View view = preFragment.getView();
                         if (view != null) {

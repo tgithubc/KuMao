@@ -6,12 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.tgithubc.kumao.base.BaseActivity;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.fragment.OnFragmentStackChangeListener;
 import com.tgithubc.kumao.message.IObserver;
 import com.tgithubc.kumao.message.MessageBus;
 import com.tgithubc.kumao.module.HomePageAdapter;
-import com.tgithubc.kumao.observer.IKuMaoObserver.ISwipeBackObserver;
+import com.tgithubc.kumao.observer.IKuMaoObserver.IFragmentSwipeBackObserver;
 import com.tgithubc.kumao.widget.bottomtab.BottomTabItemView;
 import com.tgithubc.kumao.widget.bottomtab.BottomTabLayout;
 import com.tgithubc.kumao.widget.bottomtab.OnTabSelectedListener;
@@ -19,12 +20,12 @@ import com.tgithubc.kumao.widget.bottomtab.OnTabSelectedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnFragmentStackChangeListener {
+public class MainActivity extends BaseActivity implements OnFragmentStackChangeListener {
 
     private HomePageAdapter mAdapter;
     private ViewPager mViewPager;
 
-    private IObserver mSwipeBackObserver = (ISwipeBackObserver) this::setViewPagerVisible;
+    private IObserver mFragmentSwipeBackObserver = (IFragmentSwipeBackObserver) this::setViewPagerVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +74,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentStackCh
     }
 
     private void registerMessage() {
-        MessageBus.instance().register(mSwipeBackObserver);
+        MessageBus.instance().register(mFragmentSwipeBackObserver);
     }
 
     private void unRegisterMessage() {
-        MessageBus.instance().unRegister(mSwipeBackObserver);
+        MessageBus.instance().unRegister(mFragmentSwipeBackObserver);
     }
 
     private void setViewPagerVisible(boolean isVisible) {
         mViewPager.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
-
 
     @Override
     public void onPushFragment(Fragment top) {

@@ -8,7 +8,7 @@ import com.tgithubc.kumao.message.IObserver;
  */
 public interface IKuMaoObserver extends IObserver {
 
-    interface ISwipeBackObserver extends IKuMaoObserver {
+    interface IFragmentSwipeBackObserver extends IKuMaoObserver {
         void onMainViewPagerVisible(boolean isVisible);
     }
 }
