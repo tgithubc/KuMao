@@ -15,7 +15,7 @@ import java.lang.annotation.RetentionPolicy;
         StartMode.SINGLE_INSTANCE,
         StartMode.SINGLE_TASK
 })
-public @interface StartMode {
+@interface StartMode {
     int STANDARD = 0;
     int SINGLE_TOP = 1;
     int SINGLE_INSTANCE = 2;

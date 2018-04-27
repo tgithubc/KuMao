@@ -10,8 +10,8 @@ import android.transition.TransitionSet;
 import android.util.AttributeSet;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class FragmentTransition extends TransitionSet {
-    public FragmentTransition() {
+class FragmentTransition extends TransitionSet {
+    FragmentTransition() {
         init();
     }
 

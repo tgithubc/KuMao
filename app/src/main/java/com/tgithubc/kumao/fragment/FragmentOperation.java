@@ -39,7 +39,6 @@ public class FragmentOperation {
     private OnFragmentStackChangeListener mListener;
 
     private FragmentOperation() {
-
     }
 
     private static class SingletonHolder {
@@ -145,70 +144,50 @@ public class FragmentOperation {
         if (TextUtils.isEmpty(tag) || mStack.isEmpty()) {
             return;
         }
-        ListIterator<Pair<String, Fragment>> accurateIt = mStack.listIterator(mStack.size());
-        List<Pair<String, Fragment>> upList = new ArrayList<>();
-        Pair<String, Fragment> target = null;
-        while (accurateIt.hasPrevious()) {
-            Pair<String, Fragment> pair = accurateIt.previous();
-            // 精准查找优先
-            if (tag.equals(pair.first)) {
-                target = pair;
-                break;
-            } else {
-                upList.add(pair);
-            }
-        }
-        if (target == null) {
-            upList.clear();
-            ListIterator<Pair<String, Fragment>> fuzzyIt = mStack.listIterator(mStack.size());
-            while (fuzzyIt.hasPrevious()) {
-                Pair<String, Fragment> pair = fuzzyIt.previous();
-                // 再寻找前部匹配
-                if (pair.first.startsWith(tag)) {
-                    target = pair;
-                    break;
-                } else {
-                    upList.add(pair);
-                }
-            }
-        }
 
-        if (target != null) {
-            FragmentTransaction transaction = mFragmentManager.beginTransaction();
-            for (Pair<String, Fragment> pair : upList) {
-                transaction.remove(pair.second);
-                mStack.remove(pair);
+        List<Pair<String, Fragment>> findArrary = findTargetFragmentAndUpList(tag);
+        if (findArrary == null || findArrary.isEmpty()) {
+            return;
+        }
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        Pair<String, Fragment> target = findArrary.get(findArrary.size() - 1);
+        Fragment showFragment;
+        for (Pair<String, Fragment> pair : findArrary) {
+            if (pair == target) {
+                continue;
             }
-
-            Fragment showFragment;
-            if (includeTarget) {
-                int targetIndex = mStack.indexOf(target);
-                if (targetIndex - 1 < 0) {
-                    transaction.remove(target.second).commitAllowingStateLoss();
-                    mStack.remove(target);
-                    if (mListener != null) {
-                        mListener.onShowMainLayer();
-                    }
-                    return;
-                } else {
-                    showFragment = mStack.get(targetIndex - 1).second;
-                    transaction.show(showFragment)
-                            .remove(target.second)
-                            .commitAllowingStateLoss();
-                    mStack.remove(target);
-                    safeShowFragmentView(showFragment);
-                    showFragment.onResume();
+            transaction.remove(pair.second);
+            mStack.remove(pair);
+        }
+        if (includeTarget) {
+            int targetIndex = mStack.indexOf(target);
+            if (targetIndex - 1 < 0) {
+                transaction.remove(target.second).commitAllowingStateLoss();
+                mStack.remove(target);
+                if (mListener != null) {
+                    mListener.onShowMainLayer();
                 }
+                return;
             } else {
-                showFragment = target.second;
-                transaction.show(showFragment).commitAllowingStateLoss();
+                showFragment = mStack.get(targetIndex - 1).second;
+                transaction.show(showFragment)
+                        .remove(target.second)
+                        .commitAllowingStateLoss();
+                executeTransactionNow();
+                mStack.remove(target);
                 safeShowFragmentView(showFragment);
                 showFragment.onResume();
             }
-            // 移除了n个之后（n>=1）
-            if (mListener != null) {
-                mListener.onPopFragment(getTopFragment());
-            }
+        } else {
+            showFragment = target.second;
+            transaction.show(showFragment).commitAllowingStateLoss();
+            executeTransactionNow();
+            safeShowFragmentView(showFragment);
+            showFragment.onResume();
+        }
+        // 移除了n个之后（n>=1）
+        if (mListener != null) {
+            mListener.onPopFragment(getTopFragment());
         }
     }
 
@@ -234,6 +213,7 @@ public class FragmentOperation {
                 transaction.show(showFragment)
                         .remove(getTopFragment())
                         .commitAllowingStateLoss();
+                executeTransactionNow();
                 mStack.removeLast();
                 safeShowFragmentView(showFragment);
                 showFragment.onResume();
@@ -412,6 +392,7 @@ public class FragmentOperation {
                 mStack.remove(pair);
             }
             transaction.show(target).commitAllowingStateLoss();
+            executeTransactionNow();
             ((BaseFragment) target).onNewIntent(parameter.bundle);
             safeShowFragmentView(target);
             target.onResume();
@@ -435,7 +416,21 @@ public class FragmentOperation {
         transaction.setTransition(FragmentTransaction.TRANSIT_NONE)
                 .add(mContainerId, fragment, tag);
         Fragment preFragment = mStack.getLast().second;
-        if (parameter.isPopCurrent) {
+        if (!TextUtils.isEmpty(parameter.popEndTag)) {
+            List<Pair<String, Fragment>> findArrary
+                    = findTargetFragmentAndUpList(parameter.popEndTag);
+            if (findArrary == null || findArrary.isEmpty()) {
+                return;
+            }
+            Pair<String, Fragment> target = findArrary.get(findArrary.size() - 1);
+            for (Pair<String, Fragment> pair : findArrary) {
+                if (!parameter.isIncludePopEnd && pair == target) {
+                    continue;
+                }
+                transaction.remove(pair.second);
+                mStack.remove(pair);
+            }
+        } else if (parameter.isPopCurrent) {
             transaction.remove(preFragment);
             mStack.remove(mStack.getLast());
         } else if (parameter.isHideBottomLayer) {
@@ -481,7 +476,21 @@ public class FragmentOperation {
             return;
         }
         Fragment preFragment = mStack.getLast().second;
-        if (parameter.isPopCurrent) {
+        if (!TextUtils.isEmpty(parameter.popEndTag)) {
+            List<Pair<String, Fragment>> findArrary
+                    = findTargetFragmentAndUpList(parameter.popEndTag);
+            if (findArrary == null || findArrary.isEmpty()) {
+                return;
+            }
+            Pair<String, Fragment> target = findArrary.get(findArrary.size() - 1);
+            for (Pair<String, Fragment> pair : findArrary) {
+                if (!parameter.isIncludePopEnd && pair == target) {
+                    continue;
+                }
+                transaction.remove(pair.second);
+                mStack.remove(pair);
+            }
+        } else if (parameter.isPopCurrent) {
             transaction.remove(preFragment);
             mStack.remove(mStack.getLast());
         } else if (parameter.isHideBottomLayer) {
@@ -570,5 +579,57 @@ public class FragmentOperation {
         }
         String[] strings = tag.split(SEPARATOR);
         return strings[0];
+    }
+
+    /**
+     * 兼容sdk24以下，不使用commitNow，用这个立即提交事务
+     */
+    private void executeTransactionNow() {
+        try {
+            mFragmentManager.executePendingTransactions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 找到目标fragment和其上所有framgent的集合
+     *
+     * @param tag 目标fragment tag
+     */
+    private List<Pair<String, Fragment>> findTargetFragmentAndUpList(String tag) {
+        ListIterator<Pair<String, Fragment>> accurateIt = mStack.listIterator(mStack.size());
+        List<Pair<String, Fragment>> upList = new ArrayList<>();
+        Pair<String, Fragment> target = null;
+        while (accurateIt.hasPrevious()) {
+            Pair<String, Fragment> pair = accurateIt.previous();
+            // 精准查找优先
+            if (tag.equals(pair.first)) {
+                target = pair;
+                break;
+            } else {
+                upList.add(pair);
+            }
+        }
+        if (target == null) {
+            upList.clear();
+            ListIterator<Pair<String, Fragment>> fuzzyIt = mStack.listIterator(mStack.size());
+            while (fuzzyIt.hasPrevious()) {
+                Pair<String, Fragment> pair = fuzzyIt.previous();
+                // 再寻找前部匹配
+                if (pair.first.startsWith(tag)) {
+                    target = pair;
+                    break;
+                } else {
+                    upList.add(pair);
+                }
+            }
+        }
+        if (target != null) {
+            // 把目标加到最后一个
+            upList.add(target);
+            return upList;
+        }
+        return null;
     }
 }

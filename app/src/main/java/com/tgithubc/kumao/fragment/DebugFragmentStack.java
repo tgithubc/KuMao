@@ -5,12 +5,12 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class DebugFragmentStack {
+class DebugFragmentStack {
 
-    public String mFragmentTag;
-    public List<DebugFragmentStack> mChildFragmentStack;
+    String mFragmentTag;
+    List<DebugFragmentStack> mChildFragmentStack;
 
-    public DebugFragmentStack(String tag, List<DebugFragmentStack> childFragmentStack) {
+    DebugFragmentStack(String tag, List<DebugFragmentStack> childFragmentStack) {
         this.mFragmentTag = tag;
         this.mChildFragmentStack = childFragmentStack;
     }
