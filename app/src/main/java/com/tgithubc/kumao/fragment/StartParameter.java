@@ -38,7 +38,7 @@ class StartParameter {
     boolean isIncludePopEnd;
     // 共享元素动画需要的
     List<Map.Entry<View, String>> shareViews;
-    // 以singletop，singleTask启动的时候可能回需要携带些新数据，放这里就行
+    // 以singleTop，singleTask启动的时候可能回需要携带些新数据，放这里就行
     Bundle bundle;
 
     private StartParameter(Builder builder) {

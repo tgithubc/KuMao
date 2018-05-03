@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -11,7 +12,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 public abstract class BasePresenter<V extends IView> {
 
-    protected CompositeSubscription mSubscription;
+    private CompositeSubscription mSubscription;
     private V mView;
     private Class<? extends IView> mViewClass;
 
@@ -39,6 +40,12 @@ public abstract class BasePresenter<V extends IView> {
     private void unSubscribe() {
         if (mSubscription != null && mSubscription.hasSubscriptions()) {
             mSubscription.unsubscribe();
+        }
+    }
+
+    protected void subscribe(Subscription s) {
+        if (mSubscription != null) {
+            mSubscription.add(s);
         }
     }
 

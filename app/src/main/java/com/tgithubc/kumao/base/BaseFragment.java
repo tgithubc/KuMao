@@ -25,10 +25,10 @@ public abstract class BaseFragment extends SwipeBackFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(getLayoutId(), container, false);
-        init(root, inflater, savedInstanceState);
         if (isShowLCEE()) {
             mStateLayout = StateView.inject(root);
         }
+        init(root, inflater, savedInstanceState);
         return root;
     }
 
@@ -42,7 +42,7 @@ public abstract class BaseFragment extends SwipeBackFragment {
     /**
      * 显示空页面
      */
-    protected void showEmpty() {
+    protected void baseShowEmpty() {
         if (mStateLayout != null) {
             mStateLayout.showEmpty();
         }
@@ -51,7 +51,7 @@ public abstract class BaseFragment extends SwipeBackFragment {
     /**
      * 显示错误重试
      */
-    protected void showError() {
+    protected void baseShowError() {
         if (mStateLayout != null) {
             mStateLayout.showRetry();
             mStateLayout.setOnRetryClickListener(this::onRetry);
@@ -61,7 +61,7 @@ public abstract class BaseFragment extends SwipeBackFragment {
     /**
      * 显示加载中
      */
-    protected void showLoading() {
+    protected void baseShowLoading() {
         if (mStateLayout != null) {
             mStateLayout.showLoading();
         }
@@ -70,7 +70,7 @@ public abstract class BaseFragment extends SwipeBackFragment {
     /**
      * 显示内容
      */
-    protected void showContent() {
+    protected void baseShowContent() {
         if (mStateLayout != null) {
             mStateLayout.showContent();
         }

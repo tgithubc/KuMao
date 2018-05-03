@@ -11,6 +11,7 @@ import com.tgithubc.kumao.fragment.OnFragmentStackChangeListener;
 import com.tgithubc.kumao.message.IObserver;
 import com.tgithubc.kumao.message.MessageBus;
 import com.tgithubc.kumao.module.HomePageAdapter;
+import com.tgithubc.kumao.module.featured.FeaturedFragment;
 import com.tgithubc.kumao.observer.IKuMaoObserver.IFragmentSwipeBackObserver;
 import com.tgithubc.kumao.widget.bottomtab.BottomTabItemView;
 import com.tgithubc.kumao.widget.bottomtab.BottomTabLayout;
@@ -55,7 +56,7 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
 
         final List<Fragment> fragments = new ArrayList<>();
         fragments.add(TestFragment.newInstance("我的"));
-        fragments.add(TestFragment.newInstance("精选"));
+        fragments.add(FeaturedFragment.newInstance());
         fragments.add(TestFragment.newInstance("榜单"));
         fragments.add(TestFragment.newInstance("设置"));
         mAdapter = new HomePageAdapter(getSupportFragmentManager(), fragments);

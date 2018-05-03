@@ -412,7 +412,7 @@ public class FragmentOperation {
      */
     private void openSingleInstance(Fragment fragment, String tag, StartParameter parameter) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        handlerAnimation(fragment, parameter, transaction);
+        handlerAnimation(parameter, transaction);
         transaction.setTransition(FragmentTransaction.TRANSIT_NONE)
                 .add(mContainerId, fragment, tag);
         Fragment preFragment = mStack.getLast().second;
@@ -463,7 +463,7 @@ public class FragmentOperation {
      */
     private void openStandard(Fragment fragment, String tag, StartParameter parameter) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        handlerAnimation(fragment, parameter, transaction);
+        handlerAnimation(parameter, transaction);
         transaction.setTransition(FragmentTransaction.TRANSIT_NONE)
                 .add(mContainerId, fragment, tag);
         if (mStack.isEmpty()) {
@@ -507,19 +507,20 @@ public class FragmentOperation {
     /**
      * 处理动画和共享元素，其实可以整个策咯暴露出去
      *
-     * @param fragment
      * @param parameter
      * @param transaction
      */
-    private void handlerAnimation(Fragment fragment, StartParameter parameter,
+    private void handlerAnimation(StartParameter parameter,
                                   FragmentTransaction transaction) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             List<Map.Entry<View, String>> shareView = parameter.shareViews;
             if (shareView != null && !shareView.isEmpty()) {
+                /*
                 fragment.setSharedElementEnterTransition(new FragmentTransition());
-                fragment.setExitTransition(new Fade(Fade.OUT));
                 fragment.setEnterTransition(new Fade(Fade.IN));
+                fragment.setExitTransition(new Fade(Fade.OUT));
                 fragment.setSharedElementReturnTransition(new FragmentTransition());
+                */
                 for (int i = 0, size = shareView.size(); i < size; i++) {
                     Map.Entry<View, String> item = shareView.get(i);
                     transaction.addSharedElement(item.getKey(), item.getValue());

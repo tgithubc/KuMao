@@ -21,14 +21,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by tc :)
  */
-public class ApiManager {
+public class RetrofitManager {
 
-    private static final String TAG = "ApiManager";
+    private static final String TAG = "RetrofitManager";
 
     private static final String URL_HEADER_BMOB = "bmob";
     private static final String URL_HEADER_MUSIC = "music";
 
-    private static final String BASE_URL_MUSIC = "music";
+    private static final String BASE_URL_MUSIC = "http://tingapi.ting.baidu.com/v1/restserver/";
     private static final String BASE_URL_BMOB = "bmob";
 
     private static final String USER_AGENT = "User-Agent";
@@ -37,19 +37,19 @@ public class ApiManager {
     private static final long TIME_OUT = 5000;
     private Retrofit mRetrofit;
 
-    public static ApiManager getInstance() {
+    public static RetrofitManager getInstance() {
         return SingleHolder.INSTANCE;
     }
 
     private static class SingleHolder {
-        private static final ApiManager INSTANCE = new ApiManager();
+        private static final RetrofitManager INSTANCE = new RetrofitManager();
     }
 
-    private ApiManager() {
+    private RetrofitManager() {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL_MUSIC)
-                //.addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
+                //.addConverterFactory(StringConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(initOkHttpClient())
                 .build();
@@ -119,8 +119,8 @@ public class ApiManager {
                     .host(newBaseUrl.host())
                     .port(newBaseUrl.port());
             if (URL_HEADER_MUSIC.equals(headerValue)) {
-                httpBuilder.addQueryParameter("from", "android");
-                httpBuilder.addQueryParameter("version", "5.6.5.0");
+                httpBuilder.addQueryParameter("from", "qianqian");
+                httpBuilder.addQueryParameter("version", "5.6.3.0");
                 httpBuilder.addQueryParameter("format", "json");
             }
             //重建request返回

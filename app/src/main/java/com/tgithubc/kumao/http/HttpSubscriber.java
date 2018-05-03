@@ -17,7 +17,7 @@ import rx.Subscriber;
  * 其实还有些不是服务端错误的code，比如登陆失败的业务错误也应该提前预处理了丢个异常转到onError里来，不应该再走到onNext
  * Created by tc :)
  */
-public abstract class ApiSubscriber<T> extends Subscriber<T> {
+public abstract class HttpSubscriber<T> extends Subscriber<T> {
 
     private static final String TAG = "ApiException";
 

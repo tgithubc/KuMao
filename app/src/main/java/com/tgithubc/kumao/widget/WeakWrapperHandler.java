@@ -5,6 +5,9 @@ import android.os.Message;
 
 import java.lang.ref.WeakReference;
 
+/**
+ * Created by tc :)
+ */
 public class WeakWrapperHandler extends Handler {
     
     public interface MessageHandler {

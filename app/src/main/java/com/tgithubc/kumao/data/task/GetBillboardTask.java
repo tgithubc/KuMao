@@ -1,0 +1,67 @@
+package com.tgithubc.kumao.data.task;
+
+import android.support.annotation.NonNull;
+
+import com.tgithubc.kumao.api.MusicApi;
+import com.tgithubc.kumao.base.Task;
+import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.http.RetrofitManager;
+
+import rx.Observable;
+import rx.Scheduler;
+
+/**
+ * Created by tc :)
+ */
+public class GetBillboardTask extends Task<GetBillboardTask.RequestValues, GetBillboardTask.ResponseValue> {
+
+    public GetBillboardTask(Scheduler backgroundScheduler) {
+        super(backgroundScheduler);
+    }
+
+    @Override
+    protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
+        return RetrofitManager.getInstance()
+                .createService(MusicApi.class)
+                .getBillboard(requestValues.getType(), requestValues.getOffset(), requestValues.getSize())
+                .map(ResponseValue::new);
+    }
+
+    public static final class RequestValues implements Task.RequestValues {
+
+        private int type;
+        private int offset;
+        private int size;
+
+        public RequestValues(int type, int offset, int size) {
+            this.type = type;
+            this.offset = offset;
+            this.size = size;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public int getOffset() {
+            return offset;
+        }
+
+        public int getSize() {
+            return size;
+        }
+    }
+
+    public static final class ResponseValue implements Task.ResponseValue {
+
+        private Billboard mResult;
+
+        public ResponseValue(@NonNull Billboard result) {
+            mResult = result;
+        }
+
+        public Billboard getResult() {
+            return mResult;
+        }
+    }
+}
