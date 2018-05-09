@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Banner返回结果集合
+ * Created by tc :)
+ */
 public class BannerResult {
 
     @SerializedName("pic")

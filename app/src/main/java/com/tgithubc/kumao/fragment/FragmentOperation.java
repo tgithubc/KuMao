@@ -505,22 +505,20 @@ public class FragmentOperation {
     }
 
     /**
-     * 处理动画和共享元素，其实可以整个策咯暴露出去
+     * 处理动画和共享元素
      *
+     * example:
+     * fragment.setSharedElementEnterTransition(new FragmentTransition());
+     * fragment.setEnterTransition(new Fade(Fade.IN));
+     * fragment.setExitTransition(new Fade(Fade.OUT));
+     * fragment.setSharedElementReturnTransition(new FragmentTransition());
      * @param parameter
      * @param transaction
      */
-    private void handlerAnimation(StartParameter parameter,
-                                  FragmentTransaction transaction) {
+    private void handlerAnimation(StartParameter parameter, FragmentTransaction transaction) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             List<Map.Entry<View, String>> shareView = parameter.shareViews;
             if (shareView != null && !shareView.isEmpty()) {
-                /*
-                fragment.setSharedElementEnterTransition(new FragmentTransition());
-                fragment.setEnterTransition(new Fade(Fade.IN));
-                fragment.setExitTransition(new Fade(Fade.OUT));
-                fragment.setSharedElementReturnTransition(new FragmentTransition());
-                */
                 for (int i = 0, size = shareView.size(); i < size; i++) {
                     Map.Entry<View, String> item = shareView.get(i);
                     transaction.addSharedElement(item.getKey(), item.getValue());

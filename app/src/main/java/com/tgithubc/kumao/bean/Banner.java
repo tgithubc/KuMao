@@ -3,6 +3,7 @@ package com.tgithubc.kumao.bean;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * 单条Banner
  * Created by tc :)
  */
 public class Banner {

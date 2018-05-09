@@ -3,6 +3,7 @@ package com.tgithubc.kumao.http;
 
 import android.util.Log;
 
+
 import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -11,6 +12,7 @@ import java.util.Locale;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
+
 
 /**
  * 统一处理error
@@ -34,7 +36,6 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> {
     private static final String MSG_NETWORK_CONNECTION_ERROR = "网络连接不可用，请检查或稍后重试";
     private static final String MSG_UNKNOWN_ERROR = "未知错误";
 
-    @Override
     public void onStart() {
         super.onStart();
     }
@@ -66,7 +67,7 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> {
             if (msg == null || msg.isEmpty()) {
                 msg = String.format(Locale.CHINA, "出错了！错误代码：%d", ((ApiException) e).getCode());
             }
-            onError(msg);
+            onError(msg, e);
         } else if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
             switch (httpException.code()) {
@@ -74,27 +75,27 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> {
                 case ERROR_CODE_FORBIDDEN:
                 case ERROR_CODE_NOT_FOUND:
                 case ERROR_CODE_SERVER_ERROR:
-                    onError(MSG_SERVER_ERROR);
+                    onError(MSG_SERVER_ERROR, e);
                     break;
                 case ERROR_CODE_TIMEOUT:
-                    onError(MSG_TIME_OUT);
+                    onError(MSG_TIME_OUT, e);
                     break;
                 default:
-                    onError(MSG_NETWORK_ERROR);
+                    onError(MSG_NETWORK_ERROR, e);
                     break;
             }
         } else if (e instanceof SocketTimeoutException) {
-            onError(MSG_TIME_OUT);
+            onError(MSG_TIME_OUT, e);
         } else if (e instanceof ConnectException) {
-            onError(MSG_NETWORK_ERROR);
+            onError(MSG_NETWORK_ERROR, e);
         } else if (e instanceof UnknownHostException) {
-            onError(MSG_NETWORK_CONNECTION_ERROR);
+            onError(MSG_NETWORK_CONNECTION_ERROR, e);
         } else if (e instanceof SocketException) {
-            onError(MSG_SERVER_ERROR);
+            onError(MSG_SERVER_ERROR, e);
         } else {
-            onError(MSG_UNKNOWN_ERROR);
+            onError(MSG_UNKNOWN_ERROR, e);
         }
     }
 
-    protected abstract void onError(String msg);
+    protected abstract void onError(String msg, Throwable e);
 }

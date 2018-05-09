@@ -2,6 +2,7 @@ package com.tgithubc.kumao.data.repository;
 
 
 import com.tgithubc.kumao.bean.BannerResult;
+import com.tgithubc.kumao.bean.Billboard;
 
 import rx.Observable;
 
@@ -29,5 +30,10 @@ public class KuMaoRepository implements KuMaoDataSource {
     @Override
     public Observable<BannerResult> getBanner(int numb) {
         return mRemoteDataSource.getBanner(numb);
+    }
+
+    @Override
+    public Observable<Billboard> getBillboard(int type, int offset, int size) {
+        return mRemoteDataSource.getBillboard(type, offset, size);
     }
 }

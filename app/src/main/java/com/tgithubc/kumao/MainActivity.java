@@ -13,9 +13,10 @@ import com.tgithubc.kumao.message.MessageBus;
 import com.tgithubc.kumao.module.HomePageAdapter;
 import com.tgithubc.kumao.module.featured.FeaturedFragment;
 import com.tgithubc.kumao.observer.IKuMaoObserver.IFragmentSwipeBackObserver;
-import com.tgithubc.kumao.widget.bottomtab.BottomTabItemView;
-import com.tgithubc.kumao.widget.bottomtab.BottomTabLayout;
-import com.tgithubc.kumao.widget.bottomtab.OnTabSelectedListener;
+import com.tgithubc.view.lib.BottomTabItemView;
+import com.tgithubc.view.lib.BottomTabLayout;
+import com.tgithubc.view.lib.OnTabSelectedListener;
+
 
 import java.util.ArrayList;
 import java.util.List;

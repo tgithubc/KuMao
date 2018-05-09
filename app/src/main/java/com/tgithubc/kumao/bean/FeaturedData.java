@@ -1,36 +1,30 @@
 package com.tgithubc.kumao.bean;
 
-import java.util.List;
 
 /**
  * Created by tc :)
  */
-public class FeaturedData {
+public class FeaturedData<E> {
 
-    private List<Banner> bannerList;
-    private List<Billboard> billboardList;
+    public static final int TYPE_BANNER = 0;// 轮播图
+    public static final int TYPE_BILLBOARD = 1;// 榜单
 
-    public List<Banner> getBannerList() {
-        return bannerList;
+    private int type;
+    private E data;
+
+    public int getType() {
+        return type;
     }
 
-    public void setBannerList(List<Banner> bannerList) {
-        this.bannerList = bannerList;
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public List<Billboard> getBillboardList() {
-        return billboardList;
+    public E getData() {
+        return data;
     }
 
-    public void setBillboardList(List<Billboard> billboardList) {
-        this.billboardList = billboardList;
-    }
-
-    @Override
-    public String toString() {
-        return "FeaturedData{" +
-                "bannerList=" + bannerList +
-                ", billboardList=" + billboardList +
-                '}';
+    public void setData(E data) {
+        this.data = data;
     }
 }

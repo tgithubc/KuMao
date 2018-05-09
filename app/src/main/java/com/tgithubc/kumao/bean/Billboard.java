@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * 榜单
+ * 单条榜单
  * Created by tc :)
  */
 public class Billboard {

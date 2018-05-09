@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_tab_layout"/>
 
-    <com.tgithubc.kumao.widget.bottomtab.BottomTabLayout
+    <com.tgithubc.view.lib.BottomTabLayout
         android:id="@+id/bottom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"

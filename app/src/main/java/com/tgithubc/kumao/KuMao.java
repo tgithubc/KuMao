@@ -2,6 +2,7 @@ package com.tgithubc.kumao;
 
 import android.app.Application;
 
+import com.tgithubc.fresco_wapper.load.impl.FrescoImageLoader;
 import com.tgithubc.kumao.util.RomUtil;
 
 /**
@@ -13,5 +14,6 @@ public class KuMao extends Application {
     public void onCreate() {
         super.onCreate();
         RomUtil.initRomInfo();
+        FrescoImageLoader.getInstance().initialize(this);
     }
 }

@@ -17,7 +17,7 @@ public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTa
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         return RepositoryProvider.getTasksRepository()
                 .getBanner(requestValues.getNumber())
-                .map(ResponseValue::new);
+                .map(result -> new ResponseValue(result));
     }
 
     public static final class RequestValues implements Task.RequestValues {

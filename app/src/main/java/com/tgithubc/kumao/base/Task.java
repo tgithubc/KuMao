@@ -22,7 +22,7 @@ public abstract class Task<RQ extends Task.RequestValues, RP extends Task.Respon
 
     public Observable<RP> execute(RQ requestValues) {
         return executeTask(requestValues)
-                .compose(new ApplySchedulers<RP>());
+                .compose(ApplySchedulers.apply());
     }
 
     protected abstract Observable<RP> executeTask(RQ requestValues);
@@ -33,12 +33,10 @@ public abstract class Task<RQ extends Task.RequestValues, RP extends Task.Respon
     public interface ResponseValue {
     }
 
-    private class ApplySchedulers<T> implements Observable.Transformer<T, T> {
+    private static class ApplySchedulers {
 
-        @Override
-        public Observable<T> call(Observable<T> observable) {
-            return observable
-                    .subscribeOn(mBackgroundScheduler)
+        private static <T> Observable.Transformer<T, T> apply() {
+            return observable -> observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         }
     }
