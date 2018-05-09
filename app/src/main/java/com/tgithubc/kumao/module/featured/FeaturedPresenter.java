@@ -73,6 +73,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                             }
                         });
                         Log.d(TAG, "mFeedData :" + mFeedData);
+                        getView().showFeatureView(mFeedData);
                     }
                 });
         subscribe(subscription);

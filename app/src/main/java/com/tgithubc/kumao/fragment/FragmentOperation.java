@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -536,8 +537,12 @@ public class FragmentOperation {
         if (mStack == null || mStack.size() == 0) {
             return null;
         }
-        return mStack.stream().map(pair -> new DebugFragmentStack(pair.first,
-                getChildFragmentRecords(pair.second))).collect(Collectors.toList());
+        List<DebugFragmentStack> fragmentRecordList = new ArrayList<>();
+        for (Pair<String, Fragment> pair : mStack) {
+            fragmentRecordList.add(new DebugFragmentStack(pair.first,
+                    getChildFragmentRecords(pair.second)));
+        }
+        return fragmentRecordList;
     }
 
     /**

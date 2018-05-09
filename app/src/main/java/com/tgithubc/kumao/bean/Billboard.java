@@ -38,7 +38,7 @@ public class Billboard {
                 '}';
     }
 
-    private class BillboardInfo {
+    public class BillboardInfo {
 
         // 榜单类型
         @SerializedName("billboard_type")

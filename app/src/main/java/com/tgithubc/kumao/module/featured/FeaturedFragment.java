@@ -2,11 +2,16 @@ package com.tgithubc.kumao.module.featured;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
+import com.tgithubc.kumao.bean.FeaturedData;
+
+import java.util.List;
 
 /**
  * Created by tc :)
@@ -14,6 +19,8 @@ import com.tgithubc.kumao.base.BaseFragment;
 public class FeaturedFragment extends BaseFragment implements IFeaturedContract.V {
 
     private FeaturedPresenter mPresenter;
+    private RecyclerView mRecyclerView;
+    private FeaturedAdapter mAdapter;
 
     public static FeaturedFragment newInstance() {
         return new FeaturedFragment();
@@ -28,6 +35,11 @@ public class FeaturedFragment extends BaseFragment implements IFeaturedContract.
 
     @Override
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new FeaturedAdapter(null);
+        mAdapter.bindToRecyclerView(mRecyclerView);
         mPresenter.getFeaturedData();
     }
 
@@ -65,5 +77,10 @@ public class FeaturedFragment extends BaseFragment implements IFeaturedContract.
     @Override
     public void showContent() {
         baseShowContent();
+    }
+
+    @Override
+    public void showFeatureView(List<FeaturedData> mFeedData) {
+        mAdapter.setNewData(mFeedData);
     }
 }
