@@ -4,6 +4,8 @@ import com.tgithubc.kumao.bean.BannerResult;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.data.repository.KuMaoDataSource;
 
+import java.util.Map;
+
 import rx.Observable;
 
 /**
@@ -24,12 +26,12 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<BannerResult> getBanner(int numb) {
+    public Observable<BannerResult> getBanner(String url, Map<String, String> maps) {
         return null;
     }
 
     @Override
-    public Observable<Billboard> getBillboard(int type, int offset, int size) {
+    public Observable<Billboard> getBillboard(String url, Map<String, String> maps) {
         return null;
     }
 }

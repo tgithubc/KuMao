@@ -4,6 +4,8 @@ package com.tgithubc.kumao.data.repository;
 import com.tgithubc.kumao.bean.BannerResult;
 import com.tgithubc.kumao.bean.Billboard;
 
+import java.util.Map;
+
 import rx.Observable;
 
 /**
@@ -28,12 +30,12 @@ public class KuMaoRepository implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<BannerResult> getBanner(int numb) {
-        return mRemoteDataSource.getBanner(numb);
+    public Observable<BannerResult> getBanner(String url, Map<String, String> maps) {
+        return mRemoteDataSource.getBanner(url, maps);
     }
 
     @Override
-    public Observable<Billboard> getBillboard(int type, int offset, int size) {
-        return mRemoteDataSource.getBillboard(type, offset, size);
+    public Observable<Billboard> getBillboard(String url, Map<String, String> maps) {
+        return mRemoteDataSource.getBillboard(url, maps);
     }
 }

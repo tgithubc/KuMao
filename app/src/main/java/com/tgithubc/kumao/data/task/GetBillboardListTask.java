@@ -2,10 +2,9 @@ package com.tgithubc.kumao.data.task;
 
 import android.support.annotation.NonNull;
 
-import com.tgithubc.kumao.api.MusicApi;
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.Billboard;
-import com.tgithubc.kumao.http.RetrofitManager;
+import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
 import java.util.List;
 
@@ -21,12 +20,11 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         Observable<Observable<Billboard>> all =
                 Observable.from(requestValues.getParameter())
-                        .flatMap(new Func1<RequestValues.RequestParameter, Observable<Observable<Billboard>>>() {
+                        .flatMap(new Func1<SimpleRequestValues, Observable<Observable<Billboard>>>() {
                             @Override
-                            public Observable<Observable<Billboard>> call(RequestValues.RequestParameter requestParameter) {
-                                return Observable.just(RetrofitManager.getInstance()
-                                        .createService(MusicApi.class)
-                                        .getBillboard(requestParameter.type, requestParameter.offset, requestParameter.size));
+                            public Observable<Observable<Billboard>> call(SimpleRequestValues commonRequestValues) {
+                                return Observable.just(RepositoryProvider.getTasksRepository()
+                                        .getBillboard(commonRequestValues.getUrl(), commonRequestValues.getParameter()));
                             }
                         });
         return Observable.merge(all)
@@ -44,26 +42,14 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
 
     public static final class RequestValues implements Task.RequestValues {
 
-        private List<RequestParameter> parameters;
+        private List<SimpleRequestValues> parameters;
 
-        public RequestValues(List<RequestParameter> parameters) {
+        public RequestValues(List<SimpleRequestValues> parameters) {
             this.parameters = parameters;
         }
 
-        public List<RequestParameter> getParameter() {
+        public List<SimpleRequestValues> getParameter() {
             return parameters;
-        }
-
-        public static final class RequestParameter {
-            public int type;
-            public int offset;
-            public int size;
-
-            public RequestParameter(int type, int offset, int size) {
-                this.type = type;
-                this.offset = offset;
-                this.size = size;
-            }
         }
     }
 

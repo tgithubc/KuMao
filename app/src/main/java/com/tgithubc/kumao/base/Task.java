@@ -1,5 +1,7 @@
 package com.tgithubc.kumao.base;
 
+import java.util.Map;
+
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,6 +33,25 @@ public abstract class Task<RQ extends Task.RequestValues, RP extends Task.Respon
     }
 
     public interface ResponseValue {
+    }
+
+    public static class SimpleRequestValues implements RequestValues {
+
+        private String url;
+        private Map<String, String> parameter;
+
+        public SimpleRequestValues(String url, Map<String, String> parameter) {
+            this.url = url;
+            this.parameter = parameter;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public Map<String, String> getParameter() {
+            return parameter;
+        }
     }
 
     private static class ApplySchedulers {

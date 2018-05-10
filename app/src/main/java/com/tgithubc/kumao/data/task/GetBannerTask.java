@@ -6,6 +6,8 @@ import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BannerResult;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
+import java.util.Map;
+
 import rx.Observable;
 
 /**
@@ -16,20 +18,14 @@ public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTa
     @Override
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         return RepositoryProvider.getTasksRepository()
-                .getBanner(requestValues.getNumber())
+                .getBanner(requestValues.getUrl(), requestValues.getParameter())
                 .map(result -> new ResponseValue(result));
     }
 
-    public static final class RequestValues implements Task.RequestValues {
+    public static final class RequestValues extends Task.SimpleRequestValues {
 
-        private int number;
-
-        public RequestValues(int number) {
-            this.number = number;
-        }
-
-        public int getNumber() {
-            return number;
+        public RequestValues(String url, Map<String, String> parameter) {
+            super(url, parameter);
         }
     }
 

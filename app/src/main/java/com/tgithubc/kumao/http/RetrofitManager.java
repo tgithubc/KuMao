@@ -16,7 +16,6 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by tc :)
@@ -48,8 +47,8 @@ public class RetrofitManager {
     private RetrofitManager() {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL_MUSIC)
-                .addConverterFactory(GsonConverterFactory.create())
-                //.addConverterFactory(StringConverterFactory.create())
+                //.addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(StringConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(initOkHttpClient())
                 .build();

@@ -3,6 +3,8 @@ package com.tgithubc.kumao.data.repository;
 import com.tgithubc.kumao.bean.BannerResult;
 import com.tgithubc.kumao.bean.Billboard;
 
+import java.util.Map;
+
 import rx.Observable;
 
 /**
@@ -10,7 +12,7 @@ import rx.Observable;
  */
 public interface KuMaoDataSource {
 
-    Observable<BannerResult> getBanner(int size);
+    Observable<BannerResult> getBanner(String url, Map<String,String> maps);
 
-    Observable<Billboard> getBillboard(int type, int offset, int size);
+    Observable<Billboard> getBillboard(String url, Map<String,String> maps);
 }

@@ -6,6 +6,8 @@ import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
+import java.util.Map;
+
 import rx.Observable;
 
 /**
@@ -16,32 +18,14 @@ public class GetBillboardTask extends Task<GetBillboardTask.RequestValues, GetBi
     @Override
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         return RepositoryProvider.getTasksRepository()
-                .getBillboard(requestValues.getType(), requestValues.getOffset(), requestValues.getSize())
+                .getBillboard(requestValues.getUrl(), requestValues.getParameter())
                 .map(result -> new ResponseValue(result));
     }
 
-    public static final class RequestValues implements Task.RequestValues {
+    public static final class RequestValues extends Task.SimpleRequestValues {
 
-        private int type;
-        private int offset;
-        private int size;
-
-        public RequestValues(int type, int offset, int size) {
-            this.type = type;
-            this.offset = offset;
-            this.size = size;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public int getOffset() {
-            return offset;
-        }
-
-        public int getSize() {
-            return size;
+        public RequestValues(String url, Map<String, String> parameter) {
+            super(url, parameter);
         }
     }
 

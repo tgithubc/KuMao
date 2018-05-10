@@ -5,12 +5,11 @@ import android.util.Log;
 import com.tgithubc.kumao.base.BasePresenter;
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BannerResult;
-import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.FeaturedData;
-import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBannerTask;
-import com.tgithubc.kumao.data.task.GetBillboardListTask;
+import com.tgithubc.kumao.data.task.GetBillboardTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
+import com.tgithubc.kumao.util.RxMap;
 
 
 import java.util.ArrayList;
@@ -30,18 +29,23 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     @Override
     public void getFeaturedData() {
         // 开始多个task，组合成一个数据流返回，不是自己的接口没办法
-        Observable<GetBannerTask.ResponseValue> bannerTask
-                = new GetBannerTask().execute(new GetBannerTask.RequestValues(10));
-
-        List<GetBillboardListTask.RequestValues.RequestParameter> parameters = new ArrayList<>();
-        parameters.add(new GetBillboardListTask.RequestValues.RequestParameter(
-                Constant.Api.BILLBOARD_TYPE_HOT, 0, 10));
-        parameters.add(new GetBillboardListTask.RequestValues.RequestParameter(
-                Constant.Api.BILLBOARD_TYPE_NEW, 0, 10));
-        Observable<GetBillboardListTask.ResponseValue> billboardListTask
-                = new GetBillboardListTask().execute(new GetBillboardListTask.RequestValues(parameters));
-
-        Subscription subscription = Observable.merge(bannerTask, billboardListTask)
+        Observable<GetBannerTask.ResponseValue> bannerTask =
+                new GetBannerTask()
+                        .execute(new GetBannerTask.RequestValues(
+                                "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.plaza.getFocusPic",
+                                new RxMap<String, String>()
+                                        .put("num", "10")
+                                        .build()));
+        Observable<GetBillboardTask.ResponseValue> billboardTask =
+                new GetBillboardTask()
+                        .execute(new GetBillboardTask.RequestValues(
+                                "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.billboard.billList",
+                                new RxMap<String, String>()
+                                        .put("type", "1")
+                                        .put("offset", "0")
+                                        .put("size", "5")
+                                        .build()));
+        Subscription subscription = Observable.merge(bannerTask, billboardTask)
                 .toList()
                 .doOnNext(responseValues -> {
                     // cache
@@ -61,7 +65,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                                 bannerData.setType(FeaturedData.TYPE_BANNER);
                                 bannerData.setData(((GetBannerTask.ResponseValue) value).getResult());
                                 mFeedData.add(bannerData);
-                            } else if (value instanceof GetBillboardListTask.ResponseValue) {
+                            } /*else if (value instanceof GetBillboardListTask.ResponseValue) {
                                 List<Billboard> billboardList = ((GetBillboardListTask.ResponseValue) value).getResult();
                                 Log.d(TAG, "responseValue :" + billboardList);
                                 Observable.from(billboardList).forEach(billboard -> {
@@ -70,7 +74,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                                     billboardData.setData(billboard);
                                     mFeedData.add(billboardData);
                                 });
-                            }
+                            }*/
                         });
                         Log.d(TAG, "mFeedData :" + mFeedData);
                         getView().showFeatureView(mFeedData);
