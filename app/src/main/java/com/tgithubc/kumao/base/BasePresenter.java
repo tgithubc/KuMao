@@ -27,7 +27,7 @@ public abstract class BasePresenter<V extends IView> {
 
     public void detachView() {
         mView = null;
-        unSubscribe();
+        removeSubscribe();
     }
 
     public V getView() {
@@ -37,13 +37,13 @@ public abstract class BasePresenter<V extends IView> {
         return mView;
     }
 
-    private void unSubscribe() {
+    private void removeSubscribe() {
         if (mSubscription != null && mSubscription.hasSubscriptions()) {
             mSubscription.unsubscribe();
         }
     }
 
-    protected void subscribe(Subscription s) {
+    protected void addSubscribe(Subscription s) {
         if (mSubscription != null) {
             mSubscription.add(s);
         }

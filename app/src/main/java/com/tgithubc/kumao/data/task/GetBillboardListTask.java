@@ -9,7 +9,6 @@ import com.tgithubc.kumao.data.repository.RepositoryProvider;
 import java.util.List;
 
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * Created by tc :)
@@ -20,21 +19,10 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         Observable<Observable<Billboard>> all =
                 Observable.from(requestValues.getParameter())
-                        .flatMap(new Func1<CommonRequestValues, Observable<Observable<Billboard>>>() {
-                            @Override
-                            public Observable<Observable<Billboard>> call(CommonRequestValues values) {
-                                return Observable.just(RepositoryProvider.getTasksRepository()
-                                        .getBillboard(values.getUrl(), values.getParameter()));
-                            }
-                        });
+                        .flatMap(values -> Observable.just(RepositoryProvider.getTasksRepository().getBillboard(values.getUrl(), values.getParameter())));
         return Observable.merge(all)
                 .toList()
-                .flatMap(new Func1<List<Billboard>, Observable<ResponseValue>>() {
-                    @Override
-                    public Observable<ResponseValue> call(List<Billboard> billboards) {
-                        return Observable.just(new ResponseValue(billboards));
-                    }
-                });
+                .flatMap(billboards -> Observable.just(new ResponseValue(billboards)));
     }
 
     public static final class RequestValues implements Task.RequestValues {

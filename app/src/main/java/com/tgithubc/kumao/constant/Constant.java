@@ -7,6 +7,9 @@ public class Constant {
 
     public interface Api {
 
+        String URL_BANNER = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.plaza.getFocusPic";
+        String URL_BILLBOARD = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.billboard.billList";
+
         /**
          * 榜单type
          * 1，新歌榜
