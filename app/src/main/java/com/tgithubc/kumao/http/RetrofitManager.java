@@ -3,9 +3,11 @@ package com.tgithubc.kumao.http;
 import android.util.Log;
 
 import com.tgithubc.kumao.BuildConfig;
+import com.tgithubc.kumao.api.CommonApi;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
@@ -16,6 +18,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import rx.Observable;
 
 /**
  * Created by tc :)
@@ -34,7 +37,7 @@ public class RetrofitManager {
     private static final String HEADER_USER_AGENT = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:0.9.4)";
 
     private static final long TIME_OUT = 5000;
-    private Retrofit mRetrofit;
+    private CommonApi mService;
 
     public static RetrofitManager getInstance() {
         return SingleHolder.INSTANCE;
@@ -45,17 +48,22 @@ public class RetrofitManager {
     }
 
     private RetrofitManager() {
-        mRetrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL_MUSIC)
                 //.addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(StringConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(initOkHttpClient())
                 .build();
+        mService = retrofit.create(CommonApi.class);
     }
 
-    public <T> T createService(Class<T> service) {
-        return mRetrofit.create(service);
+    public Observable<String> executeGet(String url, Map<String, String> maps) {
+        return mService.get(url, maps);
+    }
+
+    public Observable<String> executePost(String url, Map<String, String> maps) {
+        return mService.post(url, maps);
     }
 
     private OkHttpClient initOkHttpClient() {

@@ -22,7 +22,7 @@ public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTa
                 .map(result -> new ResponseValue(result));
     }
 
-    public static final class RequestValues extends Task.SimpleRequestValues {
+    public static final class RequestValues extends Task.CommonRequestValues {
 
         public RequestValues(String url, Map<String, String> parameter) {
             super(url, parameter);

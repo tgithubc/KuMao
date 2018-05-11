@@ -20,11 +20,11 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         Observable<Observable<Billboard>> all =
                 Observable.from(requestValues.getParameter())
-                        .flatMap(new Func1<SimpleRequestValues, Observable<Observable<Billboard>>>() {
+                        .flatMap(new Func1<CommonRequestValues, Observable<Observable<Billboard>>>() {
                             @Override
-                            public Observable<Observable<Billboard>> call(SimpleRequestValues commonRequestValues) {
+                            public Observable<Observable<Billboard>> call(CommonRequestValues values) {
                                 return Observable.just(RepositoryProvider.getTasksRepository()
-                                        .getBillboard(commonRequestValues.getUrl(), commonRequestValues.getParameter()));
+                                        .getBillboard(values.getUrl(), values.getParameter()));
                             }
                         });
         return Observable.merge(all)
@@ -32,23 +32,20 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
                 .flatMap(new Func1<List<Billboard>, Observable<ResponseValue>>() {
                     @Override
                     public Observable<ResponseValue> call(List<Billboard> billboards) {
-                        return Observable.create(subscriber -> {
-                            subscriber.onNext(new ResponseValue(billboards));
-                            subscriber.onCompleted();
-                        });
+                        return Observable.just(new ResponseValue(billboards));
                     }
                 });
     }
 
     public static final class RequestValues implements Task.RequestValues {
 
-        private List<SimpleRequestValues> parameters;
+        private List<CommonRequestValues> parameters;
 
-        public RequestValues(List<SimpleRequestValues> parameters) {
+        public RequestValues(List<CommonRequestValues> parameters) {
             this.parameters = parameters;
         }
 
-        public List<SimpleRequestValues> getParameter() {
+        public List<CommonRequestValues> getParameter() {
             return parameters;
         }
     }

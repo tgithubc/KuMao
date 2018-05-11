@@ -1,10 +1,11 @@
 package com.tgithubc.kumao.base;
 
+import com.tgithubc.kumao.util.RxHandler;
+
 import java.util.Map;
 
 import rx.Observable;
 import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -24,7 +25,7 @@ public abstract class Task<RQ extends Task.RequestValues, RP extends Task.Respon
 
     public Observable<RP> execute(RQ requestValues) {
         return executeTask(requestValues)
-                .compose(ApplySchedulers.apply());
+                .compose(RxHandler.applyScheduler());
     }
 
     protected abstract Observable<RP> executeTask(RQ requestValues);
@@ -35,12 +36,12 @@ public abstract class Task<RQ extends Task.RequestValues, RP extends Task.Respon
     public interface ResponseValue {
     }
 
-    public static class SimpleRequestValues implements RequestValues {
+    public static class CommonRequestValues implements RequestValues {
 
         private String url;
         private Map<String, String> parameter;
 
-        public SimpleRequestValues(String url, Map<String, String> parameter) {
+        public CommonRequestValues(String url, Map<String, String> parameter) {
             this.url = url;
             this.parameter = parameter;
         }
@@ -51,14 +52,6 @@ public abstract class Task<RQ extends Task.RequestValues, RP extends Task.Respon
 
         public Map<String, String> getParameter() {
             return parameter;
-        }
-    }
-
-    private static class ApplySchedulers {
-
-        private static <T> Observable.Transformer<T, T> apply() {
-            return observable -> observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
         }
     }
 }

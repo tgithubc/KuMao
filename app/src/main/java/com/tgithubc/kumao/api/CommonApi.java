@@ -12,7 +12,7 @@ import rx.Observable;
 /**
  * Created by tc :)
  */
-public interface Api {
+public interface CommonApi {
 
     @GET()
     Observable<String> get(@Url() String url, @QueryMap Map<String, String> maps);
