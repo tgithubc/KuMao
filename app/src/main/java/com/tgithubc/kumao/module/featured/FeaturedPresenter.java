@@ -47,10 +47,11 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                                 FeaturedData<BannerResult> bannerData = new FeaturedData<>();
                                 bannerData.setType(FeaturedData.TYPE_BANNER);
                                 bannerData.setData(((GetBannerTask.ResponseValue) value).getResult());
+                                Log.d(TAG, "banner :" + ((GetBannerTask.ResponseValue) value).getResult());
                                 mFeedData.add(bannerData);
                             } else if (value instanceof GetBillboardListTask.ResponseValue) {
                                 List<Billboard> billboardList = ((GetBillboardListTask.ResponseValue) value).getResult();
-                                Log.d(TAG, "responseValue :" + billboardList);
+                                Log.d(TAG, "billboardList :" + billboardList);
                                 Observable.from(billboardList).forEach(billboard -> {
                                     FeaturedData<Billboard> billboardData = new FeaturedData<>();
                                     billboardData.setType(FeaturedData.TYPE_BILLBOARD);

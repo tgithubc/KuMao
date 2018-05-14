@@ -38,8 +38,8 @@ public class FeaturedFragment extends BaseFragment implements IFeaturedContract.
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        //mAdapter = new FeaturedAdapter(null);
-        //mAdapter.bindToRecyclerView(mRecyclerView);
+        mAdapter = new FeaturedAdapter(null);
+        mAdapter.bindToRecyclerView(mRecyclerView);
         mPresenter.getFeaturedData();
     }
 
@@ -81,6 +81,6 @@ public class FeaturedFragment extends BaseFragment implements IFeaturedContract.
 
     @Override
     public void showFeatureView(List<FeaturedData> mFeedData) {
-        //mAdapter.setNewData(mFeedData);
+        mAdapter.setNewData(mFeedData);
     }
 }

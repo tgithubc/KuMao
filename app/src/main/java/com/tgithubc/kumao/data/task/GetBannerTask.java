@@ -17,7 +17,7 @@ public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTa
 
     @Override
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
-        return RepositoryProvider.getTasksRepository()
+        return RepositoryProvider.getRepository()
                 .getBanner(requestValues.getUrl(), requestValues.getParameter())
                 .map(result -> new ResponseValue(result));
     }

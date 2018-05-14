@@ -19,7 +19,7 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         Observable<Observable<Billboard>> all =
                 Observable.from(requestValues.getParameter())
-                        .flatMap(values -> Observable.just(RepositoryProvider.getTasksRepository().getBillboard(values.getUrl(), values.getParameter())));
+                        .flatMap(values -> Observable.just(RepositoryProvider.getRepository().getBillboard(values.getUrl(), values.getParameter())));
         return Observable.merge(all)
                 .toList()
                 .flatMap(billboards -> Observable.just(new ResponseValue(billboards)));

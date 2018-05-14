@@ -8,7 +8,7 @@ import com.tgithubc.kumao.data.repository.remote.KuMaoRemoteDataSource;
  */
 public class RepositoryProvider {
 
-    public static KuMaoRepository getTasksRepository() {
+    public static KuMaoRepository getRepository() {
         return KuMaoRepository.getInstance(KuMaoRemoteDataSource.getInstance(),
                 KuMaoLocalDataSource.getInstance());
     }

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="music_view_id" type="id" />
+    <item name="music_view_id" type="id"/>
 
-    <item type="id" name="hierarchy"></item>
-    <item type="id" name="isexpand"></item>
+    <item name="hierarchy" type="id"/>
+    <item name="isexpand" type="id"/>
+
+    <item name="rvb_banner_image_view_id" type="id"/>
 </resources>

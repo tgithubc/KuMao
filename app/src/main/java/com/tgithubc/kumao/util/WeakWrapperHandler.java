@@ -1,4 +1,4 @@
-package com.tgithubc.kumao.widget;
+package com.tgithubc.kumao.util;
 
 import android.os.Handler;
 import android.os.Message;

@@ -4,20 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#77737373"
     tools:context="com.tgithubc.kumao.MainActivity">
 
-    <com.tgithubc.kumao.widget.NoScrollViewPager
-        android:id="@+id/view_pager"
+    <LinearLayout
+        android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_tab_layout"/>
+        android:layout_height="45dp"
+        android:background="@color/colorAccent"
+        android:gravity="center_vertical"
+        android:tag="titleBar">
+
+        <TextView
+            android:id="@+id/main_home_search"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/top_search_bg"
+            android:drawableLeft="@mipmap/top_search"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="40dp"
+            android:textColorHint="#cacaca"
+            android:textSize="14dp"/>
+
+        <!--头像展位-->
+        <RelativeLayout
+            android:layout_width="40dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/user_space"/>
+        </RelativeLayout>
+    </LinearLayout>
 
     <com.tgithubc.view.lib.BottomTabLayout
         android:id="@+id/bottom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"/>
+
+    <com.tgithubc.kumao.widget.NoScrollViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_tab_layout"
+        android:layout_below="@id/topPanel"/>
 
     <FrameLayout
         android:id="@+id/fragment_container_id"
@@ -30,5 +68,4 @@
         android:layout_height="100dp"
         android:layout_above="@id/bottom_tab_layout"
         android:layout_alignParentRight="true"/>
-
 </RelativeLayout>

@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.util.DPPXUtil;
-import com.tgithubc.kumao.widget.WeakWrapperHandler;
+import com.tgithubc.kumao.util.WeakWrapperHandler;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,15 @@
 package com.tgithubc.kumao.base;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.tgithubc.kumao.util.DPPXUtil;
 import com.tgithubc.kumao.util.ImmersedStatusBarHelper;
 
 /**
@@ -20,5 +26,22 @@ public class BaseActivity extends AppCompatActivity {
         // 如果需要动态改变，需要发个消息过来，只有这个activity才能用mHelper处理动态改变沉浸式文字不同颜色
         mHelper = new ImmersedStatusBarHelper();
         mHelper.immersedStatusBar(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            View titleBar = getWindow().getDecorView().findViewWithTag("titleBar");
+            if (titleBar != null) {
+                ViewGroup.LayoutParams params = titleBar.getLayoutParams();
+                int h = DPPXUtil.dip2px(25);
+                if (params != null) {
+                    params.height = h + DPPXUtil.dip2px(45);
+                    titleBar.setPadding(0, h, 0, 0);
+                    titleBar.setLayoutParams(params);
+                }
+            }
+        }
     }
 }
