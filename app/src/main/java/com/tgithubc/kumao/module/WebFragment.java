@@ -59,8 +59,6 @@ public class WebFragment extends BaseFragment {
                 ViewGroup.LayoutParams.MATCH_PARENT));
         LinearLayout parentLayout = view.findViewById(R.id.web_parent);
         ((ViewGroup)parentLayout).addView(mWebView);*/
-        TitleBar titleBar = view.findViewById(R.id.web_title);
-        titleBar.setImmersive(true);
         mWebView = view.findViewById(R.id.web_view);
         if (!TextUtils.isEmpty(mUrl) && (mUrl.startsWith("http://") || mUrl.startsWith("https://"))) {
             mWebView.loadUrl(mUrl);
@@ -132,6 +130,13 @@ public class WebFragment extends BaseFragment {
             mWebView.destroy();
         }
         super.onDestroy();
+    }
+
+    @Override
+    protected View onCreateTitleView(LayoutInflater inflater, FrameLayout titleContainer) {
+        TitleBar titleBar = (TitleBar) inflater.inflate(R.layout.km_titlebar, titleContainer, false);
+        titleBar.setImmersive(true);
+        return titleBar;
     }
 
     @Override

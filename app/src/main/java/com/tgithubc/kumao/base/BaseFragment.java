@@ -1,13 +1,16 @@
 package com.tgithubc.kumao.base;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.github.nukc.stateview.StateView;
+import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.fragment.FragmentType;
 import com.tgithubc.kumao.widget.swipeback.SwipeBackFragment;
@@ -24,18 +27,52 @@ public abstract class BaseFragment extends SwipeBackFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(getLayoutId(), container, false);
-        if (isShowLCEE()) {
-            mStateLayout = StateView.inject(root);
+        View root = inflater.inflate(R.layout.fragment_base, container, false);
+        FrameLayout titleContainer = root.findViewById(R.id.base_title_container);
+        FrameLayout contentContainer = root.findViewById(R.id.base_content_container);
+        View content = inflater.inflate(getLayoutId(), contentContainer, true);
+        if (isShowTitle()) {
+            View titleView = onCreateTitleView(inflater, titleContainer);
+            if (titleView == null) {
+                titleContainer.setVisibility(View.GONE);
+            } else {
+                titleContainer.setVisibility(View.VISIBLE);
+                titleContainer.addView(titleView);
+                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) contentContainer.getLayoutParams();
+                int widthSpec = View.MeasureSpec.makeMeasureSpec(66666, View.MeasureSpec.EXACTLY);
+                int heightSpec = View.MeasureSpec.makeMeasureSpec(66666, View.MeasureSpec.AT_MOST);
+                titleContainer.measure(widthSpec, heightSpec);
+                lp.topMargin = titleContainer.getMeasuredHeight();
+            }
+        } else {
+            titleContainer.setVisibility(View.GONE);
         }
-        init(root, inflater, savedInstanceState);
+        if (isShowLCEE()) {
+            mStateLayout = StateView.inject(content);
+        }
+        init(content, inflater, savedInstanceState);
         return root;
+    }
+
+    /**
+     * 加载自定义title
+     */
+    protected View onCreateTitleView(LayoutInflater inflater, FrameLayout titleContainer) {
+        return null;
+    }
+
+
+    /**
+     * 是否显示title
+     */
+    protected boolean isShowTitle() {
+        return mFragmentType != FragmentType.TYPE_NONE;
     }
 
     /**
      * 是否需要多状态视图管理
      */
-    public boolean isShowLCEE() {
+    protected boolean isShowLCEE() {
         return false;
     }
 
@@ -108,6 +145,10 @@ public abstract class BaseFragment extends SwipeBackFragment {
     public void onNewIntent(Bundle bundle) {
     }
 
+    /**
+     * 内容布局，不包括title
+     * @return
+     */
     public abstract int getLayoutId();
 
     public abstract void init(View view, LayoutInflater inflater, Bundle savedInstanceState);
