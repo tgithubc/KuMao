@@ -327,8 +327,7 @@ public class RecyclerViewBanner extends FrameLayout {
                     mItemClickListener.onClick(mCurrentIndex % mData.size());
                 }
             });
-            return new RecyclerView.ViewHolder(img) {
-            };
+            return new RecyclerView.ViewHolder(img) {};
         }
 
         @Override

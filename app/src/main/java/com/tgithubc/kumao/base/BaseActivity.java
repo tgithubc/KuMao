@@ -35,7 +35,7 @@ public class BaseActivity extends AppCompatActivity {
             View titleBar = getWindow().getDecorView().findViewWithTag("titleBar");
             if (titleBar != null) {
                 ViewGroup.LayoutParams params = titleBar.getLayoutParams();
-                int h = DPPXUtil.dip2px(25);
+                int h = DPPXUtil.getStatusBarHeight();
                 if (params != null) {
                     params.height = h + DPPXUtil.dip2px(45);
                     titleBar.setPadding(0, h, 0, 0);

@@ -29,4 +29,17 @@ public class DPPXUtil {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px,
                 Resources.getSystem().getDisplayMetrics());
     }
+
+    public static int getStatusBarHeight() {
+        return getInternalDimensionSize(Resources.getSystem(), "status_bar_height");
+    }
+
+    private static int getInternalDimensionSize(Resources res, String key) {
+        int result = 0;
+        int resourceId = res.getIdentifier(key, "dimen", "android");
+        if (resourceId > 0) {
+            result = res.getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 }

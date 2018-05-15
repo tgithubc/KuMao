@@ -8,6 +8,8 @@ import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.BannerResult;
 import com.tgithubc.kumao.bean.FeaturedData;
+import com.tgithubc.kumao.fragment.FragmentOperation;
+import com.tgithubc.kumao.module.WebFragment;
 import com.tgithubc.kumao.widget.RecyclerViewBanner;
 
 import java.util.List;
@@ -33,9 +35,13 @@ public class BannerProvider extends BaseItemProvider<FeaturedData, BaseViewHolde
             List<Banner> bannerList = ((BannerResult) data.getData()).getBannerList();
             RecyclerViewBanner bannerView = helper.getView(R.id.banner_view);
             bannerView.setBannerData(bannerList);
-            bannerView.setItemChangeListener((position, imageView) -> {
-                ImageLoaderWrapper.getInstance().load((SimpleDraweeView) imageView,
-                        bannerList.get(position).getBannerPic());
+            bannerView.setItemChangeListener((position, imageView) ->
+                    ImageLoaderWrapper.getInstance().load(
+                            (SimpleDraweeView) imageView,
+                            bannerList.get(position).getBannerPic()));
+            bannerView.setOnItemClickListener(position -> {
+                WebFragment fragment = WebFragment.newInstance(bannerList.get(position).getUrl());
+                FragmentOperation.getInstance().showFullFragment(fragment);
             });
         }
     }
