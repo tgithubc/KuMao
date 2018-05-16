@@ -63,20 +63,20 @@ public class WebFragment extends BaseFragment {
         if (!TextUtils.isEmpty(mUrl) && (mUrl.startsWith("http://") || mUrl.startsWith("https://"))) {
             mWebView.loadUrl(mUrl);
         } else {
-            baseShowEmpty();
+            showEmpty();
         }
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                baseShowLoading();
+                showLoading();
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                baseShowContent();
+                showContent();
             }
 
             @Override
@@ -92,7 +92,7 @@ public class WebFragment extends BaseFragment {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
-                baseShowError();
+                showError();
             }
 
             @Override

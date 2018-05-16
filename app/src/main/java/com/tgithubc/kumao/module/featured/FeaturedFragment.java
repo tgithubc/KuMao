@@ -59,25 +59,6 @@ public class FeaturedFragment extends BaseFragment implements IFeaturedContract.
         return true;
     }
 
-    @Override
-    public void showEmpty() {
-        baseShowEmpty();
-    }
-
-    @Override
-    public void showError() {
-        baseShowError();
-    }
-
-    @Override
-    public void showLoading() {
-        baseShowLoading();
-    }
-
-    @Override
-    public void showContent() {
-        baseShowContent();
-    }
 
     @Override
     public void showFeatureView(List<FeaturedData> mFeedData) {

@@ -19,7 +19,7 @@ import com.tgithubc.kumao.widget.swipeback.SwipeBackFragment;
 /**
  * Created by tc :)
  */
-public abstract class BaseFragment extends SwipeBackFragment {
+public abstract class BaseFragment extends SwipeBackFragment implements  IStateView{
 
     private StateView mStateLayout;
     private int mFragmentType = FragmentType.TYPE_NONE;
@@ -79,7 +79,8 @@ public abstract class BaseFragment extends SwipeBackFragment {
     /**
      * 显示空页面
      */
-    protected void baseShowEmpty() {
+    @Override
+    public void showEmpty() {
         if (mStateLayout != null) {
             mStateLayout.showEmpty();
         }
@@ -88,7 +89,8 @@ public abstract class BaseFragment extends SwipeBackFragment {
     /**
      * 显示错误重试
      */
-    protected void baseShowError() {
+    @Override
+    public void showError() {
         if (mStateLayout != null) {
             mStateLayout.showRetry();
             mStateLayout.setOnRetryClickListener(this::onRetry);
@@ -98,7 +100,8 @@ public abstract class BaseFragment extends SwipeBackFragment {
     /**
      * 显示加载中
      */
-    protected void baseShowLoading() {
+    @Override
+    public void showLoading() {
         if (mStateLayout != null) {
             mStateLayout.showLoading();
         }
@@ -107,7 +110,8 @@ public abstract class BaseFragment extends SwipeBackFragment {
     /**
      * 显示内容
      */
-    protected void baseShowContent() {
+    @Override
+    public void showContent() {
         if (mStateLayout != null) {
             mStateLayout.showContent();
         }
