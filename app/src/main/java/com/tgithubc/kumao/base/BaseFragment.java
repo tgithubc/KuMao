@@ -13,13 +13,13 @@ import com.github.nukc.stateview.StateView;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.fragment.FragmentType;
+import com.tgithubc.kumao.util.DPPXUtil;
 import com.tgithubc.kumao.widget.swipeback.SwipeBackFragment;
-
 
 /**
  * Created by tc :)
  */
-public abstract class BaseFragment extends SwipeBackFragment implements  IStateView{
+public abstract class BaseFragment extends SwipeBackFragment implements IStateView {
 
     private StateView mStateLayout;
     private int mFragmentType = FragmentType.TYPE_NONE;
@@ -31,27 +31,33 @@ public abstract class BaseFragment extends SwipeBackFragment implements  IStateV
         FrameLayout titleContainer = root.findViewById(R.id.base_title_container);
         FrameLayout contentContainer = root.findViewById(R.id.base_content_container);
         View content = inflater.inflate(getLayoutId(), contentContainer, true);
-        if (isShowTitle()) {
-            View titleView = onCreateTitleView(inflater, titleContainer);
-            if (titleView == null) {
-                titleContainer.setVisibility(View.GONE);
+        View titleView = onCreateTitleView(inflater, titleContainer);
+        if (titleView == null) {
+            titleContainer.setVisibility(View.GONE);
+        } else {
+            titleContainer.setVisibility(View.VISIBLE);
+            titleContainer.addView(titleView);
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) contentContainer.getLayoutParams();
+            int widthSpec = View.MeasureSpec.makeMeasureSpec(66666, View.MeasureSpec.EXACTLY);
+            int heightSpec = View.MeasureSpec.makeMeasureSpec(66666, View.MeasureSpec.AT_MOST);
+            titleContainer.measure(widthSpec, heightSpec);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                lp.topMargin = titleContainer.getMeasuredHeight() + DPPXUtil.getStatusBarHeight();
             } else {
-                titleContainer.setVisibility(View.VISIBLE);
-                titleContainer.addView(titleView);
-                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) contentContainer.getLayoutParams();
-                int widthSpec = View.MeasureSpec.makeMeasureSpec(66666, View.MeasureSpec.EXACTLY);
-                int heightSpec = View.MeasureSpec.makeMeasureSpec(66666, View.MeasureSpec.AT_MOST);
-                titleContainer.measure(widthSpec, heightSpec);
                 lp.topMargin = titleContainer.getMeasuredHeight();
             }
-        } else {
-            titleContainer.setVisibility(View.GONE);
         }
         if (isShowLCEE()) {
             mStateLayout = StateView.inject(content);
         }
-        init(content, inflater, savedInstanceState);
+        init(root, inflater, savedInstanceState);
         return root;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        adjustTitleBarHeight();
     }
 
     /**
@@ -59,14 +65,6 @@ public abstract class BaseFragment extends SwipeBackFragment implements  IStateV
      */
     protected View onCreateTitleView(LayoutInflater inflater, FrameLayout titleContainer) {
         return null;
-    }
-
-
-    /**
-     * 是否显示title
-     */
-    protected boolean isShowTitle() {
-        return mFragmentType != FragmentType.TYPE_NONE;
     }
 
     /**
@@ -149,9 +147,21 @@ public abstract class BaseFragment extends SwipeBackFragment implements  IStateV
     public void onNewIntent(Bundle bundle) {
     }
 
+    private void adjustTitleBarHeight() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && getView() != null) {
+            View titleBar = getView().findViewWithTag("titleBar");
+            if (titleBar != null) {
+                ViewGroup.LayoutParams params = titleBar.getLayoutParams();
+                int h = DPPXUtil.getStatusBarHeight();
+                params.height += h;
+                titleBar.setPadding(0, h, 0, 0);
+                titleBar.setLayoutParams(params);
+            }
+        }
+    }
+
     /**
      * 内容布局，不包括title
-     * @return
      */
     public abstract int getLayoutId();
 
