@@ -61,8 +61,8 @@ public class CircleMusicView extends ImageView {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        mDefaultSize = DPPXUtil.dip2px(getContext(), DEFAULT_DEFAULT_SIZE);
-        int defaultBorderWidth = DPPXUtil.dip2px(getContext(), DEFAULT_BORDER_WIDTH);
+        mDefaultSize = DPPXUtil.dp2px(getContext(), DEFAULT_DEFAULT_SIZE);
+        int defaultBorderWidth = DPPXUtil.dp2px(getContext(), DEFAULT_BORDER_WIDTH);
         final TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CircleMusicView, 0, 0);
         try {
             mProgressWidth = ta.getDimensionPixelOffset(R.styleable.CircleMusicView_circle_music_view_progress_width,

@@ -77,7 +77,7 @@ public class MusicalNoteLayout extends RelativeLayout implements WeakWrapperHand
 
     private void init(Context context, AttributeSet attrs) {
         mAnimateHandler = new WeakWrapperHandler(this);
-        int defaultSize = DPPXUtil.dip2px(getContext(), DEFAULT_MUSIC_VIEW_SIZE);
+        int defaultSize = DPPXUtil.dp2px(getContext(), DEFAULT_MUSIC_VIEW_SIZE);
         int musicViewSize;
         final TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MusicalNoteLayout, 0, 0);
         try {
@@ -93,8 +93,8 @@ public class MusicalNoteLayout extends RelativeLayout implements WeakWrapperHand
         LayoutParams params = new LayoutParams(musicViewSize, musicViewSize);
         params.addRule(ALIGN_PARENT_BOTTOM);
         params.addRule(ALIGN_PARENT_RIGHT);
-        params.rightMargin = DPPXUtil.dip2px(getContext(), 10);
-        params.bottomMargin = DPPXUtil.dip2px(getContext(), 25);
+        params.rightMargin = DPPXUtil.dp2px(getContext(), 10);
+        params.bottomMargin = DPPXUtil.dp2px(getContext(), 25);
         addView(mMusicView, params);
 
         Drawable note1 = getResources().getDrawable(R.mipmap.note1);

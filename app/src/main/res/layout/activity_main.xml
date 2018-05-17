@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="com.tgithubc.kumao.MainActivity">
 
     <LinearLayout
@@ -15,7 +16,7 @@
         android:tag="titleBar">
 
         <TextView
-            android:id="@+id/main_home_search"
+            android:id="@+id/top_search"
             android:layout_width="0dp"
             android:layout_height="32dp"
             android:layout_marginLeft="40dp"
@@ -26,6 +27,7 @@
             android:gravity="center"
             android:imeOptions="actionSearch"
             android:maxLines="1"
+            android:hint="@string/search_hint"
             android:paddingLeft="8dp"
             android:paddingRight="40dp"
             android:textColorHint="#cacaca"

@@ -57,9 +57,9 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         if (mImmersive) {
             mStatusBarHeight = DPPXUtil.getStatusBarHeight();
         }
-        mActionPadding = DPPXUtil.dip2px(5);
-        mOutPadding = DPPXUtil.dip2px(8);
-        mHeight = DPPXUtil.dip2px(DEFAULT_TITLE_BAR_HEIGHT);
+        mActionPadding = DPPXUtil.dp2px(5);
+        mOutPadding = DPPXUtil.dp2px(8);
+        mHeight = DPPXUtil.dp2px(DEFAULT_TITLE_BAR_HEIGHT);
         initView(context);
     }
 

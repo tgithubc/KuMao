@@ -5,7 +5,6 @@ import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
@@ -134,7 +132,7 @@ public class WebFragment extends BaseFragment {
 
     @Override
     protected View onCreateTitleView(LayoutInflater inflater, FrameLayout titleContainer) {
-        TitleBar titleBar = (TitleBar) inflater.inflate(R.layout.km_titlebar, titleContainer, false);
+        TitleBar titleBar = (TitleBar) inflater.inflate(R.layout.titlebar_common, titleContainer, false);
         titleBar.setImmersive(true);
         return titleBar;
     }

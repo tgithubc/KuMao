@@ -108,8 +108,8 @@ public class RecyclerViewBanner extends FrameLayout {
             }
         }
         mSize = a.getDimensionPixelSize(R.styleable.RecyclerViewBanner_rvb_indicatorSize, 0);
-        mSpace = a.getDimensionPixelSize(R.styleable.RecyclerViewBanner_rvb_indicatorSpace, DPPXUtil.dip2px(4));
-        int margin = a.getDimensionPixelSize(R.styleable.RecyclerViewBanner_rvb_indicatorMargin, DPPXUtil.dip2px(8));
+        mSpace = a.getDimensionPixelSize(R.styleable.RecyclerViewBanner_rvb_indicatorSpace, DPPXUtil.dp2px(4));
+        int margin = a.getDimensionPixelSize(R.styleable.RecyclerViewBanner_rvb_indicatorMargin, DPPXUtil.dp2px(8));
         int g = a.getInt(R.styleable.RecyclerViewBanner_rvb_indicatorGravity, 1);
         int gravity;
         if (g == 0) {
@@ -163,7 +163,7 @@ public class RecyclerViewBanner extends FrameLayout {
      * 默认指示器是一系列直径为6dp的小圆点
      */
     private GradientDrawable generateDefaultDrawable(int color) {
-        int size = DPPXUtil.dip2px(6);
+        int size = DPPXUtil.dp2px(6);
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setSize(size, size);
         gradientDrawable.setCornerRadius(size);
@@ -248,12 +248,12 @@ public class RecyclerViewBanner extends FrameLayout {
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.leftMargin = mSpace / 2;
             lp.rightMargin = mSpace / 2;
-            if (mSize >= DPPXUtil.dip2px(4)) { // 设置了indicatorSize属性
+            if (mSize >= DPPXUtil.dp2px(4)) { // 设置了indicatorSize属性
                 lp.width = lp.height = mSize;
             } else {
                 // 如果设置的resource.xml没有明确的宽高，默认最小2dp，否则太小看不清
-                img.setMinimumWidth(DPPXUtil.dip2px(2));
-                img.setMinimumHeight(DPPXUtil.dip2px(2));
+                img.setMinimumWidth(DPPXUtil.dp2px(2));
+                img.setMinimumHeight(DPPXUtil.dp2px(2));
             }
             img.setImageDrawable(i == 0 ? mSelectedDrawable : mUnselectedDrawable);
             mLinearLayout.addView(img, lp);

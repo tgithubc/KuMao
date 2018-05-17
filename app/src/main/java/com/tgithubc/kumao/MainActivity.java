@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.tgithubc.kumao.base.BaseActivity;
 import com.tgithubc.kumao.fragment.FragmentOperation;
@@ -12,6 +13,7 @@ import com.tgithubc.kumao.message.IObserver;
 import com.tgithubc.kumao.message.MessageBus;
 import com.tgithubc.kumao.module.HomePageAdapter;
 import com.tgithubc.kumao.module.featured.FeaturedFragment;
+import com.tgithubc.kumao.module.search.SearchFragment;
 import com.tgithubc.kumao.observer.IKuMaoObserver.IFragmentSwipeBackObserver;
 import com.tgithubc.view.lib.BottomTabItemView;
 import com.tgithubc.view.lib.BottomTabLayout;
@@ -21,7 +23,7 @@ import com.tgithubc.view.lib.OnTabSelectedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements OnFragmentStackChangeListener {
+public class MainActivity extends BaseActivity implements OnFragmentStackChangeListener, View.OnClickListener {
 
     private HomePageAdapter mAdapter;
     private ViewPager mViewPager;
@@ -31,6 +33,7 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_main);
         FragmentOperation.getInstance().bind(R.id.fragment_container_id, this);
         initView();
@@ -45,6 +48,8 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
     }
 
     private void initView() {
+        TextView searchView = (TextView) findViewById(R.id.top_search);
+        searchView.setOnClickListener(this);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         BottomTabLayout tabLayout = (BottomTabLayout) findViewById(R.id.bottom_tab_layout);
         tabLayout.createAdapter()
@@ -109,6 +114,18 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
     public void onHideMainLayer(boolean isHide) {
         // hide viewpager
         setViewPagerVisible(!isHide);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.top_search:
+                SearchFragment fragment = SearchFragment.newInstance();
+                FragmentOperation.getInstance().showFullFragment(fragment);
+                break;
+            default:
+                break;
+        }
     }
 
     private class BottomTabClickListener implements OnTabSelectedListener {

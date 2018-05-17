@@ -31,10 +31,16 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     @Override
     public void getFeaturedData() {
         // 开始多个task，组合成一个数据流返回，不是自己的接口没办法
-        getView().showLoading();
         Subscription subscription = Observable.merge(runBannerTask(), runBillboardListTask())
                 .toList()
                 .subscribe(new HttpSubscriber<List<Task.ResponseValue>>() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        getView().showLoading();
+                    }
+
                     @Override
                     protected void onError(String msg, Throwable e) {
                         getView().showError();
