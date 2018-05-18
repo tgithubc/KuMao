@@ -12,10 +12,13 @@ public interface ISearchContract {
 
     interface V extends IStateView {
 
+        void showHotWord(List<String> hotword);
+
+        void showHotWordErrorTip();
     }
 
     interface P {
 
-
+        void getHotWord();
     }
 }

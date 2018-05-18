@@ -36,4 +36,8 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
         return null;
     }
 
+    @Override
+    public Observable<List<String>> getHotWord(String url) {
+        return null;
+    }
 }

@@ -40,7 +40,7 @@ public class RxHandler {
                                 e.printStackTrace();
                             }
                         }
-                        return Observable.just(null);
+                        return Observable.error(new RuntimeException("Parser Error"));
                     }
                 });
     }

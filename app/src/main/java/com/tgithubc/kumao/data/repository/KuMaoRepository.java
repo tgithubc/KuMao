@@ -40,4 +40,8 @@ public class KuMaoRepository implements KuMaoDataSource {
         return mRemoteDataSource.getBillboard(url, maps);
     }
 
+    @Override
+    public Observable<List<String>> getHotWord(String url) {
+        return mRemoteDataSource.getHotWord(url);
+    }
 }

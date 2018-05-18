@@ -62,6 +62,10 @@ public class RetrofitManager {
         return mService.get(url, maps);
     }
 
+    public Observable<String> executeGet(String url) {
+        return mService.get(url);
+    }
+
     public Observable<String> executePost(String url, Map<String, String> maps) {
         return mService.post(url, maps);
     }
@@ -98,7 +102,8 @@ public class RetrofitManager {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
+            // 暂时不用处理多Base的情况
+            /*Request request = chain.request();
             //从request中通过给定的键url_name获取headers
             List<String> headerValues = request.headers("url_name");
             if (headerValues == null || headerValues.isEmpty()) {
@@ -126,12 +131,29 @@ public class RetrofitManager {
                     .host(newBaseUrl.host())
                     .port(newBaseUrl.port());
             if (URL_HEADER_MUSIC.equals(headerValue)) {
-                httpBuilder.addQueryParameter("from", "qianqian");
-                httpBuilder.addQueryParameter("version", "5.6.3.0");
+                httpBuilder.addQueryParameter("from", "android");
+                httpBuilder.addQueryParameter("version", "5.9.0.1");
                 httpBuilder.addQueryParameter("format", "json");
             }
             //重建request返回
             return chain.proceed(builder.url(httpBuilder.build()).build());
+            */
+            Request oldRequest = chain.request();
+            HttpUrl.Builder newUrlBuilder = oldRequest.url()
+                    .newBuilder()
+                    .scheme(oldRequest.url().scheme())
+                    .host(oldRequest.url().host());
+            if (oldRequest.url().host().equals("tingapi.ting.baidu.com")) {
+                newUrlBuilder
+                        .addQueryParameter("from", "android")
+                        .addQueryParameter("version", "5.6.3.0")
+                        .addQueryParameter("format", "json");
+            }
+            Request newRequest = oldRequest.newBuilder()
+                    .method(oldRequest.method(), oldRequest.body())
+                    .url(newUrlBuilder.build())
+                    .build();
+            return chain.proceed(newRequest);
         }
     }
 

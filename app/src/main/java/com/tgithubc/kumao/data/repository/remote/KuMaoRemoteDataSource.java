@@ -42,4 +42,11 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
                 .executeGet(url, maps)
                 .compose(RxHandler.handlerResult(ParserFactory.PARSE_BILLBOARD));
     }
+
+    @Override
+    public Observable<List<String>> getHotWord(String url) {
+        return RetrofitManager.getInstance()
+                .executeGet(url)
+                .compose(RxHandler.handlerResult(ParserFactory.PARSE_HOTWORD));
+    }
 }

@@ -15,6 +15,9 @@ import rx.Observable;
 public interface CommonApi {
 
     @GET()
+    Observable<String> get(@Url() String url);
+
+    @GET()
     Observable<String> get(@Url() String url, @QueryMap Map<String, String> maps);
 
     @POST()

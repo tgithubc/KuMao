@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="@color/white">
@@ -8,8 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,11 +25,33 @@
                 android:textSize="15dp"
                 android:textStyle="bold"/>
 
-            <com.tgithubc.kumao.widget.TagLayout
-                android:id="@+id/search_hotword_layout"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"/>
+                android:layout_height="160dp">
+
+                <TextView
+                    android:id="@+id/search_hotword_error_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/search_hotword_error_tip"
+                    android:visibility="gone"/>
+
+                <com.tgithubc.kumao.widget.TagLayout
+                    android:id="@+id/search_hotword_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:tag_border_color="@color/black"
+                    app:tag_horizontal_range="10dp"
+                    app:tag_lr_padding="2dp"
+                    app:tag_style="STROKE"
+                    app:tag_tb_padding="2dp"
+                    app:tag_text_color="@color/black"
+                    app:tag_text_size="14dp"
+                    app:tag_vertical_range="8dp"/>
+
+            </FrameLayout>
 
             <!--搜索历史-->
             <TextView

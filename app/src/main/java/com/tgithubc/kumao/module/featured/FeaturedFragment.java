@@ -34,6 +34,12 @@ public class FeaturedFragment extends BaseFragment implements IFeaturedContract.
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
+    }
+
+    @Override
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -41,12 +47,6 @@ public class FeaturedFragment extends BaseFragment implements IFeaturedContract.
         mAdapter = new FeaturedAdapter(null);
         mAdapter.bindToRecyclerView(mRecyclerView);
         mPresenter.getFeaturedData();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mPresenter.detachView();
     }
 
     @Override
