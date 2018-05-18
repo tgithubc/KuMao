@@ -3,9 +3,10 @@ package com.tgithubc.kumao.data.task;
 import android.support.annotation.NonNull;
 
 import com.tgithubc.kumao.base.Task;
-import com.tgithubc.kumao.bean.BannerResult;
+import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
+import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
@@ -19,7 +20,7 @@ public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTa
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         return RepositoryProvider.getRepository()
                 .getBanner(requestValues.getUrl(), requestValues.getParameter())
-                .map(result -> new ResponseValue(result));
+                .map(ResponseValue::new);
     }
 
     public static final class RequestValues extends Task.CommonRequestValues {
@@ -31,13 +32,13 @@ public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTa
 
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private BannerResult mResult;
+        private List<Banner> mResult;
 
-        public ResponseValue(@NonNull BannerResult result) {
+        public ResponseValue(@NonNull List<Banner> result) {
             mResult = result;
         }
 
-        public BannerResult getResult() {
+        public List<Banner> getResult() {
             return mResult;
         }
     }

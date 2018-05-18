@@ -19,7 +19,7 @@ public class GetBillboardTask extends Task<GetBillboardTask.RequestValues, GetBi
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         return RepositoryProvider.getRepository()
                 .getBillboard(requestValues.getUrl(), requestValues.getParameter())
-                .map(result -> new ResponseValue(result));
+                .map(ResponseValue::new);
     }
 
     public static final class RequestValues extends Task.CommonRequestValues {

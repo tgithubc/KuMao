@@ -1,11 +1,13 @@
 package com.tgithubc.kumao.data.repository.remote;
 
-import com.tgithubc.kumao.bean.BannerResult;
+import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.data.repository.KuMaoDataSource;
 import com.tgithubc.kumao.http.RetrofitManager;
+import com.tgithubc.kumao.parser.ParserFactory;
 import com.tgithubc.kumao.util.RxHandler;
 
+import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
@@ -28,16 +30,16 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<BannerResult> getBanner(String url, Map<String, String> maps) {
+    public Observable<List<Banner>> getBanner(String url, Map<String, String> maps) {
         return RetrofitManager.getInstance()
                 .executeGet(url, maps)
-                .compose(RxHandler.handlerResult(BannerResult.class));
+                .compose(RxHandler.handlerResult(ParserFactory.PARSE_BANNER));
     }
 
     @Override
     public Observable<Billboard> getBillboard(String url, Map<String, String> maps) {
         return RetrofitManager.getInstance()
                 .executeGet(url, maps)
-                .compose(RxHandler.handlerResult(Billboard.class));
+                .compose(RxHandler.handlerResult(ParserFactory.PARSE_BILLBOARD));
     }
 }

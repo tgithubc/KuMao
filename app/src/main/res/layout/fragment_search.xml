@@ -4,31 +4,55 @@
              android:layout_height="match_parent"
              android:background="@color/white">
 
-    <!--搜索历史-->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/search_history"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:textStyle="bold"/>
+            android:orientation="vertical">
 
-        <com.tgithubc.kumao.widget.TagLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"/>
-    </LinearLayout>
+            <!--搜索热词-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search_hotword"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+
+            <com.tgithubc.kumao.widget.TagLayout
+                android:id="@+id/search_hotword_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"/>
+
+            <!--搜索历史-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/search_history"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/search_history_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"/>
+
+        </LinearLayout>
+    </ScrollView>
 
     <!--搜索结果-->
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/search_result_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </FrameLayout>

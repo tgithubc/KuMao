@@ -12,7 +12,7 @@ import com.tgithubc.kumao.base.BaseFragment;
 /**
  * Created by tc :)
  */
-public class SearchFragment extends BaseFragment {
+public class SearchFragment extends BaseFragment implements ISearchContract.V {
 
     public static SearchFragment newInstance() {
         return new SearchFragment();

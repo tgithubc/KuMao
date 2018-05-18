@@ -1,6 +1,5 @@
 package com.tgithubc.kumao.bean;
 
-import com.google.gson.annotations.SerializedName;
 
 /**
  * 单条Banner
@@ -8,10 +7,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Banner {
 
-    @SerializedName("randpic")
     private String bannerPic;
 
-    @SerializedName("code")
     private String url;
 
     public String getBannerPic() {

@@ -9,6 +9,7 @@ public class Constant {
 
         String URL_BANNER = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.plaza.getFocusPic";
         String URL_BILLBOARD = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.billboard.billList";
+        String URL_HOTWORD = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.search.hot";
 
         /**
          * 榜单type
@@ -29,6 +30,5 @@ public class Constant {
          */
         int BILLBOARD_TYPE_NEW = 1;
         int BILLBOARD_TYPE_HOT = 2;
-        int BILLBOARD_TYPE_KTV = 6;
     }
 }

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.tgithubc.kumao.base.BasePresenter;
 import com.tgithubc.kumao.base.Task;
-import com.tgithubc.kumao.bean.BannerResult;
+import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.FeaturedData;
 import com.tgithubc.kumao.constant.Constant;
@@ -51,7 +51,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                         super.onNext(responseValues);
                         Observable.from(responseValues).forEach(value -> {
                             if (value instanceof GetBannerTask.ResponseValue) {
-                                FeaturedData<BannerResult> bannerData = new FeaturedData<>();
+                                FeaturedData<List<Banner>> bannerData = new FeaturedData<>();
                                 bannerData.setType(FeaturedData.TYPE_BANNER);
                                 bannerData.setData(((GetBannerTask.ResponseValue) value).getResult());
                                 Log.d(TAG, "banner :" + ((GetBannerTask.ResponseValue) value).getResult());

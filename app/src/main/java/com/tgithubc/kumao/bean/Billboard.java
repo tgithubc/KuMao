@@ -1,6 +1,5 @@
 package com.tgithubc.kumao.bean;
 
-import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -13,21 +12,27 @@ public class Billboard {
     /**
      * 榜单的歌曲列表
      */
-    @SerializedName("song_list")
     private List<Song> songList;
 
     /**
      * 榜单的信息
      */
-    @SerializedName("billboard")
-    private BillboardInfo billboardInfo;
+    private Info billboardInfo;
 
     public List<Song> getSongList() {
         return this.songList;
     }
 
-    public BillboardInfo getBillboardInfo() {
+    public Info getBillboardInfo() {
         return this.billboardInfo;
+    }
+
+    public void setSongList(List<Song> songList) {
+        this.songList = songList;
+    }
+
+    public void setBillboardInfo(Info billboardInfo) {
+        this.billboardInfo = billboardInfo;
     }
 
     @Override
@@ -38,14 +43,12 @@ public class Billboard {
                 '}';
     }
 
-    public class BillboardInfo {
+    public static class Info {
 
         // 榜单类型
-        @SerializedName("billboard_type")
         private String billboardType;
 
         // 榜单更新时间
-        @SerializedName("update_date")
         private String updateDate;
 
         // 是否有更多（1有，0没有）
@@ -71,6 +74,46 @@ public class Billboard {
 
         // 这个应该是小的横的尺寸
         private String pic_s210;
+
+        public void setBillboardType(String billboardType) {
+            this.billboardType = billboardType;
+        }
+
+        public void setUpdateDate(String updateDate) {
+            this.updateDate = updateDate;
+        }
+
+        public void setHavemore(int havemore) {
+            this.havemore = havemore;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
+        }
+
+        public void setPic_s192(String pic_s192) {
+            this.pic_s192 = pic_s192;
+        }
+
+        public void setPic_s640(String pic_s640) {
+            this.pic_s640 = pic_s640;
+        }
+
+        public void setPic_s444(String pic_s444) {
+            this.pic_s444 = pic_s444;
+        }
+
+        public void setPic_s260(String pic_s260) {
+            this.pic_s260 = pic_s260;
+        }
+
+        public void setPic_s210(String pic_s210) {
+            this.pic_s210 = pic_s210;
+        }
 
         public String getBillboardType() {
             return this.billboardType;

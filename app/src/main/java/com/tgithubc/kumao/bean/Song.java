@@ -1,6 +1,5 @@
 package com.tgithubc.kumao.bean;
 
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by tc :)
@@ -8,58 +7,45 @@ import com.google.gson.annotations.SerializedName;
 public class Song {
 
     // 歌曲的id
-    //@SerializedName(value = "",alternate = {"",""})
-    @SerializedName("song_id")
     private String songId;
 
     // 歌曲名
-    @SerializedName("title")
     private String songName;
 
     // 歌手名
-    @SerializedName("author")
     private String authorName;
 
     // 歌手的id
-    @SerializedName("artist_id")
     private String artistId;
 
     // 专辑id
-    @SerializedName("album_id")
     private String albumId;
 
     // 专辑名
-    @SerializedName("album_title")
     private String albumName;
 
     // 小图留一个150*150的
-    @SerializedName("pic_big")
     private String smallPic;
 
     // 大图 500*500
-    @SerializedName("pic_s500")
     private String bigPic;
 
     // 歌词下载地址
     private String lrclink;
 
     // 是否new
-    @SerializedName("is_new")
     private String isNew;
 
     // 应该是热度，收听数
     private String hot;
 
     // 这首歌的格式 example：（64,128,256,320,flac）
-    @SerializedName("all_rate")
     private String rateArrary;
 
     // 歌曲时长
-    @SerializedName("file_duration")
     private int duration;
 
     //不知道怎么计算的免费格式 example：（{"0":"129|-1","1":"-1|-1"}）
-    @SerializedName("bitrate_fee")
     private String freeBitrate;
 
     // vip标示？？
@@ -69,7 +55,6 @@ public class Song {
     private String info;
 
     // 唱片公司的名字
-    @SerializedName("si_proxycompany")
     private String company;
 
     public void setArtistId(String artistId) {
