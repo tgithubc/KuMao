@@ -20,5 +20,9 @@ public interface ISearchContract {
     interface P {
 
         void getHotWord();
+
+        void search(String keyword);
+
+        void searchLoadMore(String keyword, int page);
     }
 }

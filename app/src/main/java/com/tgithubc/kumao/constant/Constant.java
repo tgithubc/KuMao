@@ -7,9 +7,11 @@ public class Constant {
 
     public interface Api {
 
-        String URL_BANNER = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.plaza.getFocusPic";
-        String URL_BILLBOARD = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.billboard.billList";
-        String URL_HOTWORD = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.search.hot";
+        String HOST = "http://tingapi.ting.baidu.com/v1/restserver/ting?";
+        String URL_BANNER = HOST + "method=baidu.ting.plaza.getFocusPic";
+        String URL_BILLBOARD = HOST + "method=baidu.ting.billboard.billList";
+        String URL_HOTWORD = HOST + "method=baidu.ting.search.hot";
+        String URL_SEARCH = HOST + "method=baidu.ting.search.common";
 
         /**
          * 榜单type

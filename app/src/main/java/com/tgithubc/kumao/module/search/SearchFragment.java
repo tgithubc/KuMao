@@ -3,8 +3,12 @@ package com.tgithubc.kumao.module.search;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -17,11 +21,15 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class SearchFragment extends BaseFragment implements ISearchContract.V {
+public class SearchFragment extends BaseFragment implements ISearchContract.V, TagLayout.OnTagClickListener,
+        View.OnClickListener, TextView.OnEditorActionListener {
 
     private SearchPresenter mPresenter;
     private TagLayout mHotWordLayout;
     private TextView mHotWordErrorTip;
+    private EditText mEditText;
+    private RecyclerView mSearchResultRV;
+
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
@@ -49,13 +57,18 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V {
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
         mHotWordLayout = view.findViewById(R.id.search_hotword_layout);
         mHotWordErrorTip = view.findViewById(R.id.search_hotword_error_tip);
+        mSearchResultRV = view.findViewById(R.id.search_result_recycler_view);
+        mHotWordLayout.setOnTagClickListener(this);
+        mEditText = view.findViewById(R.id.search_bar_et);
+        mEditText.setOnEditorActionListener(this);
+        view.findViewById(R.id.search_go).setOnClickListener(this);
+        view.findViewById(R.id.search_back_icon).setOnClickListener(this);
         mPresenter.getHotWord();
     }
 
     @Override
     protected View onCreateTitleView(LayoutInflater inflater, FrameLayout titleContainer) {
-        View titleBar = inflater.inflate(R.layout.titlebar_search, titleContainer, false);
-        return titleBar;
+        return inflater.inflate(R.layout.titlebar_search, titleContainer, false);
     }
 
     @Override
@@ -71,5 +84,30 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V {
     public void showHotWordErrorTip() {
         mHotWordLayout.setVisibility(View.GONE);
         mHotWordErrorTip.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onTagClick(String tag) {
+        mPresenter.search(tag);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.search_back_icon:
+                closeFragment();
+                break;
+            case R.id.search_go:
+                mPresenter.search(mEditText.getText().toString().trim());
+                break;
+        }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (EditorInfo.IME_ACTION_SEARCH == actionId) {
+            mPresenter.search(mEditText.getText().toString().trim());
+        }
+        return false;
     }
 }

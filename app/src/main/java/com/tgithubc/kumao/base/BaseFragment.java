@@ -118,6 +118,10 @@ public abstract class BaseFragment extends SwipeBackFragment implements IStateVi
     @Override
     public void swipeToCloseFragment() {
         super.swipeToCloseFragment();
+        closeFragment();
+    }
+
+    protected void closeFragment() {
         Fragment top = FragmentOperation.getInstance().getTopFragment();
         if (this == top) {
             FragmentOperation.getInstance().pop();

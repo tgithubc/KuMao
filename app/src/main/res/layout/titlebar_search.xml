@@ -8,6 +8,7 @@
               android:tag="titleBar">
 
     <ImageView
+        android:id="@+id/search_back_icon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:paddingLeft="20dp"
@@ -31,6 +32,7 @@
         android:textSize="14dp"/>
 
     <TextView
+        android:id="@+id/search_go"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"

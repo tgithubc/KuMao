@@ -45,22 +45,8 @@ public class BillboardParser implements IParser<Billboard> {
                 if (object == null) {
                     continue;
                 }
-                Song song = new Song();
-                song.setSongId(object.optString("song_id"));
-                song.setSongName(object.optString("title"));
-                song.setAuthorName(object.optString("author"));
-                song.setArtistId(object.optString("artist_id"));
-                song.setAlbumId(object.optString("album_id"));
-                song.setAlbumName(object.optString("album_title"));
-                song.setSmallPic(object.optString("pic_big"));
-                song.setBigPic(object.optString("pic_s500"));
-                song.setLrclink(object.optString("lrclink"));
-                song.setIsNew(object.optString("is_new"));
-                song.setHot(object.optString("hot"));
-                song.setRateArrary(object.optString("all_rate"));
-                song.setDuration(object.optInt("file_duration"));
-                song.setFreeBitrate(object.optString("bitrate_fee"));
-                song.setCompany(object.optString("si_proxycompany'"));
+                SongParser songParser = new SongParser();
+                Song song = songParser.parse(object.toString());
                 songList.add(song);
             }
             billboard.setSongList(songList);

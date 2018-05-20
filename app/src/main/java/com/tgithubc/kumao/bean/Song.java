@@ -57,6 +57,16 @@ public class Song {
     // 唱片公司的名字
     private String company;
 
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public void setArtistId(String artistId) {
         this.artistId = artistId;
     }
