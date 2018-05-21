@@ -4,10 +4,16 @@ package com.tgithubc.kumao.bean;
 /**
  * Created by tc :)
  */
-public class FeaturedData<E> {
+public class BaseData<E> {
 
+    // 推荐页
     public static final int TYPE_BANNER = 0;// 轮播图
     public static final int TYPE_BILLBOARD = 1;// 榜单
+    // 搜索结果页
+    public static final int TYPE_SEARCH_RESULT_ARTIST = 2;// 搜索结果的歌手
+    public static final int TYPE_SEARCH_RESULT_ALBUM = 3;// 搜索结果的专辑
+    public static final int TYPE_SEARCH_RESULT_SONG = 4;// 搜索结果的单曲
+
 
     private int type;
     private E data;

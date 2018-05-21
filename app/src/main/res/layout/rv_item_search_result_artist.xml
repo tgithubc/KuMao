@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="95dp"
+                android:gravity="center_vertical">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/search_result_artist_pic"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"/>
+
+    <ImageView
+        android:id="@+id/search_result_artist_entrance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/search_result_artist_entrance"
+        android:layout_toRightOf="@id/search_result_artist_pic"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/search_result_artist_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/search_result_artist_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_result_artist_name"
+            android:layout_marginTop="10dp"
+            android:textColor="#3a3a3a"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,7 +1,8 @@
 package com.tgithubc.kumao.module.search;
 
 import com.tgithubc.kumao.base.IStateView;
-import com.tgithubc.kumao.bean.FeaturedData;
+import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.SearchResult;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface ISearchContract {
         void showHotWord(List<String> hotword);
 
         void showHotWordErrorTip();
+
+        void showSearchResult(List<BaseData> result);
     }
 
     interface P {

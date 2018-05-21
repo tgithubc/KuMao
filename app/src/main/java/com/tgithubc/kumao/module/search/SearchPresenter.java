@@ -3,6 +3,9 @@ package com.tgithubc.kumao.module.search;
 import android.text.TextUtils;
 
 import com.tgithubc.kumao.base.BasePresenter;
+import com.tgithubc.kumao.bean.Artist;
+import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetHotWordTask;
 import com.tgithubc.kumao.data.task.GetSearchResultTask;
@@ -18,6 +21,8 @@ import rx.Subscription;
  * Created by tc :)
  */
 public class SearchPresenter extends BasePresenter<ISearchContract.V> implements ISearchContract.P {
+
+    private List<BaseData> mSearchResult;
 
     @Override
     public void getHotWord() {
@@ -57,7 +62,8 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                     @Override
                     public void onNext(GetSearchResultTask.ResponseValue responseValue) {
                         super.onNext(responseValue);
-
+                        mSearchResult = responseValue.getResult();
+                        getView().showSearchResult(responseValue.getResult());
                     }
                 });
         addSubscribe(subscription);
@@ -90,4 +96,5 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                                 .put("query", keyword)
                                 .build()));
     }
+
 }

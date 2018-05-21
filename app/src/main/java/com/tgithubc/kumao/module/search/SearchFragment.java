@@ -3,6 +3,7 @@ package com.tgithubc.kumao.module.search;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -10,10 +11,12 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
+import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.widget.TagLayout;
 
 import java.util.List;
@@ -27,8 +30,10 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     private SearchPresenter mPresenter;
     private TagLayout mHotWordLayout;
     private TextView mHotWordErrorTip;
+    private ScrollView mSearchTipLayout;
     private EditText mEditText;
     private RecyclerView mSearchResultRV;
+    private SearchResultAdapter mAdapter;
 
 
     public static SearchFragment newInstance() {
@@ -55,6 +60,7 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
 
     @Override
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
+        mSearchTipLayout = view.findViewById(R.id.search_tip_layout);
         mHotWordLayout = view.findViewById(R.id.search_hotword_layout);
         mHotWordErrorTip = view.findViewById(R.id.search_hotword_error_tip);
         mSearchResultRV = view.findViewById(R.id.search_result_recycler_view);
@@ -63,6 +69,11 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
         mEditText.setOnEditorActionListener(this);
         view.findViewById(R.id.search_go).setOnClickListener(this);
         view.findViewById(R.id.search_back_icon).setOnClickListener(this);
+        mSearchResultRV.setVisibility(View.GONE);
+        mSearchResultRV.setHasFixedSize(true);
+        mSearchResultRV.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new SearchResultAdapter(getContext(), null);
+        mAdapter.bindToRecyclerView(mSearchResultRV);
         mPresenter.getHotWord();
     }
 
@@ -84,6 +95,13 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     public void showHotWordErrorTip() {
         mHotWordLayout.setVisibility(View.GONE);
         mHotWordErrorTip.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showSearchResult(List<BaseData> result) {
+        mSearchTipLayout.setVisibility(View.GONE);
+        mSearchResultRV.setVisibility(View.VISIBLE);
+        mAdapter.setNewData(result);
     }
 
     @Override

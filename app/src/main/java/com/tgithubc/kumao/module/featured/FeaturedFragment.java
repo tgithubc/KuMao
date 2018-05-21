@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
-import com.tgithubc.kumao.bean.FeaturedData;
+import com.tgithubc.kumao.bean.BaseData;
 
 import java.util.List;
 
@@ -59,9 +59,8 @@ public class FeaturedFragment extends BaseFragment implements IFeaturedContract.
         return true;
     }
 
-
     @Override
-    public void showFeatureView(List<FeaturedData> mFeedData) {
+    public void showFeatureView(List<BaseData> mFeedData) {
         mAdapter.setNewData(mFeedData);
     }
 }

@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
-import com.tgithubc.kumao.bean.FeaturedData;
+import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.viewProvider.BannerProvider;
 import com.tgithubc.kumao.viewProvider.BillboardProvider;
 
@@ -13,16 +13,16 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class FeaturedAdapter extends MultipleItemRvAdapter<FeaturedData, BaseViewHolder> {
+public class FeaturedAdapter extends MultipleItemRvAdapter<BaseData, BaseViewHolder> {
 
-    public FeaturedAdapter(@Nullable List<FeaturedData> data) {
+    public FeaturedAdapter(@Nullable List<BaseData> data) {
         super(data);
         finishInitialize();
     }
 
     @Override
-    protected int getViewType(FeaturedData featuredData) {
-        return featuredData.getType();
+    protected int getViewType(BaseData baseData) {
+        return baseData.getType();
     }
 
     @Override

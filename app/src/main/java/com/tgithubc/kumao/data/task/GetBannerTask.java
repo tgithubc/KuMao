@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.Banner;
+import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
 import java.util.List;
@@ -20,7 +21,12 @@ public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTa
     protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
         return RepositoryProvider.getRepository()
                 .getBanner(requestValues.getUrl(), requestValues.getParameter())
-                .map(ResponseValue::new);
+                .map(result -> {
+                    BaseData<List<Banner>> bannerData = new BaseData<>();
+                    bannerData.setType(BaseData.TYPE_BANNER);
+                    bannerData.setData(result);
+                    return new ResponseValue(bannerData);
+                });
     }
 
     public static final class RequestValues extends Task.CommonRequestValues {
@@ -32,13 +38,13 @@ public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTa
 
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private List<Banner> mResult;
+        private BaseData<List<Banner>> mResult;
 
-        public ResponseValue(@NonNull List<Banner> result) {
+        public ResponseValue(@NonNull BaseData<List<Banner>> result) {
             mResult = result;
         }
 
-        public List<Banner> getResult() {
+        public BaseData<List<Banner>> getResult() {
             return mResult;
         }
     }
