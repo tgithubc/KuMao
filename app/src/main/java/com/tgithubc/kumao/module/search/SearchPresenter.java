@@ -1,6 +1,7 @@
 package com.tgithubc.kumao.module.search;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.tgithubc.kumao.base.BasePresenter;
 import com.tgithubc.kumao.bean.Artist;
@@ -22,7 +23,8 @@ import rx.Subscription;
  */
 public class SearchPresenter extends BasePresenter<ISearchContract.V> implements ISearchContract.P {
 
-    private List<BaseData> mSearchResult;
+    private String mCurrentKeyWord;
+    private int mCurrentPage = 1;
 
     @Override
     public void getHotWord() {
@@ -49,9 +51,11 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
 
     @Override
     public void search(String keyword) {
+        resetKeyWord();
         if (TextUtils.isEmpty(keyword) || keyword.replaceAll(" ", "").length() <= 0) {
             return;
         }
+        mCurrentKeyWord = keyword;
         Subscription subscription = getSearchTask(keyword, 1)
                 .subscribe(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
                     @Override
@@ -62,26 +66,37 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                     @Override
                     public void onNext(GetSearchResultTask.ResponseValue responseValue) {
                         super.onNext(responseValue);
-                        mSearchResult = responseValue.getResult();
                         getView().showSearchResult(responseValue.getResult());
                     }
                 });
         addSubscribe(subscription);
     }
 
+    private void resetKeyWord() {
+        mCurrentKeyWord = "";
+        mCurrentPage = 1;
+    }
+
     @Override
-    public void searchLoadMore(String keyword, int page) {
-        Subscription subscription = getSearchTask(keyword, page)
+    public void searchLoadMore() {
+        if (TextUtils.isEmpty(mCurrentKeyWord) || mCurrentKeyWord.replaceAll(" ", "").length() <= 0) {
+            return;
+        }
+        Subscription subscription = getSearchTask(mCurrentKeyWord, ++mCurrentPage)
                 .subscribe(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
                     @Override
                     protected void onError(String msg, Throwable e) {
-                        // load more error
+                        getView().loadMoreError();
                     }
 
                     @Override
                     public void onNext(GetSearchResultTask.ResponseValue responseValue) {
                         super.onNext(responseValue);
-                        // add new data
+                        List<BaseData> data = responseValue.getResult();
+                        if (data.isEmpty()) {
+                            getView().loadMoreFinish();
+                        }
+                        getView().loadMoreRefresh(data);
                     }
                 });
         addSubscribe(subscription);

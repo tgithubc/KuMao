@@ -18,6 +18,12 @@ public interface ISearchContract {
         void showHotWordErrorTip();
 
         void showSearchResult(List<BaseData> result);
+
+        void loadMoreError();
+
+        void loadMoreFinish();
+
+        void loadMoreRefresh(List<BaseData> mSearchResult);
     }
 
     interface P {
@@ -26,6 +32,6 @@ public interface ISearchContract {
 
         void search(String keyword);
 
-        void searchLoadMore(String keyword, int page);
+        void searchLoadMore();
     }
 }
