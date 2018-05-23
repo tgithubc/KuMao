@@ -6,4 +6,7 @@
 
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="item_main_text_color">#555555</color>
+    <color name="item_sub_text_color">#888888</color>
+    <color name="item_divide_line_color">#ebebeb</color>
 </resources>

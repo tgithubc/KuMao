@@ -61,9 +61,12 @@ public abstract class BaseFragment extends SwipeBackFragment implements IStateVi
     }
 
     /**
-     * 加载自定义title
+     * 复写加载自定义title
      */
     protected View onCreateTitleView(LayoutInflater inflater, FrameLayout titleContainer) {
+        if (getFragmentType() != FragmentType.TYPE_NONE) {
+            return inflater.inflate(R.layout.titlebar_common, titleContainer, false);
+        }
         return null;
     }
 
@@ -133,7 +136,7 @@ public abstract class BaseFragment extends SwipeBackFragment implements IStateVi
         // 默认viewpager里面的子tab都不添加左滑层级，
         // 同时所有sub的和full的默认可以左滑，
         // 不需要的话自己复写返回false
-        return mFragmentType != FragmentType.TYPE_NONE;
+        return getFragmentType() != FragmentType.TYPE_NONE;
     }
 
     public void setFragmentType(@FragmentType int type) {

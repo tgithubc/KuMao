@@ -131,13 +131,6 @@ public class WebFragment extends BaseFragment {
     }
 
     @Override
-    protected View onCreateTitleView(LayoutInflater inflater, FrameLayout titleContainer) {
-        TitleBar titleBar = (TitleBar) inflater.inflate(R.layout.titlebar_common, titleContainer, false);
-        titleBar.setImmersive(true);
-        return titleBar;
-    }
-
-    @Override
     public boolean isShowLCEE() {
         return true;
     }

@@ -5,14 +5,14 @@
                 android:gravity="center_vertical">
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/search_result_artist_pic"
+        android:id="@+id/search_result_album_pic"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"/>
 
     <ImageView
-        android:id="@+id/search_result_artist_entrance"
+        android:id="@+id/search_result_album_entrance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"/>
@@ -23,12 +23,12 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@id/search_result_artist_entrance"
-        android:layout_toRightOf="@id/search_result_artist_pic"
+        android:layout_toLeftOf="@id/search_result_album_entrance"
+        android:layout_toRightOf="@id/search_result_album_pic"
         android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/search_result_artist_name"
+            android:id="@+id/search_result_album_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -36,10 +36,10 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/search_result_artist_number"
+            android:id="@+id/search_result_album_publish_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/search_result_artist_name"
+            android:layout_below="@id/search_result_album_name"
             android:layout_marginTop="5dp"
             android:textColor="#3a3a3a"/>
     </RelativeLayout>

@@ -4,4 +4,5 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/colorAccent"
+    android:tag="titleBar"
     android:layout_height="45dp"/>

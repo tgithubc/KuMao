@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="Widget"></style>
+
+    <style name="Widget.DivideLine">
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:background">@color/item_divide_line_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+    </style>
 </resources>

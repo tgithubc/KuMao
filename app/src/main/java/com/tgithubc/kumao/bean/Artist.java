@@ -11,6 +11,26 @@ public class Artist {
 
     private String pic;
 
+    private String songCount;
+
+    private String albumCount;
+
+    public String getSongCount() {
+        return songCount;
+    }
+
+    public void setSongCount(String songCount) {
+        this.songCount = songCount;
+    }
+
+    public String getAlbumCount() {
+        return albumCount;
+    }
+
+    public void setAlbumCount(String albumCount) {
+        this.albumCount = albumCount;
+    }
+
     public String getName() {
         return name;
     }

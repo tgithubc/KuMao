@@ -35,6 +35,8 @@ public class SearchResultArtistProvider extends BaseItemProvider<BaseData, BaseV
     @Override
     public void convert(BaseViewHolder helper, BaseData data, int position) {
         Artist artist = (Artist) data.getData();
+        helper.setText(R.id.search_result_artist_number, "单曲 " + artist.getSongCount() + " 专辑 " + artist.getAlbumCount());
+        helper.setText(R.id.search_result_artist_name, artist.getName());
         ImageLoaderWrapper.getInstance().load(helper.getView(R.id.search_result_artist_pic), artist.getPic(), mConfig);
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.tgithubc.kumao.util.DPPXUtil;
 import com.tgithubc.kumao.util.ImmersedStatusBarHelper;
@@ -21,6 +22,9 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
         // 如果需要动态改变，需要发个消息过来，只有这个activity才能用mHelper处理动态改变沉浸式文字不同颜色
         mHelper = new ImmersedStatusBarHelper();
         mHelper.immersedStatusBar(this);

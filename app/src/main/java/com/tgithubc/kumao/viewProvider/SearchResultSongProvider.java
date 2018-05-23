@@ -25,6 +25,12 @@ public class SearchResultSongProvider extends BaseItemProvider<BaseData, BaseVie
     @Override
     public void convert(BaseViewHolder helper, BaseData data, int position) {
         Song song = (Song) data.getData();
-        helper.setText(R.id.search_result_song_name, song.getSongName());
+        helper.setText(R.id.search_result_song_name, replaceIllegal(song.getSongName()));
+        helper.setText(R.id.search_result_song_artist_album,
+                replaceIllegal(song.getAuthorName() + "-" + song.getAlbumName()));
+    }
+
+    private String replaceIllegal(String name) {
+        return name.replaceAll("<em>", "").replaceAll("</em>", "").trim();
     }
 }

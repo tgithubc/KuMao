@@ -31,6 +31,8 @@ public class SearchResultParser implements IParser<SearchResult> {
                 Artist artist = new Artist();
                 artist.setName(artistJson.optString("name"));
                 artist.setId(artistJson.optString("ting_uid"));
+                artist.setSongCount(artistJson.optString("songs_total"));
+                artist.setAlbumCount(artistJson.optString("albums_total"));
                 JSONObject picJson = artistJson.optJSONObject("avatar");
                 artist.setPic(picJson.optString("big"));
                 result.setArtist(artist);
@@ -38,6 +40,7 @@ public class SearchResultParser implements IParser<SearchResult> {
         }
 
         boolean isAlbum = json.optInt("is_album") == 1;
+        result.setIsAlbum(isAlbum);
         if (isAlbum) {
             JSONObject albumJson = json.optJSONObject("album");
             if (albumJson != null) {
