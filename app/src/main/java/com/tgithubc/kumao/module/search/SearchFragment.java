@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
 import com.tgithubc.kumao.bean.BaseData;
@@ -36,8 +34,6 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     private EditText mEditText;
     private RecyclerView mSearchResultRV;
     private SearchResultAdapter mAdapter;
-    private String mCurrentKeyWord;
-
 
     public static SearchFragment newInstance() {
         return new SearchFragment();

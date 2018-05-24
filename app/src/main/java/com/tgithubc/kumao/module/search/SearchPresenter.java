@@ -3,13 +3,16 @@ package com.tgithubc.kumao.module.search;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.base.BasePresenter;
 import com.tgithubc.kumao.bean.Artist;
 import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetHotWordTask;
 import com.tgithubc.kumao.data.task.GetSearchResultTask;
+import com.tgithubc.kumao.db.DbCore;
 import com.tgithubc.kumao.http.HttpSubscriber;
 import com.tgithubc.kumao.util.RxMap;
 
@@ -56,6 +59,13 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
             return;
         }
         mCurrentKeyWord = keyword;
+        KuMao.getExecutorService().execute(() -> {
+                    KeyWord entity = new KeyWord();
+                    entity.setKeyWord(keyword);
+                    entity.setSearchTime(System.currentTimeMillis());
+                    DbCore.getInstance().getDaoSession().getKeyWordDao().insert(entity);
+                }
+        );
         Subscription subscription = getSearchTask(keyword, 1)
                 .subscribe(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
                     @Override

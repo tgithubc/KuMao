@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 26
@@ -16,6 +17,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        greendao {
+            schemaVersion 3
+            daoPackage 'org.greendao.autogen'
+            targetGenDir 'src/main/java'
         }
     }
 
@@ -34,11 +41,11 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     //compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'org.greenrobot:greendao:3.2.0'
     compile 'com.github.nukc.stateview:library:1.2.1'
     compile 'com.bigkoo:ConvenientBanner:2.1.1'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
     compile 'com.tgithubc:BottomTabLayout:1.0'
     compile 'com.tgithubc:fresco_wrapper:1.0'
-
 
 }

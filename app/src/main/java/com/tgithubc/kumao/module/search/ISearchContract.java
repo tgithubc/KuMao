@@ -13,25 +13,52 @@ public interface ISearchContract {
 
     interface V extends IStateView {
 
+        /**
+         * 展示搜索热词
+         */
         void showHotWord(List<String> hotword);
 
+        /**
+         * 搜索热词获取失败错误提示
+         */
         void showHotWordErrorTip();
 
+        /**
+         * 展示搜索结果
+         */
         void showSearchResult(List<BaseData> result);
 
+        /**
+         * 加载更多错误
+         */
         void loadMoreError();
 
+        /**
+         * 没有更多数据，加载更多完成
+         */
         void loadMoreFinish();
 
-        void loadMoreRefresh(List<BaseData> mSearchResult);
+        /**
+         * 刷新加载更多数据
+         */
+        void loadMoreRefresh(List<BaseData> searchResult);
     }
 
     interface P {
 
+        /**
+         * 获取搜索热词
+         */
         void getHotWord();
 
+        /**
+         * 搜索
+         */
         void search(String keyword);
 
+        /**
+         * 搜索加载更多
+         */
         void searchLoadMore();
     }
 }

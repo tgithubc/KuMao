@@ -45,7 +45,7 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
 
     @Override
     public Observable<List<String>> getHotWord(String url) {
-        return createObservable(url, null, ParserFactory.PARSE_BILLBOARD, ACache.TIME_DAY);
+        return createObservable(url, null, ParserFactory.PARSE_HOTWORD, ACache.TIME_DAY);
     }
 
     @Override
