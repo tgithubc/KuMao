@@ -1,5 +1,7 @@
 package com.tgithubc.kumao.parser;
 
+import android.text.TextUtils;
+
 import com.tgithubc.kumao.bean.Song;
 
 import org.json.JSONException;
@@ -12,6 +14,9 @@ public class SongParser implements IParser<Song> {
 
     @Override
     public Song parse(String data) throws JSONException {
+        if (TextUtils.isEmpty(data)) {
+            return null;
+        }
         JSONObject object = new JSONObject(data);
         Song song = new Song();
         song.setSongId(object.optString("song_id"));

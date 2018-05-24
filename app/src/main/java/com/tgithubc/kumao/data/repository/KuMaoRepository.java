@@ -33,17 +33,23 @@ public class KuMaoRepository implements KuMaoDataSource {
 
     @Override
     public Observable<List<Banner>> getBanner(String url, Map<String, String> maps) {
-        return mRemoteDataSource.getBanner(url, maps);
+        return Observable
+                .concat(mLocalDataSource.getBanner(url, maps), mRemoteDataSource.getBanner(url, maps))
+                .first();
     }
 
     @Override
     public Observable<Billboard> getBillboard(String url, Map<String, String> maps) {
-        return mRemoteDataSource.getBillboard(url, maps);
+        return Observable
+                .concat(mLocalDataSource.getBillboard(url, maps), mRemoteDataSource.getBillboard(url, maps))
+                .first();
     }
 
     @Override
     public Observable<List<String>> getHotWord(String url) {
-        return mRemoteDataSource.getHotWord(url);
+        return Observable
+                .concat(mLocalDataSource.getHotWord(url), mRemoteDataSource.getHotWord(url))
+                .first();
     }
 
     @Override

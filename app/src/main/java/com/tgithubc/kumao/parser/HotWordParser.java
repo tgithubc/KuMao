@@ -1,6 +1,8 @@
 package com.tgithubc.kumao.parser;
 
 
+import android.text.TextUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +17,9 @@ public class HotWordParser implements IParser<List<String>> {
 
     @Override
     public List<String> parse(String data) throws JSONException {
+        if (TextUtils.isEmpty(data)) {
+            return null;
+        }
         List<String> result = null;
         JSONObject json = new JSONObject(data);
         JSONArray hotArrary = json.optJSONArray("result");

@@ -1,5 +1,7 @@
 package com.tgithubc.kumao.parser;
 
+import android.text.TextUtils;
+
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.Song;
 
@@ -18,6 +20,9 @@ public class BillboardParser implements IParser<Billboard> {
 
     @Override
     public Billboard parse(String data) throws JSONException {
+        if (TextUtils.isEmpty(data)) {
+            return null;
+        }
         JSONObject json = new JSONObject(data);
 
         Billboard billboard = new Billboard();

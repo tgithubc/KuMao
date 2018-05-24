@@ -1,6 +1,8 @@
 package com.tgithubc.kumao.parser;
 
 
+import android.text.TextUtils;
+
 import com.tgithubc.kumao.bean.Album;
 import com.tgithubc.kumao.bean.Artist;
 import com.tgithubc.kumao.bean.SearchResult;
@@ -20,6 +22,9 @@ public class SearchResultParser implements IParser<SearchResult> {
 
     @Override
     public SearchResult parse(String data) throws JSONException {
+        if (TextUtils.isEmpty(data)) {
+            return null;
+        }
         SearchResult result = new SearchResult();
         JSONObject json = new JSONObject(data);
 

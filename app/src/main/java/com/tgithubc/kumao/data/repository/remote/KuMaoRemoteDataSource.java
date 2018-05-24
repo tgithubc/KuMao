@@ -1,11 +1,14 @@
 package com.tgithubc.kumao.data.repository.remote;
 
+
+import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.data.repository.KuMaoDataSource;
 import com.tgithubc.kumao.http.RetrofitManager;
 import com.tgithubc.kumao.parser.ParserFactory;
+import com.tgithubc.kumao.util.ACache;
 import com.tgithubc.kumao.util.RxHandler;
 
 import java.util.List;
@@ -32,23 +35,17 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
 
     @Override
     public Observable<List<Banner>> getBanner(String url, Map<String, String> maps) {
-        return RetrofitManager.getInstance()
-                .executeGet(url, maps)
-                .compose(RxHandler.handlerResult(ParserFactory.PARSE_BANNER));
+        return createObservable(url, maps, ParserFactory.PARSE_BANNER, 12 * ACache.TIME_HOUR);
     }
 
     @Override
     public Observable<Billboard> getBillboard(String url, Map<String, String> maps) {
-        return RetrofitManager.getInstance()
-                .executeGet(url, maps)
-                .compose(RxHandler.handlerResult(ParserFactory.PARSE_BILLBOARD));
+        return createObservable(url, maps, ParserFactory.PARSE_BILLBOARD, 12 * ACache.TIME_HOUR);
     }
 
     @Override
     public Observable<List<String>> getHotWord(String url) {
-        return RetrofitManager.getInstance()
-                .executeGet(url)
-                .compose(RxHandler.handlerResult(ParserFactory.PARSE_HOTWORD));
+        return createObservable(url, null, ParserFactory.PARSE_BILLBOARD, ACache.TIME_DAY);
     }
 
     @Override
@@ -56,5 +53,15 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
         return RetrofitManager.getInstance()
                 .executeGet(url, maps)
                 .compose(RxHandler.handlerResult(ParserFactory.PARSE_SEARCH_RESULT));
+    }
+
+    private <T> Observable<T> createObservable(String url,
+                                               Map<String, String> maps,
+                                               int type,
+                                               int cacheTime) {
+        return RetrofitManager.getInstance()
+                .executeGet(url, maps)
+                .doOnNext(data -> ACache.get(KuMao.getContext()).put(url, data, cacheTime))
+                .compose(RxHandler.handlerResult(type));
     }
 }

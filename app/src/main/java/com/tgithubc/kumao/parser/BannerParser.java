@@ -1,5 +1,7 @@
 package com.tgithubc.kumao.parser;
 
+import android.text.TextUtils;
+
 import com.tgithubc.kumao.bean.Banner;
 
 import org.json.JSONArray;
@@ -16,6 +18,9 @@ public class BannerParser implements IParser<List<Banner>> {
 
     @Override
     public List<Banner> parse(String data) throws JSONException {
+        if (TextUtils.isEmpty(data)) {
+            return null;
+        }
         List<Banner> result = null;
         JSONObject json = new JSONObject(data);
         JSONArray pic = json.optJSONArray("pic");

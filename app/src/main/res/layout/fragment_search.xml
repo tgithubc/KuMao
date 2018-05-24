@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/search_hotword"
                 android:textColor="@color/black"
-                android:textSize="15dp"
+                android:textSize="16dp"
                 android:textStyle="bold"/>
 
             <FrameLayout
@@ -61,7 +61,7 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/search_history"
                 android:textColor="@color/black"
-                android:textSize="15dp"
+                android:textSize="16dp"
                 android:textStyle="bold"/>
 
             <android.support.v7.widget.RecyclerView

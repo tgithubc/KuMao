@@ -6,7 +6,6 @@ import com.tgithubc.kumao.BuildConfig;
 import com.tgithubc.kumao.api.CommonApi;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -59,11 +58,10 @@ public class RetrofitManager {
     }
 
     public Observable<String> executeGet(String url, Map<String, String> maps) {
+        if (maps == null) {
+            return mService.get(url);
+        }
         return mService.get(url, maps);
-    }
-
-    public Observable<String> executeGet(String url) {
-        return mService.get(url);
     }
 
     public Observable<String> executePost(String url, Map<String, String> maps) {
@@ -92,8 +90,7 @@ public class RetrofitManager {
             long t2 = System.currentTimeMillis();
             //response.body().string()之后，response中的流会被关闭，需要创建出一个新的response给应用层处理
             ResponseBody responseBody = response.peekBody(1024 * 1024);
-            Log.d(TAG, "Response  cost:" + (t2 - t1)
-                    + ",responseBody" + responseBody.string());
+            Log.d(TAG, "Response  cost:" + (t2 - t1) + ",responseBody" + responseBody.toString());
             return response;
         }
     }
