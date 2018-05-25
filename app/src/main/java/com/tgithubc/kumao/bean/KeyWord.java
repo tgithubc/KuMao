@@ -2,6 +2,7 @@ package com.tgithubc.kumao.bean;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Created by tc :)
@@ -9,11 +10,14 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class KeyWord {
 
+    @Id(autoincrement = true)
+    private Long ID;
     private String keyWord;
     private long searchTime;
 
-    @Generated(hash = 2093017384)
-    public KeyWord(String keyWord, long searchTime) {
+    @Generated(hash = 1687250301)
+    public KeyWord(Long ID, String keyWord, long searchTime) {
+        this.ID = ID;
         this.keyWord = keyWord;
         this.searchTime = searchTime;
     }
@@ -36,5 +40,13 @@ public class KeyWord {
 
     public void setKeyWord(String keyWord) {
         this.keyWord = keyWord;
+    }
+
+    public Long getID() {
+        return this.ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
     }
 }

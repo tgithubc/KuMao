@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
 import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.widget.TagLayout;
 
 import java.util.List;
@@ -33,7 +34,9 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     private ScrollView mSearchTipLayout;
     private EditText mEditText;
     private RecyclerView mSearchResultRV;
+    private RecyclerView mSearchHistoryRV;
     private SearchResultAdapter mAdapter;
+    private SearchHistoryAdapter mHistoryAdapter;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
@@ -62,19 +65,27 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
         mSearchTipLayout = view.findViewById(R.id.search_tip_layout);
         mHotWordLayout = view.findViewById(R.id.search_hotword_layout);
         mHotWordErrorTip = view.findViewById(R.id.search_hotword_error_tip);
+        mSearchHistoryRV = view.findViewById(R.id.search_history_recycler_view);
         mSearchResultRV = view.findViewById(R.id.search_result_recycler_view);
         mHotWordLayout.setOnTagClickListener(this);
         mEditText = view.findViewById(R.id.search_bar_et);
         mEditText.setOnEditorActionListener(this);
         view.findViewById(R.id.search_go).setOnClickListener(this);
         view.findViewById(R.id.search_back_icon).setOnClickListener(this);
+
         mSearchResultRV.setVisibility(View.GONE);
         mSearchResultRV.setHasFixedSize(true);
         mSearchResultRV.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new SearchResultAdapter(getContext(), null);
         mAdapter.bindToRecyclerView(mSearchResultRV);
         mAdapter.setOnLoadMoreListener(() -> mPresenter.searchLoadMore(), mSearchResultRV);
+
+        mSearchHistoryRV.setHasFixedSize(true);
+        mSearchHistoryRV.setLayoutManager(new LinearLayoutManager(getContext()));
+        mHistoryAdapter = new SearchHistoryAdapter(null);
+        mHistoryAdapter.bindToRecyclerView(mSearchHistoryRV);
         mPresenter.getHotWord();
+        mPresenter.getSearchHistory();
     }
 
     @Override
@@ -118,6 +129,11 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     public void loadMoreRefresh(List<BaseData> data) {
         mAdapter.addData(data);
         mAdapter.loadMoreComplete();
+    }
+
+    @Override
+    public void showSearchHistory(List<KeyWord> historyList) {
+        mHistoryAdapter.setNewData(historyList);
     }
 
     @Override

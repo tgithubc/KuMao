@@ -4,6 +4,7 @@ package com.tgithubc.kumao.data.repository.remote;
 import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.data.repository.KuMaoDataSource;
 import com.tgithubc.kumao.http.RetrofitManager;
@@ -53,6 +54,16 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
         return RetrofitManager.getInstance()
                 .executeGet(url, maps)
                 .compose(RxHandler.handlerResult(ParserFactory.PARSE_SEARCH_RESULT));
+    }
+
+    @Override
+    public Observable<List<KeyWord>> getSearchHistory() {
+        return null;
+    }
+
+    @Override
+    public void saveSearchHistory(String keyWord) {
+
     }
 
     private <T> Observable<T> createObservable(String url,

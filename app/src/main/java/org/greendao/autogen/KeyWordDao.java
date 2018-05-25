@@ -15,7 +15,7 @@ import com.tgithubc.kumao.bean.KeyWord;
 /** 
  * DAO for table "KEY_WORD".
 */
-public class KeyWordDao extends AbstractDao<KeyWord, Void> {
+public class KeyWordDao extends AbstractDao<KeyWord, Long> {
 
     public static final String TABLENAME = "KEY_WORD";
 
@@ -24,8 +24,9 @@ public class KeyWordDao extends AbstractDao<KeyWord, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property KeyWord = new Property(0, String.class, "keyWord", false, "KEY_WORD");
-        public final static Property SearchTime = new Property(1, long.class, "searchTime", false, "SEARCH_TIME");
+        public final static Property ID = new Property(0, Long.class, "ID", true, "_id");
+        public final static Property KeyWord = new Property(1, String.class, "keyWord", false, "KEY_WORD");
+        public final static Property SearchTime = new Property(2, long.class, "searchTime", false, "SEARCH_TIME");
     }
 
 
@@ -41,8 +42,9 @@ public class KeyWordDao extends AbstractDao<KeyWord, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"KEY_WORD\" (" + //
-                "\"KEY_WORD\" TEXT," + // 0: keyWord
-                "\"SEARCH_TIME\" INTEGER NOT NULL );"); // 1: searchTime
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: ID
+                "\"KEY_WORD\" TEXT," + // 1: keyWord
+                "\"SEARCH_TIME\" INTEGER NOT NULL );"); // 2: searchTime
     }
 
     /** Drops the underlying database table. */
@@ -55,59 +57,74 @@ public class KeyWordDao extends AbstractDao<KeyWord, Void> {
     protected final void bindValues(DatabaseStatement stmt, KeyWord entity) {
         stmt.clearBindings();
  
+        Long ID = entity.getID();
+        if (ID != null) {
+            stmt.bindLong(1, ID);
+        }
+ 
         String keyWord = entity.getKeyWord();
         if (keyWord != null) {
-            stmt.bindString(1, keyWord);
+            stmt.bindString(2, keyWord);
         }
-        stmt.bindLong(2, entity.getSearchTime());
+        stmt.bindLong(3, entity.getSearchTime());
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, KeyWord entity) {
         stmt.clearBindings();
  
+        Long ID = entity.getID();
+        if (ID != null) {
+            stmt.bindLong(1, ID);
+        }
+ 
         String keyWord = entity.getKeyWord();
         if (keyWord != null) {
-            stmt.bindString(1, keyWord);
+            stmt.bindString(2, keyWord);
         }
-        stmt.bindLong(2, entity.getSearchTime());
+        stmt.bindLong(3, entity.getSearchTime());
     }
 
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public KeyWord readEntity(Cursor cursor, int offset) {
         KeyWord entity = new KeyWord( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // keyWord
-            cursor.getLong(offset + 1) // searchTime
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // ID
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // keyWord
+            cursor.getLong(offset + 2) // searchTime
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, KeyWord entity, int offset) {
-        entity.setKeyWord(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setSearchTime(cursor.getLong(offset + 1));
+        entity.setID(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setKeyWord(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setSearchTime(cursor.getLong(offset + 2));
      }
     
     @Override
-    protected final Void updateKeyAfterInsert(KeyWord entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected final Long updateKeyAfterInsert(KeyWord entity, long rowId) {
+        entity.setID(rowId);
+        return rowId;
     }
     
     @Override
-    public Void getKey(KeyWord entity) {
-        return null;
+    public Long getKey(KeyWord entity) {
+        if(entity != null) {
+            return entity.getID();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public boolean hasKey(KeyWord entity) {
-        // TODO
-        return false;
+        return entity.getID() != null;
     }
 
     @Override

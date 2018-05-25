@@ -2,6 +2,7 @@ package com.tgithubc.kumao.module.search;
 
 import com.tgithubc.kumao.base.IStateView;
 import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 
 import java.util.List;
@@ -42,6 +43,11 @@ public interface ISearchContract {
          * 刷新加载更多数据
          */
         void loadMoreRefresh(List<BaseData> searchResult);
+
+        /**
+         *展示搜索历史
+         */
+        void showSearchHistory(List<KeyWord> historyList);
     }
 
     interface P {
@@ -60,5 +66,10 @@ public interface ISearchContract {
          * 搜索加载更多
          */
         void searchLoadMore();
+
+        /**
+         * 获取搜索历史
+         */
+        void getSearchHistory();
     }
 }

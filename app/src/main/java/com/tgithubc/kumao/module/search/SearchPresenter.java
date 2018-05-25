@@ -1,20 +1,17 @@
 package com.tgithubc.kumao.module.search;
 
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.base.BasePresenter;
-import com.tgithubc.kumao.bean.Artist;
 import com.tgithubc.kumao.bean.BaseData;
-import com.tgithubc.kumao.bean.KeyWord;
-import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetHotWordTask;
+import com.tgithubc.kumao.data.task.GetSearchHistoryTask;
 import com.tgithubc.kumao.data.task.GetSearchResultTask;
-import com.tgithubc.kumao.db.DbCore;
+import com.tgithubc.kumao.data.task.SaveSearchHistoryTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
 import com.tgithubc.kumao.util.RxMap;
+
 
 import java.util.List;
 
@@ -54,32 +51,39 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
 
     @Override
     public void search(String keyword) {
+        // 搜索前重置关键词
         resetKeyWord();
         if (TextUtils.isEmpty(keyword) || keyword.replaceAll(" ", "").length() <= 0) {
+            // 提示非法关键词
             return;
         }
         mCurrentKeyWord = keyword;
-        KuMao.getExecutorService().execute(() -> {
-                    KeyWord entity = new KeyWord();
-                    entity.setKeyWord(keyword);
-                    entity.setSearchTime(System.currentTimeMillis());
-                    DbCore.getInstance().getDaoSession().getKeyWordDao().insert(entity);
-                }
-        );
-        Subscription subscription = getSearchTask(keyword, 1)
-                .subscribe(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
-                    @Override
-                    protected void onError(String msg, Throwable e) {
-                        getView().showError();
-                    }
 
-                    @Override
-                    public void onNext(GetSearchResultTask.ResponseValue responseValue) {
-                        super.onNext(responseValue);
-                        getView().showSearchResult(responseValue.getResult());
-                    }
-                });
-        addSubscribe(subscription);
+        // 存储合法的搜索词到数据库
+        Subscription saveSubscription =
+                new SaveSearchHistoryTask()
+                        .execute(new SaveSearchHistoryTask.RequestValues(keyword))
+                        .subscribe(responseValue -> {
+
+                        });
+        addSubscribe(saveSubscription);
+
+        // 开个task去请求搜索结果
+        Subscription querySubscription =
+                getSearchTask(keyword, 1)
+                        .subscribe(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
+                            @Override
+                            protected void onError(String msg, Throwable e) {
+                                getView().showError();
+                            }
+
+                            @Override
+                            public void onNext(GetSearchResultTask.ResponseValue responseValue) {
+                                super.onNext(responseValue);
+                                getView().showSearchResult(responseValue.getResult());
+                            }
+                        });
+        addSubscribe(querySubscription);
     }
 
     private void resetKeyWord() {
@@ -92,23 +96,33 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
         if (TextUtils.isEmpty(mCurrentKeyWord) || mCurrentKeyWord.replaceAll(" ", "").length() <= 0) {
             return;
         }
-        Subscription subscription = getSearchTask(mCurrentKeyWord, ++mCurrentPage)
-                .subscribe(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
-                    @Override
-                    protected void onError(String msg, Throwable e) {
-                        getView().loadMoreError();
-                    }
+        Subscription subscription =
+                getSearchTask(mCurrentKeyWord, ++mCurrentPage)
+                        .subscribe(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
+                            @Override
+                            protected void onError(String msg, Throwable e) {
+                                getView().loadMoreError();
+                            }
 
-                    @Override
-                    public void onNext(GetSearchResultTask.ResponseValue responseValue) {
-                        super.onNext(responseValue);
-                        List<BaseData> data = responseValue.getResult();
-                        if (data.isEmpty()) {
-                            getView().loadMoreFinish();
-                        }
-                        getView().loadMoreRefresh(data);
-                    }
-                });
+                            @Override
+                            public void onNext(GetSearchResultTask.ResponseValue responseValue) {
+                                super.onNext(responseValue);
+                                List<BaseData> data = responseValue.getResult();
+                                if (data.isEmpty()) {
+                                    getView().loadMoreFinish();
+                                }
+                                getView().loadMoreRefresh(data);
+                            }
+                        });
+        addSubscribe(subscription);
+    }
+
+    @Override
+    public void getSearchHistory() {
+        Subscription subscription =
+                new GetSearchHistoryTask()
+                        .execute(new GetSearchHistoryTask.RequestValues())
+                        .subscribe(responseValue -> getView().showSearchHistory(responseValue.getResult()));
         addSubscribe(subscription);
     }
 
@@ -121,5 +135,4 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                                 .put("query", keyword)
                                 .build()));
     }
-
 }

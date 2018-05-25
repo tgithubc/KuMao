@@ -3,6 +3,7 @@ package com.tgithubc.kumao.data.repository;
 
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 
 import java.util.List;
@@ -55,5 +56,15 @@ public class KuMaoRepository implements KuMaoDataSource {
     @Override
     public Observable<SearchResult> getSearchResult(String url, Map<String, String> maps) {
         return mRemoteDataSource.getSearchResult(url, maps);
+    }
+
+    @Override
+    public Observable<List<KeyWord>> getSearchHistory() {
+        return mLocalDataSource.getSearchHistory();
+    }
+
+    @Override
+    public void saveSearchHistory(String keyWord) {
+        mLocalDataSource.saveSearchHistory(keyWord);
     }
 }
