@@ -5,14 +5,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
@@ -31,6 +36,7 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     private SearchPresenter mPresenter;
     private TagLayout mHotWordLayout;
     private TextView mHotWordErrorTip;
+    private ImageView mKeyWordClearBtn;
     private ScrollView mSearchTipLayout;
     private EditText mEditText;
     private RecyclerView mSearchResultRV;
@@ -63,6 +69,7 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     @Override
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
         mSearchTipLayout = view.findViewById(R.id.search_tip_layout);
+        mKeyWordClearBtn = view.findViewById(R.id.search_keyword_clear_btn);
         mHotWordLayout = view.findViewById(R.id.search_hotword_layout);
         mHotWordErrorTip = view.findViewById(R.id.search_hotword_error_tip);
         mSearchHistoryRV = view.findViewById(R.id.search_history_recycler_view);
@@ -70,6 +77,28 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
         mHotWordLayout.setOnTagClickListener(this);
         mEditText = view.findViewById(R.id.search_bar_et);
         mEditText.setOnEditorActionListener(this);
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String query = s.toString();
+                if (TextUtils.isEmpty(query)) {
+                    mKeyWordClearBtn.setVisibility(View.GONE);
+                } else {
+                    mKeyWordClearBtn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        mKeyWordClearBtn.setOnClickListener(this);
         view.findViewById(R.id.search_go).setOnClickListener(this);
         view.findViewById(R.id.search_back_icon).setOnClickListener(this);
 
@@ -116,6 +145,11 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     }
 
     @Override
+    public void showSearchHistory(List<KeyWord> historyList) {
+        mHistoryAdapter.setNewData(historyList);
+    }
+
+    @Override
     public void loadMoreError() {
         mAdapter.loadMoreFail();
     }
@@ -132,13 +166,18 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     }
 
     @Override
-    public void showSearchHistory(List<KeyWord> historyList) {
-        mHistoryAdapter.setNewData(historyList);
+    public void onTagClick(String tag) {
+        searchGo(tag);
     }
 
-    @Override
-    public void onTagClick(String tag) {
-        mPresenter.search(tag);
+    private void searchGo(String keyWord) {
+        String key = keyWord.replaceAll(" ", "");
+        if (TextUtils.isEmpty(key)) {
+            Toast.makeText(getContext(), "请输入正确的搜索词", Toast.LENGTH_LONG).show();
+            return;
+        }
+        mEditText.setText(key);
+        mPresenter.search(key);
     }
 
     @Override
@@ -148,7 +187,13 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
                 closeFragment();
                 break;
             case R.id.search_go:
-                mPresenter.search(mEditText.getText().toString().trim());
+                searchGo(mEditText.getText().toString());
+                break;
+            case R.id.search_keyword_clear_btn:
+                mEditText.setText("");
+                mSearchResultRV.setVisibility(View.GONE);
+                mSearchTipLayout.setVisibility(View.VISIBLE);
+                mPresenter.getSearchHistory();
                 break;
         }
     }
@@ -156,7 +201,7 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (EditorInfo.IME_ACTION_SEARCH == actionId) {
-            mPresenter.search(mEditText.getText().toString().trim());
+            searchGo(mEditText.getText().toString());
         }
         return false;
     }

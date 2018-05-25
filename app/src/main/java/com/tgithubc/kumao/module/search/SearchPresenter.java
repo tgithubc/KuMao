@@ -53,12 +53,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
     public void search(String keyword) {
         // 搜索前重置关键词
         resetKeyWord();
-        if (TextUtils.isEmpty(keyword) || keyword.replaceAll(" ", "").length() <= 0) {
-            // 提示非法关键词
-            return;
-        }
         mCurrentKeyWord = keyword;
-
         // 存储合法的搜索词到数据库
         Subscription saveSubscription =
                 new SaveSearchHistoryTask()

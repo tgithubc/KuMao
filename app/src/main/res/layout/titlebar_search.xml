@@ -14,22 +14,40 @@
         android:paddingLeft="20dp"
         android:src="@mipmap/nav_back_up"/>
 
-    <EditText
-        android:id="@+id/search_bar_et"
+    <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/top_search_bg"
-        android:drawableLeft="@mipmap/top_search"
-        android:drawablePadding="5dp"
-        android:hint="@string/search_hint"
-        android:imeOptions="actionSearch"
-        android:nextFocusLeft="@id/search_bar_et"
-        android:nextFocusUp="@id/search_bar_et"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textColorHint="#cacaca"
-        android:textSize="14dp"/>
+        android:background="@drawable/top_search_bg">
+
+        <EditText
+            android:id="@+id/search_bar_et"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@null"
+            android:drawableLeft="@mipmap/top_search"
+            android:drawablePadding="5dp"
+            android:hint="@string/search_hint"
+            android:imeOptions="actionSearch"
+            android:nextFocusLeft="@id/search_bar_et"
+            android:nextFocusUp="@id/search_bar_et"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="#cacaca"
+            android:textSize="14dp"/>
+
+
+        <ImageView
+            android:id="@+id/search_keyword_clear_btn"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/search_keyword_clear"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/search_go"

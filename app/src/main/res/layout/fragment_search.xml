@@ -8,12 +8,12 @@
     <ScrollView
         android:id="@+id/search_tip_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
             <!--搜索热词-->
@@ -45,7 +45,7 @@
                     android:id="@+id/search_hotword_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     app:tag_border_color="@color/black"
                     app:tag_horizontal_range="10dp"
                     app:tag_lr_padding="2dp"
@@ -58,16 +58,35 @@
             </FrameLayout>
 
             <!--搜索历史-->
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/search_history"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                android:textStyle="bold"/>
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/search_history"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/search_history_clear_btn"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/search_history_clear_all"/>
+
+                <View
+                    style="@style/Widget.DivideLine"/>
+            </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/search_history_recycler_view"
