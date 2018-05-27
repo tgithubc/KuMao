@@ -13,14 +13,12 @@ import com.tgithubc.kumao.parser.ParserFactory;
 import com.tgithubc.kumao.util.ACache;
 import com.tgithubc.kumao.util.RxHandler;
 
-import org.greendao.autogen.DaoSession;
 import org.greendao.autogen.KeyWordDao;
 
 import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by tc :)
@@ -90,6 +88,16 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
             query.setSearchTime(System.currentTimeMillis());
             mKeyWordDao.update(query);
         }
+    }
+
+    @Override
+    public void deleteSearchHistory(KeyWord keyWords) {
+        mKeyWordDao.delete(keyWords);
+    }
+
+    @Override
+    public void clearSearchHistory() {
+        mKeyWordDao.deleteAll();
     }
 
     private <T> Observable<T> createObservable(String url, int type) {

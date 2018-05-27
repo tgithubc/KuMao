@@ -6,4 +6,5 @@
     <string name="search_hotword">搜索热词</string>
     <string name="search_hotword_error_tip">热词获取失败～</string>
     <string name="search">搜索</string>
+    <string name="search_history_empty_tip">暂无搜索历史</string>
 </resources>

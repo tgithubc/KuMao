@@ -18,10 +18,10 @@ import rx.Observable;
 /**
  * Created by tc :)
  */
-public class GetSearchResultTask extends Task<GetSearchResultTask.RequestValues, GetSearchResultTask.ResponseValue> {
+public class GetSearchResultTask extends Task<GetSearchResultTask.RequestValue, GetSearchResultTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
+    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
         return RepositoryProvider.getRepository()
                 .getSearchResult(requestValues.getUrl(), requestValues.getParameter())
                 .map(result -> {
@@ -51,9 +51,9 @@ public class GetSearchResultTask extends Task<GetSearchResultTask.RequestValues,
                 });
     }
 
-    public static final class RequestValues extends Task.CommonRequestValues {
+    public static final class RequestValue extends Task.CommonRequestValue {
 
-        public RequestValues(String url, Map<String, String> parameter) {
+        public RequestValue(String url, Map<String, String> parameter) {
             super(url, parameter);
         }
     }

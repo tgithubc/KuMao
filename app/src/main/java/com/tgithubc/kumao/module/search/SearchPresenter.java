@@ -3,8 +3,12 @@ package com.tgithubc.kumao.module.search;
 import android.text.TextUtils;
 
 import com.tgithubc.kumao.base.BasePresenter;
+import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.constant.Constant;
+import com.tgithubc.kumao.data.task.DeleteAllSearchHistoryTask;
+import com.tgithubc.kumao.data.task.DeleteSearchHistoryTask;
 import com.tgithubc.kumao.data.task.GetHotWordTask;
 import com.tgithubc.kumao.data.task.GetSearchHistoryTask;
 import com.tgithubc.kumao.data.task.GetSearchResultTask;
@@ -30,7 +34,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
     public void getHotWord() {
         Observable<GetHotWordTask.ResponseValue> hotWordTask
                 = new GetHotWordTask()
-                .execute(new GetHotWordTask.RequestValues(Constant.Api.URL_HOTWORD, null));
+                .execute(new GetHotWordTask.RequestValue(Constant.Api.URL_HOTWORD, null));
         Subscription subscription = hotWordTask
                 .subscribe(new HttpSubscriber<GetHotWordTask.ResponseValue>() {
 
@@ -57,7 +61,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
         // 存储合法的搜索词到数据库
         Subscription saveSubscription =
                 new SaveSearchHistoryTask()
-                        .execute(new SaveSearchHistoryTask.RequestValues(keyword))
+                        .execute(new SaveSearchHistoryTask.RequestValue(keyword))
                         .subscribe(responseValue -> {
 
                         });
@@ -116,14 +120,32 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
     public void getSearchHistory() {
         Subscription subscription =
                 new GetSearchHistoryTask()
-                        .execute(new GetSearchHistoryTask.RequestValues())
+                        .execute(new Task.EmptyRequestValue())
                         .subscribe(responseValue -> getView().showSearchHistory(responseValue.getResult()));
+        addSubscribe(subscription);
+    }
+
+    @Override
+    public void clearSearchHistory() {
+        Subscription subscription =
+                new DeleteAllSearchHistoryTask()
+                        .execute(new Task.EmptyRequestValue())
+                        .subscribe(responseValue -> getView().clearSearchHistory());
+        addSubscribe(subscription);
+    }
+
+    @Override
+    public void deleteSearchHistory(KeyWord keyword, int position) {
+        Subscription subscription =
+                new DeleteSearchHistoryTask()
+                        .execute(new DeleteSearchHistoryTask.RequestValue(keyword))
+                        .subscribe(responseValue -> getView().refreshSearchHistory(position));
         addSubscribe(subscription);
     }
 
     private Observable<GetSearchResultTask.ResponseValue> getSearchTask(String keyword, int page) {
         return new GetSearchResultTask()
-                .execute(new GetSearchResultTask.RequestValues(Constant.Api.URL_SEARCH,
+                .execute(new GetSearchResultTask.RequestValue(Constant.Api.URL_SEARCH,
                         new RxMap<String, String>()
                                 .put("page_size", "25")
                                 .put("page_no", String.valueOf(page))

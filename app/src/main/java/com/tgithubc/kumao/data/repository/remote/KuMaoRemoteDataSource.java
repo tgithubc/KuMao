@@ -66,6 +66,16 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
 
     }
 
+    @Override
+    public void deleteSearchHistory(KeyWord keyWords) {
+
+    }
+
+    @Override
+    public void clearSearchHistory() {
+
+    }
+
     private <T> Observable<T> createObservable(String url,
                                                Map<String, String> maps,
                                                int type,

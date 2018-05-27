@@ -15,10 +15,10 @@ import rx.Observable;
 /**
  * Created by tc :)
  */
-public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValues, GetBillboardListTask.ResponseValue> {
+public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue, GetBillboardListTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
+    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
         Observable<Observable<Billboard>> all = Observable
                 .from(requestValues.getParameter())
                 .flatMap(values -> {
@@ -41,15 +41,15 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
                 );
     }
 
-    public static final class RequestValues implements Task.RequestValues {
+    public static final class RequestValue implements Task.RequestValue {
 
-        private List<CommonRequestValues> parameters;
+        private List<CommonRequestValue> parameters;
 
-        public RequestValues(List<CommonRequestValues> parameters) {
+        public RequestValue(List<CommonRequestValue> parameters) {
             this.parameters = parameters;
         }
 
-        public List<CommonRequestValues> getParameter() {
+        public List<CommonRequestValue> getParameter() {
             return parameters;
         }
     }

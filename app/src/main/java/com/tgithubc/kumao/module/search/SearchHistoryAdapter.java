@@ -22,5 +22,7 @@ public class SearchHistoryAdapter extends BaseQuickAdapter<KeyWord, BaseViewHold
     @Override
     protected void convert(BaseViewHolder helper, KeyWord item) {
         helper.setText(R.id.search_history_key_word, item.getKeyWord());
+        helper.addOnClickListener(R.id.search_history_item);
+        helper.addOnClickListener(R.id.search_history_del_btn);
     }
 }

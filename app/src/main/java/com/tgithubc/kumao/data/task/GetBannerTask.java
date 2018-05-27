@@ -15,10 +15,10 @@ import rx.Observable;
 /**
  * Created by tc :)
  */
-public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTask.ResponseValue> {
+public class GetBannerTask extends Task<GetBannerTask.RequestValue, GetBannerTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
+    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
         return RepositoryProvider.getRepository()
                 .getBanner(requestValues.getUrl(), requestValues.getParameter())
                 .map(result -> {
@@ -29,9 +29,9 @@ public class GetBannerTask extends Task<GetBannerTask.RequestValues, GetBannerTa
                 });
     }
 
-    public static final class RequestValues extends Task.CommonRequestValues {
+    public static final class RequestValue extends Task.CommonRequestValue {
 
-        public RequestValues(String url, Map<String, String> parameter) {
+        public RequestValue(String url, Map<String, String> parameter) {
             super(url, parameter);
         }
     }

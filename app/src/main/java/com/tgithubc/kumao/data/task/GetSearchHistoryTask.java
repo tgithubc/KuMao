@@ -13,17 +13,13 @@ import rx.Observable;
 /**
  * Created by tc :)
  */
-public class GetSearchHistoryTask extends Task<GetSearchHistoryTask.RequestValues, GetSearchHistoryTask.ResponseValue> {
+public class GetSearchHistoryTask extends Task<Task.EmptyRequestValue, GetSearchHistoryTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
+    protected Observable<ResponseValue> executeTask(EmptyRequestValue requestValues) {
         return RepositoryProvider.getRepository()
                 .getSearchHistory()
                 .map(ResponseValue::new);
-    }
-
-    public static final class RequestValues implements Task.RequestValues {
-
     }
 
     public static final class ResponseValue implements Task.ResponseValue {

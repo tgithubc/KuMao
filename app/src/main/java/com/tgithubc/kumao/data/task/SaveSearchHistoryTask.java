@@ -9,10 +9,10 @@ import rx.Observable;
 /**
  * Created by tc :)
  */
-public class SaveSearchHistoryTask extends Task<SaveSearchHistoryTask.RequestValues, SaveSearchHistoryTask.ResponseValue> {
+public class SaveSearchHistoryTask extends Task<SaveSearchHistoryTask.RequestValue, SaveSearchHistoryTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValues requestValues) {
+    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
         return Observable.create(subscriber -> {
             RepositoryProvider.getRepository().saveSearchHistory(requestValues.getParameter());
             subscriber.onNext(new ResponseValue());
@@ -20,11 +20,11 @@ public class SaveSearchHistoryTask extends Task<SaveSearchHistoryTask.RequestVal
         });
     }
 
-    public static final class RequestValues implements Task.RequestValues {
+    public static final class RequestValue implements Task.RequestValue {
 
         private String keyWord;
 
-        public RequestValues(String keyWord) {
+        public RequestValue(String keyWord) {
             this.keyWord = keyWord;
         }
 

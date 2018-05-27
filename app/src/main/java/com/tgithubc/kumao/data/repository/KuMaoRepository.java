@@ -67,4 +67,14 @@ public class KuMaoRepository implements KuMaoDataSource {
     public void saveSearchHistory(String keyWord) {
         mLocalDataSource.saveSearchHistory(keyWord);
     }
+
+    @Override
+    public void deleteSearchHistory(KeyWord keyWord) {
+        mLocalDataSource.deleteSearchHistory(keyWord);
+    }
+
+    @Override
+    public void clearSearchHistory() {
+        mLocalDataSource.clearSearchHistory();
+    }
 }

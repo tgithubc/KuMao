@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/search_history_item"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical">
@@ -16,25 +15,12 @@
         android:src="@mipmap/search_history_icon"/>
 
     <TextView
-        android:id="@+id/search_history_key_word"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/search_history_icon"
         android:gravity="center_vertical"
+        android:text="@string/search_history_empty_tip"
         android:textColor="@color/black"
         android:textSize="17dp"/>
-
-    <ImageView
-        android:id="@+id/search_history_del_btn"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="20dp"
-        android:scaleType="center"
-        android:src="@mipmap/search_history_del"/>
-
-    <View
-        style="@style/Widget.DivideLine"/>
 </RelativeLayout>

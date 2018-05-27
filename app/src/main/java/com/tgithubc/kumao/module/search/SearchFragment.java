@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
 import com.tgithubc.kumao.bean.BaseData;
@@ -33,14 +34,16 @@ import java.util.List;
 public class SearchFragment extends BaseFragment implements ISearchContract.V, TagLayout.OnTagClickListener,
         View.OnClickListener, TextView.OnEditorActionListener {
 
-    private SearchPresenter mPresenter;
     private TagLayout mHotWordLayout;
     private TextView mHotWordErrorTip;
     private ImageView mKeyWordClearBtn;
+    private ImageView mHistoryClearBtn;
     private ScrollView mSearchTipLayout;
     private EditText mEditText;
     private RecyclerView mSearchResultRV;
     private RecyclerView mSearchHistoryRV;
+
+    private SearchPresenter mPresenter;
     private SearchResultAdapter mAdapter;
     private SearchHistoryAdapter mHistoryAdapter;
 
@@ -70,6 +73,7 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
         mSearchTipLayout = view.findViewById(R.id.search_tip_layout);
         mKeyWordClearBtn = view.findViewById(R.id.search_keyword_clear_btn);
+        mHistoryClearBtn = view.findViewById(R.id.search_history_clear_btn);
         mHotWordLayout = view.findViewById(R.id.search_hotword_layout);
         mHotWordErrorTip = view.findViewById(R.id.search_hotword_error_tip);
         mSearchHistoryRV = view.findViewById(R.id.search_history_recycler_view);
@@ -99,6 +103,7 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
             }
         });
         mKeyWordClearBtn.setOnClickListener(this);
+        mHistoryClearBtn.setOnClickListener(this);
         view.findViewById(R.id.search_go).setOnClickListener(this);
         view.findViewById(R.id.search_back_icon).setOnClickListener(this);
 
@@ -112,7 +117,9 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
         mSearchHistoryRV.setHasFixedSize(true);
         mSearchHistoryRV.setLayoutManager(new LinearLayoutManager(getContext()));
         mHistoryAdapter = new SearchHistoryAdapter(null);
+        mHistoryAdapter.setOnItemChildClickListener(getAdapterItemClickListener());
         mHistoryAdapter.bindToRecyclerView(mSearchHistoryRV);
+        mHistoryAdapter.setEmptyView(R.layout.rv_item_search_history_empty);
         mPresenter.getHotWord();
         mPresenter.getSearchHistory();
     }
@@ -146,7 +153,25 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
 
     @Override
     public void showSearchHistory(List<KeyWord> historyList) {
+        if (historyList.isEmpty()) {
+            return;
+        }
         mHistoryAdapter.setNewData(historyList);
+        mHistoryClearBtn.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void clearSearchHistory() {
+        mHistoryAdapter.setNewData(null);
+        mHistoryClearBtn.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void refreshSearchHistory(int position) {
+        mHistoryAdapter.remove(position);
+        if (mHistoryAdapter.getData().isEmpty()) {
+            mHistoryClearBtn.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -195,6 +220,9 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
                 mSearchTipLayout.setVisibility(View.VISIBLE);
                 mPresenter.getSearchHistory();
                 break;
+            case R.id.search_history_clear_btn:
+                mPresenter.clearSearchHistory();
+                break;
         }
     }
 
@@ -204,5 +232,24 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
             searchGo(mEditText.getText().toString());
         }
         return false;
+    }
+
+    private BaseQuickAdapter.OnItemChildClickListener getAdapterItemClickListener() {
+        return (adapter, view, position) -> {
+            List<KeyWord> data = adapter.getData();
+            if (data.isEmpty() || position < 0 || position >= data.size()) {
+                return;
+            }
+            switch (view.getId()) {
+                case R.id.search_history_item:
+                    String key = data.get(position).getKeyWord();
+                    searchGo(key);
+                    break;
+                case R.id.search_history_del_btn:
+                    KeyWord keyword = data.get(position);
+                    mPresenter.deleteSearchHistory(keyword, position);
+                    break;
+            }
+        };
     }
 }

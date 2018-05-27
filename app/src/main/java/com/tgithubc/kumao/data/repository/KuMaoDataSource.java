@@ -26,4 +26,8 @@ public interface KuMaoDataSource {
     Observable<List<KeyWord>> getSearchHistory();
 
     void saveSearchHistory(String keyWord);
+
+    void deleteSearchHistory(KeyWord keyWords);
+
+    void clearSearchHistory();
 }

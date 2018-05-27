@@ -66,7 +66,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
 
     private Observable<GetBannerTask.ResponseValue> runBannerTask() {
         return new GetBannerTask()
-                .execute(new GetBannerTask.RequestValues(
+                .execute(new GetBannerTask.RequestValue(
                         Constant.Api.URL_BANNER,
                         new RxMap<String, String>()
                                 .put("num", "10")
@@ -74,14 +74,14 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     }
 
     private Observable<GetBillboardListTask.ResponseValue> runBillboardListTask() {
-        List<Task.CommonRequestValues> parameters = new ArrayList<>();
+        List<Task.CommonRequestValue> parameters = new ArrayList<>();
         parameters.add(buildBillboardRequest(Constant.Api.BILLBOARD_TYPE_NEW));
         parameters.add(buildBillboardRequest(Constant.Api.BILLBOARD_TYPE_HOT));
-        return new GetBillboardListTask().execute(new GetBillboardListTask.RequestValues(parameters));
+        return new GetBillboardListTask().execute(new GetBillboardListTask.RequestValue(parameters));
     }
 
-    private Task.CommonRequestValues buildBillboardRequest(int type) {
-        return new Task.CommonRequestValues(
+    private Task.CommonRequestValue buildBillboardRequest(int type) {
+        return new Task.CommonRequestValue(
                 Constant.Api.URL_BILLBOARD,
                 new RxMap<String, String>()
                         .put("type", String.valueOf(type))
