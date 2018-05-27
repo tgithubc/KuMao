@@ -55,6 +55,9 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
 
     @Override
     public void search(String keyword) {
+        if (keyword.equals(mCurrentKeyWord)) {
+            return;
+        }
         // 搜索前重置关键词
         resetKeyWord();
         mCurrentKeyWord = keyword;

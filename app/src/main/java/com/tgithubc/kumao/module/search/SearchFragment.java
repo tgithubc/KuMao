@@ -195,16 +195,6 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
         searchGo(tag);
     }
 
-    private void searchGo(String keyWord) {
-        String key = keyWord.replaceAll(" ", "");
-        if (TextUtils.isEmpty(key)) {
-            Toast.makeText(getContext(), "请输入正确的搜索词", Toast.LENGTH_LONG).show();
-            return;
-        }
-        mEditText.setText(key);
-        mPresenter.search(key);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -232,6 +222,16 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
             searchGo(mEditText.getText().toString());
         }
         return false;
+    }
+
+    private void searchGo(String keyWord) {
+        String key = keyWord.replaceAll(" ", "");
+        if (TextUtils.isEmpty(key)) {
+            Toast.makeText(getContext(), "请输入正确的搜索词", Toast.LENGTH_LONG).show();
+            return;
+        }
+        mEditText.setText(key);
+        mPresenter.search(key);
     }
 
     private BaseQuickAdapter.OnItemChildClickListener getAdapterItemClickListener() {

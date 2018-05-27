@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,9 +26,9 @@
             android:drawableLeft="@mipmap/top_search"
             android:drawablePadding="5dp"
             android:gravity="center"
+            android:hint="@string/search_hint"
             android:imeOptions="actionSearch"
             android:maxLines="1"
-            android:hint="@string/search_hint"
             android:paddingLeft="8dp"
             android:paddingRight="40dp"
             android:textColorHint="#cacaca"
@@ -46,11 +47,17 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <View
+        android:layout_alignParentBottom="false"
+        style="@style/Widget.DivideLine"
+        android:layout_above="@+id/bottom_tab_layout"/>
+
     <com.tgithubc.view.lib.BottomTabLayout
         android:id="@+id/bottom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        app:bottom_tab_item_text_selected_color="@color/colorAccent"/>
 
     <com.tgithubc.kumao.widget.NoScrollViewPager
         android:id="@+id/view_pager"
