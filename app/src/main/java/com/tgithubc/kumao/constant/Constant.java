@@ -29,8 +29,10 @@ public class Constant {
          * 22，经典老歌榜
          * 23，情歌对唱榜
          * 25，网络歌曲榜
+         * 32，韩语榜
          */
         int BILLBOARD_TYPE_NEW = 1;
         int BILLBOARD_TYPE_HOT = 2;
+        int BILLBOARD_TYPE_NET_HOT = 25;
     }
 }

@@ -53,6 +53,10 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                                     if (value instanceof GetBannerTask.ResponseValue) {
                                         mFeedData.add(((GetBannerTask.ResponseValue) value).getResult());
                                     } else if (value instanceof GetBillboardListTask.ResponseValue) {
+                                        BaseData baseData = new BaseData();
+                                        baseData.setType(BaseData.TYPE_TITLE_MORE);
+                                        baseData.setData("排行榜");
+                                        mFeedData.add(baseData);
                                         mFeedData.addAll(((GetBillboardListTask.ResponseValue) value).getResult());
                                     }
                                 });
@@ -77,6 +81,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
         List<Task.CommonRequestValue> parameters = new ArrayList<>();
         parameters.add(buildBillboardRequest(Constant.Api.BILLBOARD_TYPE_NEW));
         parameters.add(buildBillboardRequest(Constant.Api.BILLBOARD_TYPE_HOT));
+        parameters.add(buildBillboardRequest(Constant.Api.BILLBOARD_TYPE_NET_HOT));
         return new GetBillboardListTask().execute(new GetBillboardListTask.RequestValue(parameters));
     }
 
@@ -86,7 +91,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                 new RxMap<String, String>()
                         .put("type", String.valueOf(type))
                         .put("offset", "0")
-                        .put("size", "5")
+                        .put("size", "3")
                         .build());
     }
 }

@@ -1,6 +1,8 @@
 package com.tgithubc.kumao.data.repository.remote;
 
 
+import android.util.Log;
+
 import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
@@ -82,7 +84,10 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
                                                int cacheTime) {
         return RetrofitManager.getInstance()
                 .executeGet(url, maps)
-                .doOnNext(data -> ACache.get(KuMao.getContext()).put(url, data, cacheTime))
+                .doOnNext(data -> {
+                    String cacheKey = maps == null ? url : url + maps.toString();
+                    ACache.get(KuMao.getContext()).put(cacheKey, data, cacheTime);
+                })
                 .compose(RxHandler.handlerResult(type));
     }
 }

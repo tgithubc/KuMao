@@ -1,6 +1,7 @@
 package com.tgithubc.kumao.data.task;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BaseData;
@@ -22,7 +23,8 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
         Observable<Observable<Billboard>> all = Observable
                 .from(requestValues.getParameter())
                 .flatMap(values -> {
-                    Observable<Billboard> single = RepositoryProvider.getRepository().getBillboard(values.getUrl(), values.getParameter());
+                    Observable<Billboard> single =
+                            RepositoryProvider.getRepository().getBillboard(values.getUrl(), values.getParameter());
                     return Observable.just(single);
                 });
         return Observable

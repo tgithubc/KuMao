@@ -61,6 +61,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
         // 搜索前重置关键词
         resetKeyWord();
         mCurrentKeyWord = keyword;
+        getView().showLoading();
         // 存储合法的搜索词到数据库
         Subscription saveSubscription =
                 new SaveSearchHistoryTask()
@@ -82,6 +83,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                             @Override
                             public void onNext(GetSearchResultTask.ResponseValue responseValue) {
                                 super.onNext(responseValue);
+                                getView().showContent();
                                 getView().showSearchResult(responseValue.getResult());
                             }
                         });

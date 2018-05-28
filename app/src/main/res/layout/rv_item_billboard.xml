@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"/>
-</LinearLayout>
+        android:id="@+id/billboard_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/billboard_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/billboard_pic"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/billboard_pic"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        tools:text="@string/app_name"/>
+
+    <TextView
+        android:id="@+id/billboard_song_title_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/billboard_title"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/billboard_pic"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        tools:text="@string/app_name"/>
+
+    <TextView
+        android:id="@+id/billboard_song_title_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/billboard_song_title_1"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/billboard_pic"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        tools:text="@string/app_name"/>
+
+    <TextView
+        android:id="@+id/billboard_song_title_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/billboard_song_title_2"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/billboard_pic"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        tools:text="@string/app_name"/>
+
+    <View
+        style="@style/Widget.DivideLine"/>
+</RelativeLayout>

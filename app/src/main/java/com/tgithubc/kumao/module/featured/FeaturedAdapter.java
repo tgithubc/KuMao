@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.MultipleItemRvAdapter;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.viewProvider.BannerProvider;
 import com.tgithubc.kumao.viewProvider.BillboardProvider;
+import com.tgithubc.kumao.viewProvider.TitleMoreProvider;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class FeaturedAdapter extends MultipleItemRvAdapter<BaseData, BaseViewHol
 
     @Override
     public void registerItemProvider() {
+        mProviderDelegate.registerProvider(new TitleMoreProvider());
         mProviderDelegate.registerProvider(new BillboardProvider());
         mProviderDelegate.registerProvider(new BannerProvider());
     }

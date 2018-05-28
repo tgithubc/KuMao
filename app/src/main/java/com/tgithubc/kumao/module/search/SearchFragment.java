@@ -125,6 +125,11 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
     }
 
     @Override
+    public boolean isShowLCEE() {
+        return true;
+    }
+
+    @Override
     protected View onCreateTitleView(LayoutInflater inflater, FrameLayout titleContainer) {
         return inflater.inflate(R.layout.titlebar_search, titleContainer, false);
     }
