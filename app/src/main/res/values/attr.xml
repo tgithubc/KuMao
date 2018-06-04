@@ -56,9 +56,9 @@
     <attr name="SwipeBackLayoutStyle" format="reference" />
 
     <style name="SwipeBackLayout">
-        <item name="shadow_left">@mipmap/shadow_left</item>
-        <item name="shadow_right">@mipmap/shadow_right</item>
-        <item name="shadow_bottom">@mipmap/shadow_bottom</item>
+        <item name="shadow_left">@drawable/shadow_left</item>
+        <item name="shadow_right">@drawable/shadow_right</item>
+        <item name="shadow_bottom">@drawable/shadow_bottom</item>
     </style>
 
     <declare-styleable name="RecyclerViewBanner">
@@ -93,5 +93,26 @@
             <enum name="STROKE" value="1"/>
             <enum name="FILL" value="2"/>
         </attr>
+    </declare-styleable>
+
+    <!--use for title bar -->
+    <declare-styleable name="KMTitleBar">
+        <!--title back ground color-->
+        <attr name="bgColor" format="reference" />
+
+        <attr name="main_title_str" format="reference" />
+        <attr name="sub_title_str" format="reference" />
+
+        <attr name="leftIconId" format="reference" />
+        <attr name="rightIconId" format="reference" />
+        <attr name="extentIconId" format="reference" />
+
+        <attr name="extendStr" format="reference" />
+        <attr name="rightStr" format="reference" />
+        <attr name="leftStr" format="reference" />
+
+        <attr name="showCheckBox" format="boolean" />
+        <attr name="checkBoxBkg" format="reference" />
+
     </declare-styleable>
 </resources>

@@ -17,4 +17,11 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1px</item>
     </style>
+
+    <style name="RedDotTip">
+        <item name="android:layout_width">5dp</item>
+        <item name="android:layout_height">5dp</item>
+        <item name="android:background">@drawable/red_dot_tip</item>
+    </style>
+
 </resources>

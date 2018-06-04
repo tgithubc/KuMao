@@ -75,13 +75,13 @@ public class DebugHierarchyViewContainer extends ScrollView {
             final List<DebugFragmentStack> childFragmentRecord = child.mChildFragmentStack;
             if (childFragmentRecord != null && childFragmentRecord.size() > 0) {
                 tempHierarchy++;
-                childTvItem.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.arrow_right, 0, 0, 0);
+                childTvItem.setCompoundDrawablesWithIntrinsicBounds(R.drawable.arrow_right, 0, 0, 0);
                 final int finalChildHierarchy = tempHierarchy;
                 childTvItem.setOnClickListener(v -> {
                     if (v.getTag(R.id.isexpand) != null) {
                         boolean isExpand = (boolean) v.getTag(R.id.isexpand);
                         if (isExpand) {
-                            childTvItem.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.arrow_right, 0, 0, 0);
+                            childTvItem.setCompoundDrawablesWithIntrinsicBounds(R.drawable.arrow_right, 0, 0, 0);
                             DebugHierarchyViewContainer.this.removeView(finalChildHierarchy);
                         } else {
                             handleExpandView(childFragmentRecord, finalChildHierarchy, childTvItem);
@@ -106,7 +106,7 @@ public class DebugHierarchyViewContainer extends ScrollView {
 
     private void handleExpandView(List<DebugFragmentStack> childFragmentRecord, int finalChilHierarchy, TextView childTvItem) {
         DebugHierarchyViewContainer.this.setView(childFragmentRecord, finalChilHierarchy, childTvItem);
-        childTvItem.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.arrow_down, 0, 0, 0);
+        childTvItem.setCompoundDrawablesWithIntrinsicBounds(R.drawable.arrow_down, 0, 0, 0);
     }
 
     private void removeView(int hierarchy) {

@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:paddingLeft="20dp"
-        android:src="@mipmap/nav_back_up"/>
+        android:src="@drawable/title_back_up"/>
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:background="@null"
-            android:drawableLeft="@mipmap/top_search"
+            android:drawableLeft="@drawable/top_search"
             android:drawablePadding="5dp"
             android:hint="@string/search_hint"
             android:imeOptions="actionSearch"
@@ -44,7 +44,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/search_keyword_clear"
+            android:src="@drawable/search_keyword_clear"
             android:visibility="gone"/>
     </RelativeLayout>
 

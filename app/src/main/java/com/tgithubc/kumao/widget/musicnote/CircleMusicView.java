@@ -1,5 +1,6 @@
 package com.tgithubc.kumao.widget.musicnote;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -20,9 +21,10 @@ import com.tgithubc.kumao.util.DPPXUtil;
 /**
  * Created by tc :)
  */
+@SuppressLint("AppCompatCustomView")
 public class CircleMusicView extends ImageView {
 
-    private static final int DEFAULT_BORDER_WIDTH = 2;//dp
+    private static final int DEFAULT_BORDER_WIDTH = 1;//dp
     private static final int DEFAULT_DEFAULT_SIZE = 45;//dp
 
     private int mDefaultSize;

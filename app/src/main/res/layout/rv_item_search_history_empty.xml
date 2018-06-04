@@ -12,7 +12,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:scaleType="center"
-        android:src="@mipmap/search_history_icon"/>
+        android:src="@drawable/search_history_icon"/>
 
     <TextView
         android:layout_width="wrap_content"

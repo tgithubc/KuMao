@@ -13,11 +13,9 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
-import com.tgithubc.kumao.widget.TitleBar;
 
 /**
  * Created by tc :)

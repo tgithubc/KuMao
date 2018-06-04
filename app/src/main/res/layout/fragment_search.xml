@@ -85,7 +85,7 @@
                     android:layout_marginRight="20dp"
                     android:scaleType="fitXY"
                     android:visibility="gone"
-                    android:src="@mipmap/search_history_clear_all"/>
+                    android:src="@drawable/search_history_clear_all"/>
 
                 <View
                     style="@style/Widget.DivideLine"/>

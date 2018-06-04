@@ -11,4 +11,8 @@ public interface IKuMaoObserver extends IObserver {
     interface IFragmentSwipeBackObserver extends IKuMaoObserver {
         void onMainViewPagerVisible(boolean isVisible);
     }
+
+    interface IChangeStatusBarObserver extends IKuMaoObserver {
+        void onChangeStatusBar(boolean isDark);
+    }
 }

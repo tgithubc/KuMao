@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:scaleType="center"
-        android:src="@mipmap/search_history_icon"/>
+        android:src="@drawable/search_history_icon"/>
 
     <TextView
         android:id="@+id/search_history_key_word"
@@ -33,7 +33,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
         android:scaleType="center"
-        android:src="@mipmap/search_history_del"/>
+        android:src="@drawable/search_history_del"/>
 
     <View
         style="@style/Widget.DivideLine"/>

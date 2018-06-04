@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/left_panel"
+        android:layout_width="65dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="15dp"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/left_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:gravity="right"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:visibility="gone"
+            tools:text="取消"
+            tools:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/left_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:scaleType="center"
+            tools:src="@mipmap/title_back_up"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/right_panel"
+        android:layout_width="65dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:paddingRight="15dp"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <CheckBox
+            android:id="@+id/check_all"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="false"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/right_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:visibility="gone"
+            tools:text="完成"
+            tools:visibility="visible"/>
+
+        <RelativeLayout
+            android:id="@+id/right_icon_panel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical">
+
+            <ImageView
+                android:id="@+id/right_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="center"
+                android:visibility="gone"
+                tools:src="@mipmap/ic_launcher"
+                tools:visibility="visible"/>
+
+            <View
+                android:id="@+id/right_icon_tip"
+                style="@style/RedDotTip"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="0dp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+        </RelativeLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/extend_panel"
+        android:layout_width="65dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="15dp"
+        android:layout_toLeftOf="@id/right_panel"
+        android:focusable="false"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/extend_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:visibility="gone"
+            tools:text="分享"
+            tools:visibility="visible"/>
+
+        <RelativeLayout
+            android:id="@+id/extend_icon_panel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/extend_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="center"
+                android:visibility="gone"
+                tools:src="@mipmap/ic_launcher"
+                tools:visibility="visible"/>
+
+            <View
+                android:id="@+id/extend_icon_tip"
+                style="@style/RedDotTip"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="0dp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+        </RelativeLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/title_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/right_panel"
+        android:layout_toRightOf="@id/left_panel"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:textColor="@color/black"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="18dp"
+            tools:text="主标题"/>
+
+        <TextView
+            android:id="@+id/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:visibility="gone"
+            tools:text="副标题"
+            tools:visibility="visible"/>
+    </LinearLayout>
+</merge>

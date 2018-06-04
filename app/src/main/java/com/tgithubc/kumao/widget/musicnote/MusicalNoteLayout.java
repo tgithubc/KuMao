@@ -88,7 +88,7 @@ public class MusicalNoteLayout extends RelativeLayout implements WeakWrapperHand
         }
 
         mMusicView = new CircleMusicView(getContext());
-        mMusicView.setImageResource(R.mipmap.ic_launcher);
+        mMusicView.setImageResource(R.drawable.ic_launcher);
         mMusicView.setId(R.id.music_view_id);
         LayoutParams params = new LayoutParams(musicViewSize, musicViewSize);
         params.addRule(ALIGN_PARENT_BOTTOM);
@@ -97,8 +97,8 @@ public class MusicalNoteLayout extends RelativeLayout implements WeakWrapperHand
         params.bottomMargin = DPPXUtil.dp2px(getContext(), 25);
         addView(mMusicView, params);
 
-        Drawable note1 = getResources().getDrawable(R.mipmap.note1);
-        Drawable note2 = getResources().getDrawable(R.mipmap.note2);
+        Drawable note1 = getResources().getDrawable(R.drawable.note1);
+        Drawable note2 = getResources().getDrawable(R.drawable.note2);
         mDrawables = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             mDrawables.add(i == 0 ? note1 : note2);

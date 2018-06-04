@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.tgithubc.kumao.message.IObserver;
+import com.tgithubc.kumao.message.MessageBus;
+import com.tgithubc.kumao.observer.IKuMaoObserver;
 import com.tgithubc.kumao.util.DPPXUtil;
 import com.tgithubc.kumao.util.ImmersedStatusBarHelper;
 
@@ -18,6 +21,14 @@ import com.tgithubc.kumao.util.ImmersedStatusBarHelper;
 public class BaseActivity extends AppCompatActivity {
 
     private ImmersedStatusBarHelper mHelper;
+    private IObserver mChangeStatusBarObserver = new IKuMaoObserver.IChangeStatusBarObserver() {
+        @Override
+        public void onChangeStatusBar(boolean isDark) {
+            if (mHelper != null) {
+                mHelper.resetStatusBarTextColor(BaseActivity.this, isDark);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +39,7 @@ public class BaseActivity extends AppCompatActivity {
         // 如果需要动态改变，需要发个消息过来，只有这个activity才能用mHelper处理动态改变沉浸式文字不同颜色
         mHelper = new ImmersedStatusBarHelper();
         mHelper.immersedStatusBar(this);
+        MessageBus.instance().register(mChangeStatusBarObserver);
     }
 
     @Override
@@ -45,5 +57,11 @@ public class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MessageBus.instance().unRegister(mChangeStatusBarObserver);
     }
 }

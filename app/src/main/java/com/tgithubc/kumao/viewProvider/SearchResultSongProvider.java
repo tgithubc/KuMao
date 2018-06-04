@@ -1,11 +1,13 @@
 package com.tgithubc.kumao.viewProvider;
 
-
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
+import com.tgithubc.kumao.KuMao;
+import com.tgithubc.kumao.MainActivity;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.service.PlayManager;
 
 /**
  * Created by tc :)
@@ -28,6 +30,11 @@ public class SearchResultSongProvider extends BaseItemProvider<BaseData, BaseVie
         helper.setText(R.id.search_result_song_name, replaceIllegal(song.getSongName()));
         helper.setText(R.id.search_result_song_artist_album,
                 replaceIllegal(song.getAuthorName() + "-" + song.getAlbumName()));
+    }
+
+    @Override
+    public void onClick(BaseViewHolder helper, BaseData data, int position) {
+        super.onClick(helper, data, position);
     }
 
     private String replaceIllegal(String name) {

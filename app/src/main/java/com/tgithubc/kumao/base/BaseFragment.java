@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,6 +153,11 @@ public abstract class BaseFragment extends SwipeBackFragment implements IStateVi
     }
 
     public void onNewIntent(Bundle bundle) {
+    }
+
+    //返回true表示不向下传递消息了
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return false;
     }
 
     private void adjustTitleBarHeight() {

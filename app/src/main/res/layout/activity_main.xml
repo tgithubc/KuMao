@@ -23,7 +23,7 @@
             android:layout_marginLeft="40dp"
             android:layout_weight="1"
             android:background="@drawable/top_search_bg"
-            android:drawableLeft="@mipmap/top_search"
+            android:drawableLeft="@drawable/top_search"
             android:drawablePadding="5dp"
             android:gravity="center"
             android:hint="@string/search_hint"
@@ -43,20 +43,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/user_space"/>
+                android:src="@drawable/user_space"/>
         </RelativeLayout>
     </LinearLayout>
 
     <View
-        android:layout_alignParentBottom="false"
         style="@style/Widget.DivideLine"
-        android:layout_above="@+id/bottom_tab_layout"/>
+        android:layout_above="@+id/bottom_tab_layout"
+        android:layout_alignParentBottom="false"/>
 
     <com.tgithubc.view.lib.BottomTabLayout
         android:id="@+id/bottom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
+        app:bottom_tab_center_view="@layout/bottom_centerview_layout"
+        app:bottom_tab_center_view_padding_lr="15dp"
         app:bottom_tab_item_text_selected_color="@color/colorAccent"/>
 
     <com.tgithubc.kumao.widget.NoScrollViewPager
@@ -76,5 +78,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_above="@id/bottom_tab_layout"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
 </RelativeLayout>

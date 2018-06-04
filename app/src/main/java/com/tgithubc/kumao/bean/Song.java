@@ -1,10 +1,13 @@
 package com.tgithubc.kumao.bean;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by tc :)
  */
-public class Song {
+public class Song implements Parcelable{
 
     // 歌曲的id
     private String songId;
@@ -32,6 +35,9 @@ public class Song {
 
     // 歌词下载地址
     private String lrclink;
+
+    //文件地址
+    private String filelink;
 
     // 是否new
     private String isNew;
@@ -147,6 +153,13 @@ public class Song {
         return this.info;
     }
 
+    public String getFilelink() {
+        return filelink;
+    }
+
+    public void setFilelink(String filelink) {
+        this.filelink = filelink;
+    }
 
     public void setCompany(String company) {
         this.company = company;
@@ -204,4 +217,92 @@ public class Song {
         return this.bigPic;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(songId);
+        dest.writeString(songName);
+        dest.writeString(authorName);
+        dest.writeString(artistId);
+        dest.writeString(albumId);
+        dest.writeString(albumName);
+        dest.writeString(smallPic);
+        dest.writeString(bigPic);
+        dest.writeString(lrclink);
+        dest.writeString(isNew);
+        dest.writeString(hot);
+        dest.writeString(rateArrary);
+        dest.writeInt(duration);
+        dest.writeString(freeBitrate);
+        dest.writeString(biaoshi);
+        dest.writeString(info);
+        dest.writeString(company);
+        dest.writeString(content);
+        dest.writeString(filelink);
+    }
+
+    public Song(){}
+
+    protected Song(Parcel in) {
+        songId = in.readString();
+        songName = in.readString();
+        authorName = in.readString();
+        artistId = in.readString();
+        albumId = in.readString();
+        albumName = in.readString();
+        smallPic = in.readString();
+        bigPic = in.readString();
+        lrclink = in.readString();
+        isNew = in.readString();
+        hot = in.readString();
+        rateArrary = in.readString();
+        duration = in.readInt();
+        freeBitrate = in.readString();
+        biaoshi = in.readString();
+        info = in.readString();
+        company = in.readString();
+        content = in.readString();
+        filelink = in.readString();
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "songId='" + songId + '\'' +
+                ", songName='" + songName + '\'' +
+                ", authorName='" + authorName + '\'' +
+                ", artistId='" + artistId + '\'' +
+                ", albumId='" + albumId + '\'' +
+                ", albumName='" + albumName + '\'' +
+                ", smallPic='" + smallPic + '\'' +
+                ", bigPic='" + bigPic + '\'' +
+                ", lrclink='" + lrclink + '\'' +
+                ", filelink='" + filelink + '\'' +
+                ", isNew='" + isNew + '\'' +
+                ", hot='" + hot + '\'' +
+                ", rateArrary='" + rateArrary + '\'' +
+                ", duration=" + duration +
+                ", freeBitrate='" + freeBitrate + '\'' +
+                ", biaoshi='" + biaoshi + '\'' +
+                ", info='" + info + '\'' +
+                ", company='" + company + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

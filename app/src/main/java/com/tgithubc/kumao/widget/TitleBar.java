@@ -1,397 +1,301 @@
 package com.tgithubc.kumao.widget;
 
-
 import android.content.Context;
-import android.graphics.Color;
-import android.text.TextUtils;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.tgithubc.kumao.util.DPPXUtil;
+import com.tgithubc.kumao.R;
 
-public class TitleBar extends ViewGroup implements View.OnClickListener {
+/**
+ * Created by tc :)
+ */
+public class TitleBar extends RelativeLayout {
 
-    private static final int DEFAULT_MAIN_TEXT_SIZE = 18;
-    private static final int DEFAULT_SUB_TEXT_SIZE = 12;
-    private static final int DEFAULT_ACTION_TEXT_SIZE = 15;
-    private static final int DEFAULT_TITLE_BAR_HEIGHT = 48;
+    private View mRootView;
 
+    private View mLeftPanel;
+    private ImageView mLeftIcon;
     private TextView mLeftText;
-    private LinearLayout mRightLayout;
-    private LinearLayout mCenterLayout;
-    private TextView mCenterText;
-    private TextView mSubTitleText;
-    private View mCustomCenterView;
 
-    private boolean mImmersive;
+    private LinearLayout mTitlePanel;
+    private TextView mMainTitle;
+    private TextView mSubTitle;
 
-    private int mScreenWidth;
-    private int mStatusBarHeight;
-    private int mActionPadding;
-    private int mOutPadding;
-    private int mActionTextColor;
-    private int mHeight;
+    private View mRightPanel;
+    private ImageView mRightIcon;
+    private View mRightIconTip;
+    private TextView mRightText;
+    private CheckBox mCheckBox;
+
+    private View mExtendPanel;
+    private ImageView mExtendIcon;
+    private View mExtendIconTip;
+    private TextView mExtendText;
 
     public TitleBar(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public TitleBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public TitleBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-    }
-
-    private void init(Context context) {
-        mScreenWidth = getResources().getDisplayMetrics().widthPixels;
-        if (mImmersive) {
-            mStatusBarHeight = DPPXUtil.getStatusBarHeight();
-        }
-        mActionPadding = DPPXUtil.dp2px(5);
-        mOutPadding = DPPXUtil.dp2px(8);
-        mHeight = DPPXUtil.dp2px(DEFAULT_TITLE_BAR_HEIGHT);
         initView(context);
+        initAttr(context, attrs);
     }
 
     private void initView(Context context) {
-        mLeftText = new TextView(context);
-        mCenterLayout = new LinearLayout(context);
-        mRightLayout = new LinearLayout(context);
-
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-
-        mLeftText.setTextSize(DEFAULT_ACTION_TEXT_SIZE);
-        mLeftText.setSingleLine();
-        mLeftText.setGravity(Gravity.CENTER_VERTICAL);
-        mLeftText.setPadding(mOutPadding + mActionPadding, 0, mOutPadding, 0);
-
-        mCenterText = new TextView(context);
-        mSubTitleText = new TextView(context);
-        mCenterLayout.addView(mCenterText);
-        mCenterLayout.addView(mSubTitleText);
-
-        mCenterLayout.setGravity(Gravity.CENTER);
-        mCenterText.setTextSize(DEFAULT_MAIN_TEXT_SIZE);
-        mCenterText.setSingleLine();
-        mCenterText.setGravity(Gravity.CENTER);
-        mCenterText.setEllipsize(TextUtils.TruncateAt.END);
-        mCenterText.setTextColor(Color.WHITE);
-
-        mSubTitleText.setTextSize(DEFAULT_SUB_TEXT_SIZE);
-        mSubTitleText.setSingleLine();
-        mSubTitleText.setGravity(Gravity.CENTER);
-        mSubTitleText.setEllipsize(TextUtils.TruncateAt.END);
-
-        mRightLayout.setPadding(mOutPadding, 0, mOutPadding, 0);
-
-        addView(mLeftText, layoutParams);
-        addView(mCenterLayout);
-        addView(mRightLayout, layoutParams);
+        LayoutInflater.from(context).inflate(R.layout.titlebar, this, true);
+        mRootView = getRootView();
+        // title
+        mTitlePanel = findViewById(R.id.title_panel);
+        mMainTitle = findViewById(R.id.main_title);
+        mSubTitle = findViewById(R.id.sub_title);
+        // left
+        mLeftPanel = findViewById(R.id.left_panel);
+        mLeftIcon = findViewById(R.id.left_icon);
+        mLeftText = findViewById(R.id.left_text);
+        //right
+        mRightPanel = findViewById(R.id.right_panel);
+        mRightIcon = findViewById(R.id.right_icon);
+        mRightText = findViewById(R.id.right_text);
+        mCheckBox = findViewById(R.id.check_all);
+        mRightIconTip = findViewById(R.id.right_icon_tip);
+        //extend
+        mExtendPanel = findViewById(R.id.extend_panel);
+        mExtendIcon = findViewById(R.id.extend_icon);
+        mExtendIconTip = findViewById(R.id.extend_icon_tip);
+        mExtendText = findViewById(R.id.extend_text);
     }
 
-    public TitleBar setImmersive(boolean immersive) {
-        mImmersive = immersive;
-        if (mImmersive) {
-            mStatusBarHeight = DPPXUtil.getStatusBarHeight();
-        } else {
-            mStatusBarHeight = 0;
-        }
-        return this;
-    }
+    private void initAttr(Context context, AttributeSet attrs) {
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.KMTitleBar);
+        try {
+            int bkg = array.getResourceId(R.styleable.KMTitleBar_bgColor, -1);
+            int mainStr = array.getResourceId(R.styleable.KMTitleBar_main_title_str, -1);
+            int subStr = array.getResourceId(R.styleable.KMTitleBar_sub_title_str, -1);
+            int leftIconRes = array.getResourceId(R.styleable.KMTitleBar_leftIconId, -1);
+            int leftStr = array.getResourceId(R.styleable.KMTitleBar_leftStr, -1);
+            int rightIconRes = array.getResourceId(R.styleable.KMTitleBar_rightIconId, -1);
+            int rightStr = array.getResourceId(R.styleable.KMTitleBar_rightStr, -1);
+            int checkBoxBkgId = array.getResourceId(R.styleable.KMTitleBar_checkBoxBkg, -1);
+            boolean showCheckBox = array.getBoolean(R.styleable.KMTitleBar_showCheckBox, false);
+            int extendIconRes = array.getResourceId(R.styleable.KMTitleBar_extentIconId, -1);
+            int extendStr = array.getResourceId(R.styleable.KMTitleBar_extendStr, -1);
 
-    public TitleBar setHeight(int height) {
-        mHeight = height;
-        setMeasuredDimension(getMeasuredWidth(), mHeight);
-        return this;
-    }
-
-    public TitleBar setLeftImageResource(int resId) {
-        mLeftText.setCompoundDrawablesWithIntrinsicBounds(resId, 0, 0, 0);
-        return this;
-    }
-
-    public TitleBar setLeftClickListener(OnClickListener l) {
-        mLeftText.setOnClickListener(l);
-        return this;
-    }
-
-    public TitleBar setLeftText(CharSequence title) {
-        mLeftText.setText(title);
-        return this;
-    }
-
-    public TitleBar setLeftText(int resid) {
-        mLeftText.setText(resid);
-        return this;
-    }
-
-    public TitleBar setLeftTextSize(float size) {
-        mLeftText.setTextSize(size);
-        return this;
-    }
-
-    public TitleBar setLeftTextColor(int color) {
-        mLeftText.setTextColor(color);
-        return this;
-    }
-
-    public TitleBar setLeftVisible(boolean visible) {
-        mLeftText.setVisibility(visible ? View.VISIBLE : View.GONE);
-        return this;
-    }
-
-    public TitleBar setTitle(CharSequence title) {
-        int index = title.toString().indexOf("\n");
-        if (index > 0) {
-            setTitle(title.subSequence(0, index), title.subSequence(index + 1, title.length()), LinearLayout.VERTICAL);
-        } else {
-            index = title.toString().indexOf("\t");
-            if (index > 0) {
-                setTitle(title.subSequence(0, index), "  " + title.subSequence(index + 1, title.length()), LinearLayout.HORIZONTAL);
-            } else {
-                mCenterText.setText(title);
-                mSubTitleText.setVisibility(View.GONE);
+            if (extendStr != -1) {
+                setRightText(extendStr);
             }
-        }
-        return this;
-    }
-
-    private TitleBar setTitle(CharSequence title, CharSequence subTitle, int orientation) {
-        mCenterLayout.setOrientation(orientation);
-        mCenterText.setText(title);
-
-        mSubTitleText.setText(subTitle);
-        mSubTitleText.setVisibility(View.VISIBLE);
-        return this;
-    }
-
-    public TitleBar setCenterClickListener(OnClickListener l) {
-        mCenterLayout.setOnClickListener(l);
-        return this;
-    }
-
-    public TitleBar setTitle(int resid) {
-        setTitle(getResources().getString(resid));
-        return this;
-    }
-
-    public TitleBar setTitleColor(int resid) {
-        mCenterText.setTextColor(resid);
-        return this;
-    }
-
-    public TitleBar setTitleSize(float size) {
-        mCenterText.setTextSize(size);
-        return this;
-    }
-
-    public TitleBar setTitleBackground(int resid) {
-        mCenterText.setBackgroundResource(resid);
-        return this;
-    }
-
-    public TitleBar setSubTitleColor(int resid) {
-        mSubTitleText.setTextColor(resid);
-        return this;
-    }
-
-    public TitleBar setSubTitleSize(float size) {
-        mSubTitleText.setTextSize(size);
-        return this;
-    }
-
-    public TitleBar setCustomTitle(View titleView) {
-        if (titleView == null) {
-            mCenterText.setVisibility(View.VISIBLE);
-            if (mCustomCenterView != null) {
-                mCenterLayout.removeView(mCustomCenterView);
+            if (extendIconRes != -1) {
+                setExtendIcon(extendIconRes);
             }
-
-        } else {
-            if (mCustomCenterView != null) {
-                mCenterLayout.removeView(mCustomCenterView);
+            if (rightStr != -1) {
+                setRightText(rightStr);
             }
-            LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-            mCustomCenterView = titleView;
-            mCenterLayout.addView(titleView, layoutParams);
-            mCenterText.setVisibility(View.GONE);
-        }
-        return this;
-    }
-
-    public TitleBar setActionTextColor(int colorResId) {
-        mActionTextColor = colorResId;
-        return this;
-    }
-
-
-    public TitleBar setOnTitleClickListener(OnClickListener listener) {
-        mCenterText.setOnClickListener(listener);
-        return this;
-    }
-
-    @Override
-    public void onClick(View view) {
-        final Object tag = view.getTag();
-        if (tag instanceof Action) {
-            final Action action = (Action) tag;
-            action.performAction(view);
-        }
-    }
-
-    public TitleBar addAction(Action action) {
-        final int index = mRightLayout.getChildCount();
-        addAction(action, index);
-        return this;
-    }
-
-
-    public TitleBar addAction(Action action, int index) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.MATCH_PARENT);
-        View view = inflateAction(action);
-        mRightLayout.addView(view, index, params);
-        return this;
-    }
-
-    public TitleBar removeAllActions() {
-        mRightLayout.removeAllViews();
-        return this;
-    }
-
-
-    public TitleBar removeActionAt(int index) {
-        mRightLayout.removeViewAt(index);
-        return this;
-    }
-
-    public TitleBar removeAction(Action action) {
-        int childCount = mRightLayout.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View view = mRightLayout.getChildAt(i);
-            if (view != null) {
-                final Object tag = view.getTag();
-                if (tag instanceof Action && tag.equals(action)) {
-                    mRightLayout.removeView(view);
+            if (rightIconRes != -1) {
+                setRightIcon(rightIconRes);
+            }
+            if (leftStr != -1) {
+                setLeftText(leftStr);
+            }
+            if (leftIconRes != -1) {
+                setLeftIcon(leftIconRes);
+            }
+            if (bkg != -1) {
+                setTitleBackground(bkg);
+            }
+            if (mainStr != -1) {
+                setMainTitle(mainStr);
+            }
+            if (subStr != -1) {
+                setSubTitle(subStr);
+            }
+            if (showCheckBox) {
+                showCheckBox();
+                if (checkBoxBkgId != -1) {
+                    mCheckBox.setBackgroundResource(checkBoxBkgId);
+                } else {
+                    mCheckBox.setBackgroundResource(R.drawable.checkbox_style);
                 }
             }
+        } finally {
+            array.recycle();
+        }
+    }
+
+    private TitleBar setLeftText(int leftStr) {
+        mLeftPanel.setVisibility(View.VISIBLE);
+        mLeftText.setVisibility(View.VISIBLE);
+        mLeftText.setText(leftStr);
+        mLeftIcon.setVisibility(View.GONE);
+        return this;
+    }
+
+    private TitleBar setLeftText(CharSequence str) {
+        mLeftPanel.setVisibility(View.VISIBLE);
+        mLeftText.setVisibility(View.VISIBLE);
+        mLeftText.setText(str);
+        mLeftIcon.setVisibility(View.GONE);
+        return this;
+    }
+
+    public TitleBar showCheckBox() {
+        mRightPanel.setVisibility(View.VISIBLE);
+        mCheckBox.setVisibility(View.VISIBLE);
+        mRightIcon.setVisibility(View.GONE);
+        mRightText.setVisibility(View.GONE);
+        return this;
+    }
+
+    public TitleBar setTitleColor(int color) {
+        mMainTitle.setTextColor(color);
+        mSubTitle.setTextColor(color);
+        return this;
+    }
+
+    public TitleBar setTitleBackground(int bkg) {
+        mRootView.setBackgroundResource(bkg);
+        return this;
+    }
+
+    public TitleBar setMainTitle(int resId) {
+        mMainTitle.setText(resId);
+        return this;
+    }
+
+    public TitleBar setMainTitle(CharSequence str) {
+        mMainTitle.setText(str);
+        return this;
+    }
+
+    public TitleBar setSubTitle(int resId) {
+        mSubTitle.setText(resId);
+        mSubTitle.setVisibility(VISIBLE);
+        return this;
+    }
+
+    public TitleBar setSubTitle(CharSequence str) {
+        mSubTitle.setText(str);
+        mSubTitle.setVisibility(VISIBLE);
+        return this;
+    }
+
+    public TitleBar setLeftIcon(int leftIconId) {
+        mLeftPanel.setVisibility(View.VISIBLE);
+        mLeftIcon.setBackgroundResource(leftIconId);
+        mLeftIcon.setVisibility(View.VISIBLE);
+        return this;
+    }
+
+    public TitleBar setRightIcon(int rightIconId) {
+        mRightPanel.setVisibility(View.VISIBLE);
+        mRightIcon.setBackgroundResource(rightIconId);
+        mRightIcon.setVisibility(View.VISIBLE);
+        mRightText.setVisibility(View.GONE);
+        mCheckBox.setVisibility(View.GONE);
+        return this;
+    }
+
+    public TitleBar setRightText(int rightStr) {
+        mRightPanel.setVisibility(View.VISIBLE);
+        mRightText.setText(rightStr);
+        mRightText.setVisibility(View.VISIBLE);
+        mRightIcon.setVisibility(View.GONE);
+        mCheckBox.setVisibility(View.GONE);
+        return this;
+    }
+
+    public TitleBar setRightText(CharSequence rightStr) {
+        mRightPanel.setVisibility(View.VISIBLE);
+        mRightText.setText(rightStr);
+        mRightText.setVisibility(View.VISIBLE);
+        mRightIcon.setVisibility(View.GONE);
+        mCheckBox.setVisibility(View.GONE);
+        return this;
+    }
+
+    public TitleBar setExtendIcon(int extendIconId) {
+        mExtendPanel.setVisibility(View.VISIBLE);
+        mExtendIcon.setBackgroundResource(extendIconId);
+        mExtendIcon.setVisibility(View.VISIBLE);
+        mExtendText.setVisibility(View.GONE);
+        return this;
+    }
+
+    public TitleBar setExtendText(int rightStr) {
+        mExtendPanel.setVisibility(View.VISIBLE);
+        mExtendText.setText(rightStr);
+        mExtendText.setVisibility(View.VISIBLE);
+        mExtendIcon.setVisibility(View.GONE);
+        return this;
+    }
+
+    public TitleBar setExtendText(CharSequence rightStr) {
+        mExtendPanel.setVisibility(View.VISIBLE);
+        mExtendText.setText(rightStr);
+        mExtendText.setVisibility(View.VISIBLE);
+        mExtendIcon.setVisibility(View.GONE);
+        return this;
+    }
+
+    public TitleBar showSettingsTip(boolean show) {
+        mRightIconTip.setVisibility(show ? View.VISIBLE : View.GONE);
+        return this;
+    }
+
+    public TitleBar showExtendIconTip(boolean show) {
+        mExtendIconTip.setVisibility(show ? View.VISIBLE : View.GONE);
+        return this;
+    }
+
+    public TitleBar setTitleLeftAlign() {
+        mTitlePanel.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+        return this;
+    }
+
+    public TitleBar setLeftClickListener(final View.OnClickListener listener) {
+        if (listener != null) {
+            mLeftPanel.setVisibility(View.VISIBLE);
+            mLeftPanel.setOnClickListener(listener);
+            mLeftPanel.setFocusable(true);
         }
         return this;
     }
 
-
-    private View inflateAction(Action action) {
-        View view;
-        if (TextUtils.isEmpty(action.getText())) {
-            ImageView img = new ImageView(getContext());
-            img.setImageResource(action.getDrawable());
-            view = img;
-        } else {
-            TextView text = new TextView(getContext());
-            text.setGravity(Gravity.CENTER);
-            text.setText(action.getText());
-            text.setTextSize(DEFAULT_ACTION_TEXT_SIZE);
-            if (mActionTextColor != 0) {
-                text.setTextColor(mActionTextColor);
-            }
-            view = text;
+    public TitleBar setRightClickListener(final View.OnClickListener listener) {
+        if (listener != null) {
+            mRightPanel.setVisibility(View.VISIBLE);
+            mRightPanel.setOnClickListener(listener);
+            mRightPanel.setFocusable(true);
         }
-
-        view.setPadding(mActionPadding, 0, mActionPadding, 0);
-        view.setTag(action);
-        view.setOnClickListener(this);
-        return view;
+        return this;
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int height;
-        if (heightMode != MeasureSpec.EXACTLY) {
-            height = mHeight + mStatusBarHeight;
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.EXACTLY);
-        } else {
-            height = MeasureSpec.getSize(heightMeasureSpec) + mStatusBarHeight;
+    public TitleBar setExtendClickListener(final View.OnClickListener listener) {
+        if (listener != null) {
+            mExtendPanel.setVisibility(View.VISIBLE);
+            mExtendPanel.setOnClickListener(listener);
+            mExtendPanel.setFocusable(true);
         }
-
-        measureChild(mLeftText, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mRightLayout, widthMeasureSpec, heightMeasureSpec);
-        if (mLeftText.getMeasuredWidth() > mRightLayout.getMeasuredWidth()) {
-            mCenterLayout.measure(MeasureSpec.makeMeasureSpec(mScreenWidth - 2 * mLeftText.getMeasuredWidth(), MeasureSpec.EXACTLY)
-                    , heightMeasureSpec);
-        } else {
-            mCenterLayout.measure(MeasureSpec.makeMeasureSpec(mScreenWidth - 2 * mRightLayout.getMeasuredWidth(), MeasureSpec.EXACTLY)
-                    , heightMeasureSpec);
-        }
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), height);
+        return this;
     }
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        mLeftText.layout(0, mStatusBarHeight, mLeftText.getMeasuredWidth(), mLeftText.getMeasuredHeight() + mStatusBarHeight);
-        mRightLayout.layout(mScreenWidth - mRightLayout.getMeasuredWidth(), mStatusBarHeight,
-                mScreenWidth, mRightLayout.getMeasuredHeight() + mStatusBarHeight);
-        if (mLeftText.getMeasuredWidth() > mRightLayout.getMeasuredWidth()) {
-            mCenterLayout.layout(mLeftText.getMeasuredWidth(), mStatusBarHeight,
-                    mScreenWidth - mLeftText.getMeasuredWidth(), getMeasuredHeight());
-        } else {
-            mCenterLayout.layout(mRightLayout.getMeasuredWidth(), mStatusBarHeight,
-                    mScreenWidth - mRightLayout.getMeasuredWidth(), getMeasuredHeight());
+    public TitleBar setCheckboxClickListener(final CompoundButton.OnCheckedChangeListener listener) {
+        if (listener != null) {
+            showCheckBox();
+            mCheckBox.setOnCheckedChangeListener(listener);
         }
+        return this;
     }
-
-    public interface Action {
-        String getText();
-
-        int getDrawable();
-
-        void performAction(View view);
-    }
-
-    public static abstract class ImageAction implements Action {
-        private int mDrawable;
-
-        public ImageAction(int drawable) {
-            mDrawable = drawable;
-        }
-
-        @Override
-        public int getDrawable() {
-            return mDrawable;
-        }
-
-        @Override
-        public String getText() {
-            return null;
-        }
-    }
-
-    public static abstract class TextAction implements Action {
-        final private String mText;
-
-        public TextAction(String text) {
-            mText = text;
-        }
-
-        @Override
-        public int getDrawable() {
-            return 0;
-        }
-
-        @Override
-        public String getText() {
-            return mText;
-        }
-    }
-
 }

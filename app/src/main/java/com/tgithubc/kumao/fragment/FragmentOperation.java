@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.transition.Fade;
 import android.util.Log;
 import android.util.Pair;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.tgithubc.kumao.R;
@@ -504,6 +505,14 @@ public class FragmentOperation {
         transaction.commitAllowingStateLoss();
         mStack.add(new Pair<>(tag, fragment));
     }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Fragment fragment = getTopFragment();
+        return fragment != null
+                && fragment instanceof BaseFragment
+                && ((BaseFragment) fragment).onKeyDown(keyCode, event);
+    }
+
 
     /**
      * 处理动画和共享元素
