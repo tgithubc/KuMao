@@ -12,6 +12,7 @@ public class Constant {
         String URL_BILLBOARD = HOST + "method=baidu.ting.billboard.billList";
         String URL_HOTWORD = HOST + "method=baidu.ting.search.hot";
         String URL_SEARCH = HOST + "method=baidu.ting.search.common";
+        String URL_SONGINFO = HOST + "method=baidu.ting.song.play";
 
         /**
          * 榜单type

@@ -12,7 +12,11 @@ interface IPlayAidl {
 
     void pause();
 
+    void resume();
+
     void seekTo(int pos);
+
+    int getPlayState();
 
     void addPlayCallback(IPlayCallbackAidl callback);
 

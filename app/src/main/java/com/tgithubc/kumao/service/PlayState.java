@@ -13,5 +13,8 @@ public class PlayState {
     public static final int STATE_PAUSE = 3;//暂停
     public static final int STATE_PLAY_COMPLETE = 4;//播放完成
     public static final int STATE_REAL_PLAY = 5;//真正播放
+    public static final int STATE_PLAYING = 5;//播放中
     public static final int STATE_STOP = 6;//停止
+    public static final int STATE_BUFFERING = 7;//缓冲中
+    public static final int STATE_BUFFERING_END = 8;//缓冲结束
 }

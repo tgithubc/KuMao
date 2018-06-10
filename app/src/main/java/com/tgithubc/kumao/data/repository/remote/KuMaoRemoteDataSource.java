@@ -1,13 +1,12 @@
 package com.tgithubc.kumao.data.repository.remote;
 
 
-import android.util.Log;
-
 import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
+import com.tgithubc.kumao.bean.Song;
 import com.tgithubc.kumao.data.repository.KuMaoDataSource;
 import com.tgithubc.kumao.http.RetrofitManager;
 import com.tgithubc.kumao.parser.ParserFactory;
@@ -47,12 +46,18 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
     }
 
     @Override
+    public Observable<Song> getSongInfo(String url, Map<String, String> maps) {
+        return createObservable(url, maps, ParserFactory.PARSE_SONG_INFO, ACache.TIME_DAY * 30);
+    }
+
+    @Override
     public Observable<List<String>> getHotWord(String url) {
         return createObservable(url, null, ParserFactory.PARSE_HOTWORD, ACache.TIME_DAY);
     }
 
     @Override
     public Observable<SearchResult> getSearchResult(String url, Map<String, String> maps) {
+        // not cache
         return RetrofitManager.getInstance()
                 .executeGet(url, maps)
                 .compose(RxHandler.handlerResult(ParserFactory.PARSE_SEARCH_RESULT));

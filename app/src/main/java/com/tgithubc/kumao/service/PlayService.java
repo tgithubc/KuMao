@@ -13,7 +13,6 @@ import com.tgithubc.kumao.IPlayAidl;
 import com.tgithubc.kumao.IPlayCallbackAidl;
 import com.tgithubc.kumao.bean.Song;
 
-import java.io.IOException;
 
 /**
  * Created by tc :)
@@ -23,9 +22,11 @@ public class PlayService extends Service implements
         MediaPlayer.OnErrorListener,
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnInfoListener, MediaPlayer.OnBufferingUpdateListener {
+        MediaPlayer.OnInfoListener,
+        MediaPlayer.OnBufferingUpdateListener {
 
     private MediaPlayer mPlayer;
+    private boolean mSeekFlag = false;
     private int mCurrentState = PlayState.STATE_IDLE;
     private RemoteCallbackList<IPlayCallbackAidl> mCallbackList = new RemoteCallbackList<>();
 
@@ -38,9 +39,14 @@ public class PlayService extends Service implements
                 mPlayer.reset();
                 mPlayer.setDataSource(song.getFilelink());
                 mPlayer.prepareAsync();
+                mCurrentState = PlayState.STATE_PREPARE;
                 notifyClient(PlayState.STATE_PREPARE);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                Message message = Message.obtain();
+                message.arg1 = -123;
+                mCurrentState = PlayState.STATE_ERROR;
+                notifyClient(PlayState.STATE_ERROR, message);
             }
         }
 
@@ -50,6 +56,7 @@ public class PlayService extends Service implements
                 mPlayer.stop();
                 mPlayer.release();
                 mPlayer = null;
+                mCurrentState = PlayState.STATE_STOP;
                 notifyClient(PlayState.STATE_STOP);
             }
         }
@@ -59,12 +66,19 @@ public class PlayService extends Service implements
             if (mPlayer != null) {
                 if (mPlayer.isPlaying()) {
                     mPlayer.pause();
+                    mCurrentState = PlayState.STATE_PAUSE;
                     notifyClient(PlayState.STATE_PAUSE);
-                } else {
-                    if (PlayState.STATE_PAUSE == mCurrentState) {
-                        mPlayer.start();
-                        notifyClient(PlayState.STATE_CONTINUE);
-                    }
+                }
+            }
+        }
+
+        @Override
+        public void resume() throws RemoteException {
+            if (mPlayer != null) {
+                if (PlayState.STATE_PAUSE == mCurrentState) {
+                    mPlayer.start();
+                    notifyClient(PlayState.STATE_CONTINUE);
+                    mCurrentState = PlayState.STATE_PLAYING;
                 }
             }
         }
@@ -73,7 +87,13 @@ public class PlayService extends Service implements
         public void seekTo(int pos) throws RemoteException {
             if (mPlayer != null && pos >= 0) {
                 mPlayer.seekTo(pos);
+                mSeekFlag = true;
             }
+        }
+
+        @Override
+        public int getPlayState() throws RemoteException {
+            return mCurrentState;
         }
 
         @Override
@@ -103,6 +123,8 @@ public class PlayService extends Service implements
         if (mPlayer != null) {
             if (mPlayer.isPlaying()) {
                 mPlayer.stop();
+                mCurrentState = PlayState.STATE_STOP;
+                notifyClient(PlayState.STATE_STOP);
             }
             mPlayer.release();
             mPlayer = null;
@@ -134,13 +156,14 @@ public class PlayService extends Service implements
 
     @Override
     public void onSeekComplete(MediaPlayer mp) {
-
+        mSeekFlag = false;
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         Message message = Message.obtain();
         message.arg1 = what;
+        mCurrentState = PlayState.STATE_ERROR;
         notifyClient(PlayState.STATE_ERROR, message);
         return false;
     }
@@ -150,10 +173,12 @@ public class PlayService extends Service implements
         ensureMediaPlayer();
         mPlayer.start();
         notifyClient(PlayState.STATE_REAL_PLAY);
+        mCurrentState = PlayState.STATE_PLAYING;
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+        mCurrentState = PlayState.STATE_PLAY_COMPLETE;
         notifyClient(PlayState.STATE_PLAY_COMPLETE);
     }
 
@@ -162,7 +187,6 @@ public class PlayService extends Service implements
     }
 
     private void notifyClient(int state, Message message) {
-        mCurrentState = state;
         int count = mCallbackList.beginBroadcast();
         try {
             for (int i = 0; i < count; i++) {
@@ -170,7 +194,7 @@ public class PlayService extends Service implements
                 if (callback == null) {
                     continue;
                 }
-                switch (mCurrentState) {
+                switch (state) {
                     case PlayState.STATE_ERROR:
                         if (message != null) {
                             callback.onPlayError(message.arg1);
@@ -182,8 +206,14 @@ public class PlayService extends Service implements
                     case PlayState.STATE_PLAY_COMPLETE:
                         callback.onPlayCompleted();
                         break;
-                    case PlayState.STATE_CONTINUE:
-                        callback.onContinue();
+                    case PlayState.STATE_REAL_PLAY:
+                        callback.onPlayRealStart();
+                        break;
+                    case PlayState.STATE_BUFFERING:
+                        callback.onStartBuffering();
+                        break;
+                    case PlayState.STATE_BUFFERING_END:
+                        callback.onEndBuffering();
                         break;
                 }
             }
@@ -198,8 +228,20 @@ public class PlayService extends Service implements
     public boolean onInfo(MediaPlayer mp, int what, int extra) {
         switch (what) {
             case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                if (mCurrentState == PlayState.STATE_PLAYING) {
+                    if (!mSeekFlag) {
+                        mCurrentState = PlayState.STATE_BUFFERING;
+                        notifyClient(PlayState.STATE_BUFFERING);
+                    }
+                }
                 break;
             case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                if (mCurrentState == PlayState.STATE_BUFFERING) {
+                    if (!mSeekFlag) {
+                        notifyClient(PlayState.STATE_BUFFERING_END);
+                    }
+                    mCurrentState = PlayState.STATE_PLAYING;
+                }
                 break;
         }
         return true;

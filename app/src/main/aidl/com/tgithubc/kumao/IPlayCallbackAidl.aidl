@@ -11,5 +11,9 @@ interface IPlayCallbackAidl {
 
     void onPlayCompleted();
 
-    void onContinue();
+    void onPlayRealStart();
+
+    void onStartBuffering();
+
+    void onEndBuffering();
 }

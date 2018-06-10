@@ -4,10 +4,18 @@ package com.tgithubc.kumao.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
+
 /**
  * Created by tc :)
  */
-public class Song implements Parcelable{
+@Entity
+public class Song implements Parcelable {
+
+    @Id(autoincrement = true)
+    private Long ID;
 
     // 歌曲的id
     private String songId;
@@ -33,6 +41,9 @@ public class Song implements Parcelable{
     // 大图 500*500
     private String bigPic;
 
+    // 大图 1000*1000
+    private String bigMorePic;
+
     // 歌词下载地址
     private String lrclink;
 
@@ -45,8 +56,11 @@ public class Song implements Parcelable{
     // 应该是热度，收听数
     private String hot;
 
-    // 这首歌的格式 example：（64,128,256,320,flac）
+    // 这首歌的所有格式 example：（64,128,256,320,flac）
     private String rateArrary;
+
+    // 这首歌的格式
+    private String rate;
 
     // 歌曲时长
     private int duration;
@@ -64,6 +78,9 @@ public class Song implements Parcelable{
     private String company;
 
     private String content;
+
+    // 文件大小
+    private long fileSize;
 
     public String getContent() {
         return content;
@@ -217,6 +234,31 @@ public class Song implements Parcelable{
         return this.bigPic;
     }
 
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+
+    public String getBigMorePic() {
+        return bigMorePic;
+    }
+
+    public void setBigMorePic(String bigMorePic) {
+        this.bigMorePic = bigMorePic;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -243,9 +285,13 @@ public class Song implements Parcelable{
         dest.writeString(company);
         dest.writeString(content);
         dest.writeString(filelink);
+        dest.writeString(bigMorePic);
+        dest.writeString(rate);
+        dest.writeLong(fileSize);
     }
 
-    public Song(){}
+    public Song() {
+    }
 
     protected Song(Parcel in) {
         songId = in.readString();
@@ -267,6 +313,41 @@ public class Song implements Parcelable{
         company = in.readString();
         content = in.readString();
         filelink = in.readString();
+        bigMorePic = in.readString();
+        rate = in.readString();
+        fileSize = in.readLong();
+    }
+
+    @Generated(hash = 1887854520)
+    public Song(Long ID, String songId, String songName, String authorName,
+            String artistId, String albumId, String albumName, String smallPic,
+            String bigPic, String bigMorePic, String lrclink, String filelink,
+            String isNew, String hot, String rateArrary, String rate, int duration,
+            String freeBitrate, String biaoshi, String info, String company,
+            String content, long fileSize) {
+        this.ID = ID;
+        this.songId = songId;
+        this.songName = songName;
+        this.authorName = authorName;
+        this.artistId = artistId;
+        this.albumId = albumId;
+        this.albumName = albumName;
+        this.smallPic = smallPic;
+        this.bigPic = bigPic;
+        this.bigMorePic = bigMorePic;
+        this.lrclink = lrclink;
+        this.filelink = filelink;
+        this.isNew = isNew;
+        this.hot = hot;
+        this.rateArrary = rateArrary;
+        this.rate = rate;
+        this.duration = duration;
+        this.freeBitrate = freeBitrate;
+        this.biaoshi = biaoshi;
+        this.info = info;
+        this.company = company;
+        this.content = content;
+        this.fileSize = fileSize;
     }
 
     public static final Creator<Song> CREATOR = new Creator<Song>() {
@@ -304,5 +385,13 @@ public class Song implements Parcelable{
                 ", company='" + company + '\'' +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    public Long getID() {
+        return this.ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
     }
 }

@@ -28,7 +28,6 @@ public class SongParser implements IParser<Song> {
         song.setSmallPic(object.optString("pic_big"));
         song.setBigPic(object.optString("pic_s500"));
         song.setLrclink(object.optString("lrclink"));
-        song.setFilelink(object.optString("filelink"));
         song.setIsNew(object.optString("is_new"));
         song.setContent(object.optString("content"));
         song.setHot(object.optString("hot"));

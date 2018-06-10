@@ -12,18 +12,36 @@ import com.tgithubc.kumao.IPlayAidl;
 import com.tgithubc.kumao.IPlayCallbackAidl;
 import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.constant.Constant;
+import com.tgithubc.kumao.data.task.GetSongInfoTask;
+import com.tgithubc.kumao.util.RxMap;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 
 /**
- * 1，播放列表
- * 2，音频焦点
- * 3，通知栏
  * Created by tc :)
  */
 public class PlayManager {
 
-    private IPlayAidl mService = null;
+    public final static int
+            MODE_SINGLE = 0,
+            MODE_LOOP = 1,
+            MODE_RANDOM = 2,
+            MODE_LIST = 3,
+            MODE_MAX = 4;
+
+    private IPlayAidl mService;
     private ServiceBinder mBinder;
     private Song mCurrentSong;
+    private List<Song> mCurrentSongList;
+    private List<Integer> mRandomIndexList;
+    private int mCurrentIndex;
+    private int mRandomIndex;
+    private int mCurrentPlayMode;
+    private boolean isAutoPlayEnd;
 
     private IPlayCallbackAidl mStateCallback = new IPlayCallbackAidl.Stub() {
 
@@ -40,11 +58,30 @@ public class PlayManager {
 
         @Override
         public void onPlayCompleted() throws RemoteException {
+            isAutoPlayEnd = true;
+            if (mCurrentPlayMode == MODE_RANDOM) {
+                mRandomIndex++;
+                if (mRandomIndexList == null
+                        || mRandomIndex < 0
+                        || mRandomIndex > mRandomIndexList.size() - 1) {
+                    shuffleList();
+                }
+            }
+            playNext();
+        }
+
+        @Override
+        public void onPlayRealStart() throws RemoteException {
+            isAutoPlayEnd = false;
+        }
+
+        @Override
+        public void onStartBuffering() throws RemoteException {
 
         }
 
         @Override
-        public void onContinue() throws RemoteException {
+        public void onEndBuffering() throws RemoteException {
 
         }
     };
@@ -74,6 +111,237 @@ public class PlayManager {
         mService = null;
     }
 
+    /**
+     * 列表播放
+     *
+     * @param songList 歌曲列表
+     * @param index    当前index
+     */
+    public void play(List<Song> songList, int index) {
+        if (songList == null || songList.isEmpty()) {
+            return;
+        }
+        mCurrentSongList = songList;
+        playByIndex(index);
+    }
+
+
+    /**
+     * 单曲插入播放
+     *
+     * @param song
+     */
+    public void play(Song song) {
+        if (song == null) {
+            return;
+        }
+        if (mCurrentSongList == null || mCurrentSongList.isEmpty()) {
+            List<Song> list = new ArrayList<>();
+            list.add(song);
+            play(list, 0);
+            return;
+        }
+        int index = mCurrentIndex + 1;
+        mCurrentSongList.add(index, song);
+        playByIndex(index);
+    }
+
+    /**
+     * 暂停
+     */
+    public void pause() {
+        if (mService == null) {
+            return;
+        }
+        try {
+            if (PlayState.STATE_PLAYING == mService.getPlayState()) {
+                mService.pause();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void continuePlay() {
+        if (mService == null) {
+            return;
+        }
+        try {
+            if (PlayState.STATE_PAUSE == mService.getPlayState()) {
+                mService.resume();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 播放下一曲(自动或者手动)
+     */
+    public void playNext() {
+        if (mCurrentSongList == null || mCurrentSongList.isEmpty()) {
+            return;
+        }
+        int index = 0;
+        switch (mCurrentPlayMode) {
+            case MODE_SINGLE:
+                if (isAutoPlayEnd) {
+                    index = mCurrentIndex;
+                } else {
+                    index = ++mCurrentIndex;
+                }
+                break;
+            case MODE_LIST:
+                if (isAutoPlayEnd && mCurrentIndex == mCurrentSongList.size() - 1) {
+                    return;
+                } else {
+                    index = ++mCurrentIndex;
+                    if (index > mCurrentSongList.size() - 1) {
+                        index = 0;
+                    }
+                }
+                break;
+            case MODE_LOOP:
+                index = ++mCurrentIndex;
+                if (index > mCurrentSongList.size() - 1) {
+                    index = 0;
+                }
+                break;
+            case MODE_RANDOM:
+                //如果播放下一曲的时候是随机播放，要用随机的index去取，还得记录随机index的列表拿到第几个了
+                if (mRandomIndexList == null
+                        || mRandomIndex < 0
+                        || mRandomIndex > mRandomIndexList.size() - 1) {
+                    shuffleList();
+                }
+                index = mRandomIndexList.get(mRandomIndex);
+                break;
+        }
+        playByIndex(index);
+    }
+
+    /**
+     * 播放上一曲
+     */
+    public void playPrev() {
+        if (mCurrentSongList == null || mCurrentSongList.isEmpty()) {
+            return;
+        }
+        int index = 0;
+        switch (mCurrentPlayMode) {
+            case MODE_SINGLE:
+            case MODE_LIST:
+            case MODE_LOOP:
+                index = --mCurrentIndex;
+                if (index <= -1) {
+                    index = mCurrentSongList.size() - 1;
+                }
+                break;
+            case MODE_RANDOM:
+                //先暂定上一曲也随机吧
+                mRandomIndex = --mRandomIndex;
+                if (mRandomIndexList == null
+                        || mRandomIndex < 0
+                        || mRandomIndex > mRandomIndexList.size() - 1) {
+                    shuffleList();
+                }
+                index = mRandomIndexList.get(mRandomIndex);
+                break;
+        }
+        playByIndex(index);
+    }
+
+    /**
+     * 播放当前列表中index位歌曲
+     *
+     * @param index
+     */
+    private void playByIndex(int index) {
+        if (mService == null || index < 0 || index >= mCurrentSongList.size()) {
+            return;
+        }
+        Song requestSong = mCurrentSongList.get(index);
+        new GetSongInfoTask()
+                .execute(new GetSongInfoTask.RequestValue(
+                        Constant.Api.URL_SONGINFO,
+                        new RxMap<String, String>().put("songid", requestSong.getSongId()).build()))
+                .subscribe(responseValue -> {
+                    Song song = responseValue.getResult();
+                    try {
+                        // 当前没播放的歌曲，或者当前播放的歌曲和要播放的歌曲不同，播放要播放的歌曲
+                        if (mCurrentSong == null || !song.getFilelink().equals(mCurrentSong.getFilelink())) {
+                            mService.play(song);
+                        } else { // 还是同一首歌，seek 到 0
+                            mService.seekTo(0);
+                        }
+                        mCurrentSong = song;
+                        mCurrentIndex = index;
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    /**
+     * 设置播放模式
+     *
+     * @param mode
+     */
+    public void setPlayMode(int mode) {
+        if (mCurrentPlayMode != mode) {
+            mCurrentPlayMode = mode;
+            if (mode == MODE_RANDOM) {
+                // shuffle list
+                shuffleList();
+            }
+            // 得通知出去播放模式变了
+        }
+    }
+
+    /**
+     * 生成一个随机列表
+     */
+    private void shuffleList() {
+        if (mCurrentSongList == null || mCurrentSongList.isEmpty()) {
+            return;
+        }
+        int size = mCurrentSongList.size();
+        mRandomIndexList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            mRandomIndexList.add(i);
+        }
+        Collections.shuffle(mRandomIndexList);
+        mRandomIndex = 0;
+    }
+
+    /**
+     * 获取当前播放歌曲
+     *
+     * @return
+     */
+    public Song getCurrentSong() {
+        return mCurrentSong;
+    }
+
+    public int getPlayMode() {
+        return mCurrentPlayMode;
+    }
+
+    /**
+     * 获取当前播放状态
+     *
+     * @return
+     */
+    public int getPlayState() {
+        int state = PlayState.STATE_IDLE;
+        try {
+            return mService.getPlayState();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return state;
+    }
+
     public static PlayManager getInstance() {
         return SingleHolder.INSTANCE;
     }
@@ -83,34 +351,10 @@ public class PlayManager {
     }
 
     private PlayManager() {
-
-    }
-
-    public void play(Song song) {
-        song = new Song();
-        song.setFilelink("http://zhangmenshiting.qianqian.com/data2/music/d190bc80771bed15d5afd2e08672e194/64540063/" +
-                "64540063.mp3?xcode=6738dc9b8b3a3bc184da5601d869449c");
-        if (song == null || mService == null) {
-            return;
-        }
-        try {
-            // 当前没播放的歌曲，或者当前播放的歌曲和要播放的歌曲不同，播放要播放的歌曲
-            if (mCurrentSong == null || !song.getFilelink().equals(mCurrentSong.getFilelink())) {
-                mService.play(song);
-                mCurrentSong = song;
-            } else { // 还是同一首歌，seek 到 0
-                mService.seekTo(0);
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Song getCurrentSong() {
-        return mCurrentSong;
     }
 
     private class ServiceBinder implements ServiceConnection {
+
 
         @Override
         public void onServiceConnected(final ComponentName className, final IBinder service) {

@@ -5,7 +5,9 @@ import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
+import com.tgithubc.kumao.bean.Song;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +45,15 @@ public class KuMaoRepository implements KuMaoDataSource {
     public Observable<Billboard> getBillboard(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getBillboard(url, maps), mRemoteDataSource.getBillboard(url, maps))
+                .first();
+    }
+
+    @Override
+    public Observable<Song> getSongInfo(String url, Map<String, String> maps) {
+        List<Observable<Song>> concatList =
+                Arrays.asList(mLocalDataSource.getSongInfo(url, maps), mRemoteDataSource.getSongInfo(url, maps));
+        return Observable
+                .concatDelayError(concatList)
                 .first();
     }
 
