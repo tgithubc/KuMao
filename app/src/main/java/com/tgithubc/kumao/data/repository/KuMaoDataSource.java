@@ -16,7 +16,6 @@ import rx.Observable;
  */
 public interface KuMaoDataSource {
 
-
     Observable<List<Banner>> getBanner(String url, Map<String, String> maps);
 
     Observable<Billboard> getBillboard(String url, Map<String, String> maps);

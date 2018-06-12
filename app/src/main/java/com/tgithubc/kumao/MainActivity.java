@@ -1,6 +1,10 @@
 package com.tgithubc.kumao;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -42,6 +46,9 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
         FragmentOperation.getInstance().bind(R.id.fragment_container_id, this);
         initView();
         registerMessage();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+        }
     }
 
     @Override
@@ -52,12 +59,12 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
     }
 
     private void initView() {
-        TextView searchView = findViewById(R.id.top_search);
+        TextView searchView = (TextView) findViewById(R.id.top_search);
         searchView.setOnClickListener(this);
-        mFloatMusicVIew = findViewById(R.id.music_note_layout);
+        mFloatMusicVIew = (MusicalNoteLayout) findViewById(R.id.music_note_layout);
         mFloatMusicVIew.setOnClickListener(this);
-        mViewPager = findViewById(R.id.view_pager);
-        BottomTabLayout tabLayout = findViewById(R.id.bottom_tab_layout);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        BottomTabLayout tabLayout = (BottomTabLayout) findViewById(R.id.bottom_tab_layout);
         tabLayout.createAdapter()
                 .addTab(newTab("我的", R.drawable.mine_normal, R.drawable.mine_selected))
                 .addTab(newTab("精选", R.drawable.featured_normal, R.drawable.featured_selected))

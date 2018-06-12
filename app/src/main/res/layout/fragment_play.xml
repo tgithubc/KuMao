@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/play_page_down_icon"/>
+                android:src="@drawable/play_page_down_normal"/>
 
             <ImageView
                 android:id="@+id/play_page_comment"
@@ -121,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/play_page_comment_icon"/>
+                android:src="@drawable/play_page_comment_normal"/>
 
             <ImageView
                 android:id="@+id/play_page_more"
@@ -195,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/play_page_play_pre_icon"/>
+                android:src="@drawable/play_page_play_pre_icon_selector"/>
 
             <ImageView
                 android:id="@+id/play_page_play"
@@ -203,7 +203,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/play_page_play_icon"/>
+                android:src="@drawable/play_page_play_normal"/>
 
             <ImageView
                 android:id="@+id/play_page_play_next"
@@ -211,7 +211,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/play_page_play_next_icon"/>
+                android:src="@drawable/play_page_play_next_icon_selector"/>
 
             <ImageView
                 android:id="@+id/play_page_list"
@@ -230,32 +230,7 @@
         android:layout_above="@id/play_page_bottom_layout"
         android:layout_below="@id/line">
 
-        <ImageView
-            android:layout_width="263dp"
-            android:layout_height="263dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/play_page_disc"/>
 
-        <ImageView
-            android:layout_width="257dp"
-            android:layout_height="260dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/play_page_disc_halo"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="100dp"
-            android:layout_marginTop="-16dp"
-            android:rotation="-30"
-            android:src="@drawable/play_page_needle"
-            android:transformPivotX="15.1dp"
-            android:transformPivotY="15.1dp"/>
     </RelativeLayout>
 </RelativeLayout>

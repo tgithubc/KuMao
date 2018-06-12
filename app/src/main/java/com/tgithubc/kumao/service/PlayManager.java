@@ -14,6 +14,8 @@ import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Song;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetSongInfoTask;
+import com.tgithubc.kumao.message.MessageBus;
+import com.tgithubc.kumao.observer.IKuMaoObserver.IPlayObserver;
 import com.tgithubc.kumao.util.RxMap;
 
 import java.util.ArrayList;
@@ -27,11 +29,10 @@ import java.util.List;
 public class PlayManager {
 
     public final static int
-            MODE_SINGLE = 0,
-            MODE_LOOP = 1,
-            MODE_RANDOM = 2,
-            MODE_LIST = 3,
-            MODE_MAX = 4;
+            MODE_LOOP = 0,
+            MODE_RANDOM = 1,
+            MODE_SINGLE = 2,
+            MODE_MAX = 3;
 
     private IPlayAidl mService;
     private ServiceBinder mBinder;
@@ -53,7 +54,7 @@ public class PlayManager {
 
         @Override
         public void onPause() throws RemoteException {
-
+            MessageBus.instance().getDefault(IPlayObserver.class).onPause();
         }
 
         @Override
@@ -73,6 +74,7 @@ public class PlayManager {
         @Override
         public void onPlayRealStart() throws RemoteException {
             isAutoPlayEnd = false;
+            MessageBus.instance().getDefault(IPlayObserver.class).onPlayRealStart();
         }
 
         @Override
@@ -83,6 +85,11 @@ public class PlayManager {
         @Override
         public void onEndBuffering() throws RemoteException {
 
+        }
+
+        @Override
+        public void onContinuePlay() throws RemoteException {
+            MessageBus.instance().getDefault(IPlayObserver.class).onContinuePlay();
         }
     };
 
@@ -191,16 +198,6 @@ public class PlayManager {
                     index = ++mCurrentIndex;
                 }
                 break;
-            case MODE_LIST:
-                if (isAutoPlayEnd && mCurrentIndex == mCurrentSongList.size() - 1) {
-                    return;
-                } else {
-                    index = ++mCurrentIndex;
-                    if (index > mCurrentSongList.size() - 1) {
-                        index = 0;
-                    }
-                }
-                break;
             case MODE_LOOP:
                 index = ++mCurrentIndex;
                 if (index > mCurrentSongList.size() - 1) {
@@ -230,7 +227,6 @@ public class PlayManager {
         int index = 0;
         switch (mCurrentPlayMode) {
             case MODE_SINGLE:
-            case MODE_LIST:
             case MODE_LOOP:
                 index = --mCurrentIndex;
                 if (index <= -1) {
@@ -294,7 +290,6 @@ public class PlayManager {
                 // shuffle list
                 shuffleList();
             }
-            // 得通知出去播放模式变了
         }
     }
 
@@ -335,7 +330,9 @@ public class PlayManager {
     public int getPlayState() {
         int state = PlayState.STATE_IDLE;
         try {
-            return mService.getPlayState();
+            if (mService != null) {
+                return mService.getPlayState();
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }

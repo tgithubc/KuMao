@@ -16,4 +16,6 @@ interface IPlayCallbackAidl {
     void onStartBuffering();
 
     void onEndBuffering();
+
+    void onContinuePlay();
 }

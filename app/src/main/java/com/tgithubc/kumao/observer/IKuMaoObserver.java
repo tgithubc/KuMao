@@ -15,4 +15,13 @@ public interface IKuMaoObserver extends IObserver {
     interface IChangeStatusBarObserver extends IKuMaoObserver {
         void onChangeStatusBar(boolean isDark);
     }
+
+    interface IPlayObserver extends IKuMaoObserver {
+
+        void onPlayRealStart();
+
+        void onPause();
+
+        void onContinuePlay();
+    }
 }

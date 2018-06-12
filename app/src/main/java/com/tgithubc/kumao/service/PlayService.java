@@ -3,6 +3,7 @@ package com.tgithubc.kumao.service;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.audiofx.Visualizer;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteCallbackList;
@@ -13,7 +14,6 @@ import com.tgithubc.kumao.IPlayAidl;
 import com.tgithubc.kumao.IPlayCallbackAidl;
 import com.tgithubc.kumao.bean.Song;
 
-
 /**
  * Created by tc :)
  */
@@ -23,8 +23,10 @@ public class PlayService extends Service implements
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener,
         MediaPlayer.OnInfoListener,
-        MediaPlayer.OnBufferingUpdateListener {
+        MediaPlayer.OnBufferingUpdateListener,
+        Visualizer.OnDataCaptureListener {
 
+    private Visualizer mVisualizer;
     private MediaPlayer mPlayer;
     private boolean mSeekFlag = false;
     private int mCurrentState = PlayState.STATE_IDLE;
@@ -56,6 +58,7 @@ public class PlayService extends Service implements
                 mPlayer.stop();
                 mPlayer.release();
                 mPlayer = null;
+                mVisualizer.setEnabled(false);
                 mCurrentState = PlayState.STATE_STOP;
                 notifyClient(PlayState.STATE_STOP);
             }
@@ -66,6 +69,7 @@ public class PlayService extends Service implements
             if (mPlayer != null) {
                 if (mPlayer.isPlaying()) {
                     mPlayer.pause();
+                    mVisualizer.setEnabled(false);
                     mCurrentState = PlayState.STATE_PAUSE;
                     notifyClient(PlayState.STATE_PAUSE);
                 }
@@ -77,6 +81,7 @@ public class PlayService extends Service implements
             if (mPlayer != null) {
                 if (PlayState.STATE_PAUSE == mCurrentState) {
                     mPlayer.start();
+                    mVisualizer.setEnabled(true);
                     notifyClient(PlayState.STATE_CONTINUE);
                     mCurrentState = PlayState.STATE_PLAYING;
                 }
@@ -115,6 +120,7 @@ public class PlayService extends Service implements
     public void onCreate() {
         super.onCreate();
         ensureMediaPlayer();
+        initVisualizer();
     }
 
     @Override
@@ -128,6 +134,9 @@ public class PlayService extends Service implements
             }
             mPlayer.release();
             mPlayer = null;
+            mVisualizer.setEnabled(false);
+            mVisualizer.release();
+            mVisualizer = null;
         }
     }
 
@@ -141,6 +150,12 @@ public class PlayService extends Service implements
             mPlayer.setOnInfoListener(this);
             mPlayer.setOnPreparedListener(this);
         }
+    }
+
+    private void initVisualizer() {
+        mVisualizer = new Visualizer(mPlayer.getAudioSessionId());
+        mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
+        mVisualizer.setDataCaptureListener(this, Visualizer.getMaxCaptureRate() / 2, false, true);
     }
 
     @Nullable
@@ -172,6 +187,7 @@ public class PlayService extends Service implements
     public void onPrepared(MediaPlayer mp) {
         ensureMediaPlayer();
         mPlayer.start();
+        mVisualizer.setEnabled(true);
         notifyClient(PlayState.STATE_REAL_PLAY);
         mCurrentState = PlayState.STATE_PLAYING;
     }
@@ -180,6 +196,7 @@ public class PlayService extends Service implements
     public void onCompletion(MediaPlayer mp) {
         mCurrentState = PlayState.STATE_PLAY_COMPLETE;
         notifyClient(PlayState.STATE_PLAY_COMPLETE);
+        mVisualizer.setEnabled(false);
     }
 
     private void notifyClient(int state) {
@@ -215,6 +232,9 @@ public class PlayService extends Service implements
                     case PlayState.STATE_BUFFERING_END:
                         callback.onEndBuffering();
                         break;
+                    case PlayState.STATE_CONTINUE:
+                        callback.onContinuePlay();
+                        break;
                 }
             }
         } catch (Exception e) {
@@ -249,6 +269,16 @@ public class PlayService extends Service implements
 
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
+
+    }
+
+    @Override
+    public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
+
+    }
+
+    @Override
+    public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
 
     }
 }

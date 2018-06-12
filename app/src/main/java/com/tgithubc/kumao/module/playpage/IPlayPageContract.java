@@ -11,7 +11,11 @@ public interface IPlayPageContract {
 
     interface V  extends IView{
 
-        void setBlurBackground(Song song);
+        void refreshInfoView(Song song);
+
+        void refreshPlayStateView(boolean isPlaying);
+
+        void refreshPlayMode(int mode);
     }
 
     interface P {
@@ -20,5 +24,12 @@ public interface IPlayPageContract {
 
         void onDestory();
 
+        void doPlay();
+
+        void doPlayNext();
+
+        void doPlayPrev();
+
+        void switchPlayMode();
     }
 }
