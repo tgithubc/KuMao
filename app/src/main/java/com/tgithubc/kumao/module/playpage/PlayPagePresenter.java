@@ -30,6 +30,11 @@ public class PlayPagePresenter extends BasePresenter<IPlayPageContract.V> implem
         public void onContinuePlay() {
             getView().refreshPlayStateView(true);
         }
+
+        @Override
+        public void onWaveFormDataCapture(byte[] waveform) {
+            getView().refreshJellyfishView(waveform);
+        }
     };
 
     @Override

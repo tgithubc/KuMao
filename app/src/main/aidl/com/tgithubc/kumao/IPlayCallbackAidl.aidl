@@ -1,6 +1,5 @@
 // IPlayCallbackAidl.aidl
 package com.tgithubc.kumao;
-
 // Declare any non-default types here with import statements
 
 interface IPlayCallbackAidl {
@@ -18,4 +17,6 @@ interface IPlayCallbackAidl {
     void onEndBuffering();
 
     void onContinuePlay();
+
+    void onWaveFormDataCapture(in byte[] waveform);
 }

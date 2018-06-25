@@ -23,5 +23,7 @@ public interface IKuMaoObserver extends IObserver {
         void onPause();
 
         void onContinuePlay();
+
+        void onWaveFormDataCapture(byte[] waveform);
     }
 }

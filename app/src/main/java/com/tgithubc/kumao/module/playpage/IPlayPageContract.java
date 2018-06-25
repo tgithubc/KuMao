@@ -16,6 +16,8 @@ public interface IPlayPageContract {
         void refreshPlayStateView(boolean isPlaying);
 
         void refreshPlayMode(int mode);
+
+        void refreshJellyfishView(byte[] waveform);
     }
 
     interface P {

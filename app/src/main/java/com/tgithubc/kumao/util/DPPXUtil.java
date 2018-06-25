@@ -42,4 +42,13 @@ public class DPPXUtil {
         }
         return result;
     }
+
+    public static int getScreenWidth(Context context) {
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
+
+    /*设备屏幕高度*/
+    public static int getScreenHeight(Context context) {
+        return context.getResources().getDisplayMetrics().heightPixels;
+    }
 }

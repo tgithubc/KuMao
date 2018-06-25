@@ -91,6 +91,11 @@ public class PlayManager {
         public void onContinuePlay() throws RemoteException {
             MessageBus.instance().getDefault(IPlayObserver.class).onContinuePlay();
         }
+
+        @Override
+        public void onWaveFormDataCapture(byte[] waveform) throws RemoteException {
+            MessageBus.instance().getDefault(IPlayObserver.class).onWaveFormDataCapture(waveform);
+        }
     };
 
     public void bindToService() {

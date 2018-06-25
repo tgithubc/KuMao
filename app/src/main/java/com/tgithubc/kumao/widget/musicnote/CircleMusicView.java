@@ -25,7 +25,7 @@ import com.tgithubc.kumao.util.DPPXUtil;
 public class CircleMusicView extends ImageView {
 
     private static final int DEFAULT_BORDER_WIDTH = 1;//dp
-    private static final int DEFAULT_DEFAULT_SIZE = 45;//dp
+    private static final int DEFAULT_SIZE = 45;//dp
 
     private int mDefaultSize;
     private int mProgressWidth;
@@ -63,7 +63,7 @@ public class CircleMusicView extends ImageView {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        mDefaultSize = DPPXUtil.dp2px(getContext(), DEFAULT_DEFAULT_SIZE);
+        mDefaultSize = DPPXUtil.dp2px(getContext(), DEFAULT_SIZE);
         int defaultBorderWidth = DPPXUtil.dp2px(getContext(), DEFAULT_BORDER_WIDTH);
         final TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CircleMusicView, 0, 0);
         try {

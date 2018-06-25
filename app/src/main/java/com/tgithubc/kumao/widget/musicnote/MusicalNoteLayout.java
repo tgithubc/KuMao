@@ -71,8 +71,6 @@ public class MusicalNoteLayout extends RelativeLayout implements WeakWrapperHand
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = w;
         mHeight = h;
-        // test code
-        start(true);
     }
 
     private void init(Context context, AttributeSet attrs) {

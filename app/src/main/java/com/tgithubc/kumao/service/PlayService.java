@@ -155,7 +155,7 @@ public class PlayService extends Service implements
     private void initVisualizer() {
         mVisualizer = new Visualizer(mPlayer.getAudioSessionId());
         mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
-        mVisualizer.setDataCaptureListener(this, Visualizer.getMaxCaptureRate() / 2, false, true);
+        mVisualizer.setDataCaptureListener(this, Visualizer.getMaxCaptureRate() / 2, true, false);
     }
 
     @Nullable
@@ -204,8 +204,9 @@ public class PlayService extends Service implements
     }
 
     private void notifyClient(int state, Message message) {
-        int count = mCallbackList.beginBroadcast();
+        int count = 0;
         try {
+            count = mCallbackList.beginBroadcast();
             for (int i = 0; i < count; i++) {
                 IPlayCallbackAidl callback = mCallbackList.getBroadcastItem(i);
                 if (callback == null) {
@@ -240,7 +241,29 @@ public class PlayService extends Service implements
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            mCallbackList.finishBroadcast();
+            if (count >0 ) {
+                mCallbackList.finishBroadcast();
+            }
+        }
+    }
+
+    private void notifyWaveFormData(byte[] waveform) {
+        int count = 0;
+        try {
+            count = mCallbackList.beginBroadcast();
+            for (int i = 0; i < count; i++) {
+                IPlayCallbackAidl callback = mCallbackList.getBroadcastItem(i);
+                if (callback == null) {
+                    continue;
+                }
+                callback.onWaveFormDataCapture(waveform);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (count >0 ) {
+                mCallbackList.finishBroadcast();
+            }
         }
     }
 
@@ -274,11 +297,11 @@ public class PlayService extends Service implements
 
     @Override
     public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
-
+        notifyWaveFormData(waveform);
     }
 
     @Override
-    public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
+    public void onFftDataCapture(Visualizer visualizer, byte[] bytes, int samplingRate) {
 
     }
 }
