@@ -45,25 +45,25 @@ public class SearchResultSongProvider extends BaseItemProvider<BaseData, BaseVie
         song.setSongName("肆无忌惮");
         list.add(song);
 
-        Song song1 = new Song();
-        song1.setSongId("591310911");
-        song1.setSongName("哑巴");
-        list.add(song1);
+        Song song4 = new Song();
+        song4.setSongId("593097514");
+        song4.setSongName("Fendiman");
+        list.add(song4);
 
         Song song2 = new Song();
         song2.setSongId("593080765");
         song2.setSongName("忠于自我");
         list.add(song2);
 
+        Song song1 = new Song();
+        song1.setSongId("591310911");
+        song1.setSongName("哑巴");
+        list.add(song1);
+
         Song song3 = new Song();
         song3.setSongId("591846818");
         song3.setSongName("初恋的地方");
         list.add(song3);
-
-        Song song4 = new Song();
-        song4.setSongId("593097514");
-        song4.setSongName("Fendiman");
-        list.add(song4);
 
         Song song5 = new Song();
         song5.setSongId("591130598");

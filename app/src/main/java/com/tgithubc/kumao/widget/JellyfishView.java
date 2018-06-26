@@ -42,7 +42,7 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
     // 专辑的默认大小dp
     private static final int DEFAULT_SIZE = 280;
     // 水母预留活动范围默认dp
-    private static final int DEFAULT_SPACE = 50;
+    private static final int DEFAULT_SPACE = 30;
     // 水母上下跃动默认offset
     private static final int DEFAULT_OFFSET = 15;
 
@@ -52,12 +52,27 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
     private int mSpaceSize;
     // 专辑封面和水母控件总大小
     private int mSize;
+    // 水母拟圆的半径
+    private int mRadius;
+    // 水母撑起初始
+    private float mDefaultOffset;
+    // 水母跳动高度
+    private float mVibrateOffset;
+    // 旋转角度
+    private float mFrontAngle = 0;
+    private float mBehindAngle = mFrontAngle - 180;
+    // 水母伸展/结束的时候变化乘积（1到0，0到1）
+    private float mOffsetFactor;
+
     // 图片画笔
     private Paint mPaint;
     // 遮罩画笔
     private Paint mShadowPaint;
     // 水母画笔
     private Paint mJellyfishPaint;
+    private Path mJellyfishPath;
+    private Matrix mGradientMatrix;
+    private LinearGradient mLinearGradient;
     // 专辑图片
     private Bitmap mCoverBitmap;
     // 专辑图片输入输出范围
@@ -69,22 +84,8 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
     private PointF mPoint0, mPoint3, mPoint6, mPoint9;
     // 三阶拟圆的控制点
     private PointF mPoint1, mPoint2, mPoint4, mPoint5, mPoint7, mPoint8, mPoint10, mPoint11;
-    private Path mJellyfishPath;
-    private Matrix mGradientMatrix;
-    private LinearGradient mLinearGradient;
-    // 水母上下跳动高度
-    private float mOffset;
-    // 旋转角度
-    private float mFrontAngle = 0;
-    private float mBehindAngle = mFrontAngle - 180;
-    // 水母拟圆的半径
-    private int mRadius;
     // 开始的时候伸展/结束的时候收缩的动画
     private ValueAnimator mExpandAnimator, mShrinkAnimator;
-    // 水母伸展/结束的时候变化乘积
-    private float mOffsetFactor;
-    // 水母震荡的时候变化乘积
-    private float mVibrateFactor;
     // 是否在转动
     private boolean isRotating;
     private Handler mRotateHandler;
@@ -129,10 +130,12 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
         mShadowPaint.setFilterBitmap(true);
         mJellyfishPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mJellyfishPaint.setStyle(Paint.Style.FILL);
+        mJellyfishPaint.setStrokeCap(Paint.Cap.ROUND);
+        mJellyfishPaint.setStrokeJoin(Paint.Join.ROUND);
 
         mSpaceSize = DPPXUtil.dp2px(DEFAULT_SPACE);
         mDefaultSize = DPPXUtil.dp2px(DEFAULT_SIZE);
-        mOffset = DPPXUtil.dp2px(DEFAULT_OFFSET);
+        mDefaultOffset = DPPXUtil.dp2px(DEFAULT_OFFSET);
         mGradientMatrix = new Matrix();
         mJellyfishPath = new Path();
         mCoverBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.play_page_cover);
@@ -161,7 +164,7 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mJellyfishPaint.setAlpha(80);
+        mJellyfishPaint.setAlpha(70);
         drawJellyfish(canvas, mBehindAngle);
         mJellyfishPaint.setAlpha(50);
         drawJellyfish(canvas, mFrontAngle);
@@ -223,9 +226,9 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
     }
 
     private void drawPath(Canvas canvas) {
-        float offset = mOffset + (mOffset * mVibrateFactor);
-        if (offset < mOffset) {
-            offset = mOffset;
+        float offset = mDefaultOffset + mVibrateOffset;
+        if (offset < mDefaultOffset) {
+            offset = mDefaultOffset;
         }
         float dx = mOffsetFactor * offset;
         mJellyfishPath.rewind();
@@ -243,7 +246,7 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
             return;
         }
         if (mShrinkAnimator == null) {
-            getShrinkAnimator();
+            mShrinkAnimator = getShrinkAnimator();
         }
         if (!mShrinkAnimator.isRunning()) {
             mShrinkAnimator.start();
@@ -255,7 +258,7 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
             return;
         }
         if (mExpandAnimator == null) {
-            getExpandAnimator();
+            mExpandAnimator = getExpandAnimator();
         }
         if (!mExpandAnimator.isRunning()) {
             mExpandAnimator.start();
@@ -290,15 +293,15 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
     /**
      * 收起动画
      */
-    private void getShrinkAnimator() {
-        mShrinkAnimator = ValueAnimator.ofFloat(1F, 0F);
-        mShrinkAnimator.setDuration(600);
-        mShrinkAnimator.setInterpolator(new AccelerateInterpolator());
-        mShrinkAnimator.addUpdateListener(animation -> {
+    private ValueAnimator getShrinkAnimator() {
+        ValueAnimator animator = ValueAnimator.ofFloat(1F, 0F);
+        animator.setDuration(600);
+        animator.setInterpolator(new AccelerateInterpolator());
+        animator.addUpdateListener(animation -> {
             mOffsetFactor = (float) animation.getAnimatedValue();
             invalidate();
         });
-        mShrinkAnimator.addListener(new AnimatorListenerAdapter() {
+        animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
@@ -306,23 +309,25 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
                 isRotating = false;
             }
         });
+        return animator;
     }
 
     /**
      * 展开动画
      */
-    private void getExpandAnimator() {
-        mExpandAnimator = ValueAnimator.ofFloat(0F, 1F);
-        mExpandAnimator.setDuration(600);
-        mExpandAnimator.setInterpolator(new AccelerateInterpolator());
-        mExpandAnimator.addUpdateListener(animation -> mOffsetFactor = (float) animation.getAnimatedValue());
-        mExpandAnimator.addListener(new AnimatorListenerAdapter() {
+    private ValueAnimator getExpandAnimator() {
+        ValueAnimator animator = ValueAnimator.ofFloat(0F, 1F);
+        animator.setDuration(500);
+        animator.setInterpolator(new AccelerateInterpolator());
+        animator.addUpdateListener(animation -> mOffsetFactor = (float) animation.getAnimatedValue());
+        animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 mRotateHandler.sendEmptyMessage(MSG_WHAT_ROTATE);
                 isRotating = true;
             }
         });
+        return animator;
     }
 
     @Override
@@ -331,15 +336,22 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
             mBehindAngle += DEFAULT_ROTATE_STEP;
             mFrontAngle += DEFAULT_ROTATE_STEP;
             invalidate();
-            mRotateHandler.sendEmptyMessageDelayed(MSG_WHAT_ROTATE, 50);
+            mRotateHandler.sendEmptyMessageDelayed(MSG_WHAT_ROTATE, 60);
         }
     }
 
     public void updateWave(byte[] waveform) {
-        // 这里感觉想的不对，还得有好的办法平滑振幅，加光圈的时候再想想
         for (int i = 0, len = waveform.length - 1; i < len; i += 4) {
-            int dx = Math.abs(Math.abs(waveform[i + 1]) - Math.abs(waveform[i]));
-            mVibrateFactor = dx * mSpaceSize / mOffset / 128;
+            int dx;
+            int wave = waveform[i];
+            if (wave < 0) {
+                dx = -(128 + wave);
+            } else if (wave > 0) {
+                dx = 128 - wave;
+            } else {
+                dx = 0;
+            }
+            mVibrateOffset = dx * (mSpaceSize - mDefaultOffset) / 128;
         }
     }
 
