@@ -12,6 +12,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -19,10 +20,14 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
@@ -33,7 +38,7 @@ import com.tgithubc.kumao.util.WeakWrapperHandler;
 /**
  * Created by tc :)
  */
-public class JellyfishView extends View implements WeakWrapperHandler.MessageHandler {
+public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback, Handler.Callback {
 
     private static final float FACTOR = 0.551915024494F;
     // 水母上下跃动默认offset
@@ -88,7 +93,9 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
     private ValueAnimator mExpandAnimator, mShrinkAnimator;
     // 是否在转动
     private boolean isRotating;
-    private Handler mRotateHandler;
+    private SurfaceHolder mSurfaceHolder;
+    private HandlerThread mHandlerThread;
+    private Handler mHandler;
 
     private Palette.PaletteAsyncListener mPaletteListener = new Palette.PaletteAsyncListener() {
         @Override
@@ -101,7 +108,6 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
                 mLinearGradient = new LinearGradient(mRadius, -mRadius, -mRadius, mRadius, lightVibrantColor, vibrantColor,
                         Shader.TileMode.CLAMP);
                 mJellyfishPaint.setShader(mLinearGradient);
-                invalidate();
             }
         }
     };
@@ -120,8 +126,10 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
     }
 
     private void init() {
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        mRotateHandler = new WeakWrapperHandler(this);
+        setZOrderOnTop(true);
+        mSurfaceHolder = getHolder();
+        mSurfaceHolder.addCallback(this);
+        mSurfaceHolder.setFormat(PixelFormat.TRANSLUCENT);
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setFilterBitmap(true);
@@ -130,8 +138,6 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
         mShadowPaint.setFilterBitmap(true);
         mJellyfishPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mJellyfishPaint.setStyle(Paint.Style.FILL);
-        mJellyfishPaint.setStrokeCap(Paint.Cap.ROUND);
-        mJellyfishPaint.setStrokeJoin(Paint.Join.ROUND);
 
         mSpaceSize = DPPXUtil.dp2px(DEFAULT_SPACE);
         mDefaultSize = DPPXUtil.dp2px(DEFAULT_SIZE);
@@ -161,21 +167,10 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
         initPoint();
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        mJellyfishPaint.setAlpha(70);
-        drawJellyfish(canvas, mBehindAngle);
-        mJellyfishPaint.setAlpha(50);
-        drawJellyfish(canvas, mFrontAngle);
-        drawBitmap(canvas);
-    }
-
     public void setBitmap(Bitmap bitmap) {
         mCoverBitmap = bitmap;
         mBitmapInRect = new Rect(0, 0, mCoverBitmap.getWidth(), mCoverBitmap.getHeight());
         Palette.from(mCoverBitmap).generate(mPaletteListener);
-        invalidate();
     }
 
     public void start(boolean start) {
@@ -297,15 +292,11 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
         ValueAnimator animator = ValueAnimator.ofFloat(1F, 0F);
         animator.setDuration(600);
         animator.setInterpolator(new AccelerateInterpolator());
-        animator.addUpdateListener(animation -> {
-            mOffsetFactor = (float) animation.getAnimatedValue();
-            invalidate();
-        });
+        animator.addUpdateListener(animation -> mOffsetFactor = (float) animation.getAnimatedValue());
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mRotateHandler.removeMessages(MSG_WHAT_ROTATE);
                 isRotating = false;
             }
         });
@@ -323,7 +314,6 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                mRotateHandler.sendEmptyMessage(MSG_WHAT_ROTATE);
                 isRotating = true;
             }
         });
@@ -331,12 +321,27 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
     }
 
     @Override
-    public void handleMessage(Message msg) {
+    public boolean handleMessage(Message msg) {
         if (msg.what == MSG_WHAT_ROTATE) {
-            mBehindAngle += DEFAULT_ROTATE_STEP;
-            mFrontAngle += DEFAULT_ROTATE_STEP;
-            invalidate();
-            mRotateHandler.sendEmptyMessageDelayed(MSG_WHAT_ROTATE, 60);
+            doDraw();
+            return true;
+        }
+        return false;
+    }
+
+    private void doDraw() {
+        mBehindAngle += DEFAULT_ROTATE_STEP;
+        mFrontAngle += DEFAULT_ROTATE_STEP;
+        Canvas canvas = mSurfaceHolder.lockCanvas();
+        if (canvas != null) {
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            mJellyfishPaint.setAlpha(70);
+            drawJellyfish(canvas, mBehindAngle);
+            mJellyfishPaint.setAlpha(50);
+            drawJellyfish(canvas, mFrontAngle);
+            drawBitmap(canvas);
+            mSurfaceHolder.unlockCanvasAndPost(canvas);
+            mHandler.sendEmptyMessageDelayed(MSG_WHAT_ROTATE, 50);
         }
     }
 
@@ -352,6 +357,26 @@ public class JellyfishView extends View implements WeakWrapperHandler.MessageHan
                 dx = 0;
             }
             mVibrateOffset = dx * (mSpaceSize - mDefaultOffset) / 128;
+        }
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        mHandlerThread = new HandlerThread("DrawThread");
+        mHandlerThread.start();
+        mHandler = new Handler(mHandlerThread.getLooper(), this);
+        mHandler.sendEmptyMessage(MSG_WHAT_ROTATE);
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+        if (mHandlerThread != null) {
+            mHandlerThread.quit();
+            mHandlerThread = null;
         }
     }
 
