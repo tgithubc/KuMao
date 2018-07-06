@@ -25,15 +25,12 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.util.DPPXUtil;
-import com.tgithubc.kumao.util.WeakWrapperHandler;
 
 /**
  * Created by tc :)
@@ -44,6 +41,8 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
     // 水母上下跃动默认offset
     private static final float DEFAULT_ROTATE_STEP = 2.5F;
     private static final int MSG_WHAT_ROTATE = 1;
+    private static final int MSG_WHAT_REFRESH = 2;
+
     // 专辑的默认大小dp
     private static final int DEFAULT_SIZE = 280;
     // 水母预留活动范围默认dp
@@ -108,6 +107,7 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
                 mLinearGradient = new LinearGradient(mRadius, -mRadius, -mRadius, mRadius, lightVibrantColor, vibrantColor,
                         Shader.TileMode.CLAMP);
                 mJellyfishPaint.setShader(mLinearGradient);
+                mHandler.sendEmptyMessage(MSG_WHAT_REFRESH);
             }
         }
     };
@@ -149,6 +149,10 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
         mLinearGradient = new LinearGradient(mRadius, -mRadius, -mRadius, mRadius, Color.YELLOW, Color.RED,
                 Shader.TileMode.CLAMP);
         Palette.from(mCoverBitmap).generate(mPaletteListener);
+
+        mHandlerThread = new HandlerThread("DrawThread");
+        mHandlerThread.start();
+        mHandler = new Handler(mHandlerThread.getLooper(), this);
     }
 
     @Override
@@ -225,13 +229,14 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
         if (offset < mDefaultOffset) {
             offset = mDefaultOffset;
         }
-        float dx = mOffsetFactor * offset;
+        float dx1 = mOffsetFactor * offset;
+        float dx2 = mOffsetFactor * mDefaultOffset;
         mJellyfishPath.rewind();
-        mJellyfishPath.moveTo(mPoint0.x, mPoint0.y - dx);
-        mJellyfishPath.cubicTo(mPoint1.x, mPoint1.y - dx, mPoint2.x, mPoint2.y, mPoint3.x, mPoint3.y);
-        mJellyfishPath.cubicTo(mPoint4.x + dx, mPoint4.y + dx, mPoint5.x, mPoint5.y, mPoint6.x, mPoint6.y);
-        mJellyfishPath.cubicTo(mPoint7.x, mPoint7.y, mPoint8.x - dx, mPoint8.y + dx, mPoint9.x, mPoint9.y);
-        mJellyfishPath.cubicTo(mPoint10.x, mPoint10.y, mPoint11.x, mPoint11.y - dx, mPoint0.x, mPoint0.y - dx);
+        mJellyfishPath.moveTo(mPoint0.x, mPoint0.y - dx1);
+        mJellyfishPath.cubicTo(mPoint1.x, mPoint1.y - dx1, mPoint2.x, mPoint2.y, mPoint3.x, mPoint3.y);
+        mJellyfishPath.cubicTo(mPoint4.x + dx2, mPoint4.y + dx2, mPoint5.x, mPoint5.y, mPoint6.x, mPoint6.y);
+        mJellyfishPath.cubicTo(mPoint7.x, mPoint7.y, mPoint8.x - dx2, mPoint8.y + dx2, mPoint9.x, mPoint9.y);
+        mJellyfishPath.cubicTo(mPoint10.x, mPoint10.y, mPoint11.x, mPoint11.y - dx1, mPoint0.x, mPoint0.y - dx1);
         mJellyfishPath.close();
         canvas.drawPath(mJellyfishPath, mJellyfishPaint);
     }
@@ -290,7 +295,6 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
      */
     private ValueAnimator getShrinkAnimator() {
         ValueAnimator animator = ValueAnimator.ofFloat(1F, 0F);
-        animator.setDuration(600);
         animator.setInterpolator(new AccelerateInterpolator());
         animator.addUpdateListener(animation -> mOffsetFactor = (float) animation.getAnimatedValue());
         animator.addListener(new AnimatorListenerAdapter() {
@@ -298,6 +302,16 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 isRotating = false;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                // 回收补偿
+                mPoint3.offset(-10, 0);
+                mPoint9.offset(10, 0);
+                mHandler.removeMessages(MSG_WHAT_ROTATE);
+                mHandler.sendEmptyMessage(MSG_WHAT_REFRESH);
             }
         });
         return animator;
@@ -308,13 +322,21 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
      */
     private ValueAnimator getExpandAnimator() {
         ValueAnimator animator = ValueAnimator.ofFloat(0F, 1F);
-        animator.setDuration(500);
         animator.setInterpolator(new AccelerateInterpolator());
         animator.addUpdateListener(animation -> mOffsetFactor = (float) animation.getAnimatedValue());
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 isRotating = true;
+                mHandler.sendEmptyMessage(MSG_WHAT_ROTATE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                // 补偿一点偏移，整体更圆一些
+                mPoint3.offset(10, 0);
+                mPoint9.offset(-10, 0);
             }
         });
         return animator;
@@ -323,15 +345,19 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.what == MSG_WHAT_ROTATE) {
-            doDraw();
+            mBehindAngle += DEFAULT_ROTATE_STEP;
+            mFrontAngle += DEFAULT_ROTATE_STEP;
+            draw();
+            mHandler.sendEmptyMessageDelayed(MSG_WHAT_ROTATE, 50);
+            return true;
+        } else if (msg.what == MSG_WHAT_REFRESH) {
+            draw();
             return true;
         }
         return false;
     }
 
-    private void doDraw() {
-        mBehindAngle += DEFAULT_ROTATE_STEP;
-        mFrontAngle += DEFAULT_ROTATE_STEP;
+    private void draw() {
         Canvas canvas = mSurfaceHolder.lockCanvas();
         if (canvas != null) {
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
@@ -341,7 +367,6 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
             drawJellyfish(canvas, mFrontAngle);
             drawBitmap(canvas);
             mSurfaceHolder.unlockCanvasAndPost(canvas);
-            mHandler.sendEmptyMessageDelayed(MSG_WHAT_ROTATE, 50);
         }
     }
 
@@ -362,10 +387,7 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        mHandlerThread = new HandlerThread("DrawThread");
-        mHandlerThread.start();
-        mHandler = new Handler(mHandlerThread.getLooper(), this);
-        mHandler.sendEmptyMessage(MSG_WHAT_ROTATE);
+        draw();
     }
 
     @Override
@@ -374,8 +396,13 @@ public class JellyfishView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
+    }
+
+    public void stop() {
+        mHandler.removeMessages(MSG_WHAT_ROTATE);
         if (mHandlerThread != null) {
-            mHandlerThread.quit();
+            mHandlerThread.quitSafely();
             mHandlerThread = null;
         }
     }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.tgithubc.kumao.IPlayAidl;
 import com.tgithubc.kumao.IPlayCallbackAidl;
@@ -43,6 +44,18 @@ public class PlayManager {
     private int mRandomIndex;
     private int mCurrentPlayMode;
     private boolean isAutoPlayEnd;
+
+    private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
+
+        @Override
+        public void binderDied() {
+            if (mService != null) {
+                mService.asBinder().unlinkToDeath(mDeathRecipient, 0);
+                mService = null;
+            }
+            bindToService();
+        }
+    };
 
     private IPlayCallbackAidl mStateCallback = new IPlayCallbackAidl.Stub() {
 
@@ -258,7 +271,10 @@ public class PlayManager {
      * @param index
      */
     private void playByIndex(int index) {
-        if (mService == null || index < 0 || index >= mCurrentSongList.size()) {
+        if (mService == null) {
+            return;
+        }
+        if (index < 0 || index >= mCurrentSongList.size()) {
             return;
         }
         Song requestSong = mCurrentSongList.get(index);
@@ -334,10 +350,11 @@ public class PlayManager {
      */
     public int getPlayState() {
         int state = PlayState.STATE_IDLE;
+        if (mService == null) {
+            return state;
+        }
         try {
-            if (mService != null) {
-                return mService.getPlayState();
-            }
+            return mService.getPlayState();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -357,12 +374,12 @@ public class PlayManager {
 
     private class ServiceBinder implements ServiceConnection {
 
-
         @Override
         public void onServiceConnected(final ComponentName className, final IBinder service) {
-            mService = IPlayAidl.Stub.asInterface(service);
             try {
+                mService = IPlayAidl.Stub.asInterface(service);
                 mService.addPlayCallback(mStateCallback);
+                service.linkToDeath(mDeathRecipient, 0);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -372,10 +389,11 @@ public class PlayManager {
         public void onServiceDisconnected(final ComponentName className) {
             try {
                 mService.removePlayCallback(mStateCallback);
+                mService = null;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            mService = null;
+            bindToService();
         }
     }
 }

@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_main);
         FragmentOperation.getInstance().bind(R.id.fragment_container_id, this);
@@ -72,7 +72,6 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
                 .addTab(newTab("设置", R.drawable.setting_normal, R.drawable.setting_selected))
                 .build();
         tabLayout.setMessage(1, 999);
-
 
         final List<Fragment> fragments = new ArrayList<>();
         fragments.add(TestFragment.newInstance("我的"));

@@ -59,6 +59,7 @@ public class PlayFragment extends BaseFragment implements IPlayPageContract.V, V
         super.onDestroy();
         mPresenter.detachView();
         mPresenter.onDestory();
+        mJellyfishView.stop();
     }
 
     @Override

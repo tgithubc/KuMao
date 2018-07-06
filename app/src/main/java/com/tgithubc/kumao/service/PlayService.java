@@ -241,7 +241,7 @@ public class PlayService extends Service implements
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (count >0 ) {
+            if (count > 0) {
                 mCallbackList.finishBroadcast();
             }
         }
@@ -261,7 +261,7 @@ public class PlayService extends Service implements
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (count >0 ) {
+            if (count > 0) {
                 mCallbackList.finishBroadcast();
             }
         }

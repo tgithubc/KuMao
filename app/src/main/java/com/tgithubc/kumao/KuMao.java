@@ -6,6 +6,7 @@ import android.content.Context;
 import com.tgithubc.fresco_wapper.load.impl.FrescoImageLoader;
 import com.tgithubc.kumao.db.DbCore;
 import com.tgithubc.kumao.service.PlayManager;
+import com.tgithubc.kumao.util.AppUtil;
 import com.tgithubc.kumao.util.RomUtil;
 
 
@@ -20,13 +21,19 @@ public class KuMao extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        RomUtil.initRomInfo();
-        FrescoImageLoader.getInstance().initialize(this);
-        DbCore.getInstance().init(this);
-        PlayManager.getInstance().bindToService();
+        init();
     }
 
     public static Context getContext() {
         return mInstance.getApplicationContext();
+    }
+
+    private void init() {
+        if (AppUtil.isMainProcess(this)) {
+            RomUtil.initRomInfo();
+            DbCore.getInstance().init(this);
+            FrescoImageLoader.getInstance().initialize(this);
+            PlayManager.getInstance().bindToService();
+        }
     }
 }
