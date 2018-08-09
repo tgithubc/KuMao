@@ -5,7 +5,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical">
 
-    <com.tgithubc.kumao.widget.RecyclerViewBanner
+    <com.tgithubc.kumao.widget.banner.BannerRecyclerView
         android:id="@+id/banner_view"
         android:layout_width="match_parent"
         android:layout_height="140dp"
