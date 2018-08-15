@@ -1,15 +1,18 @@
 package com.tgithubc.kumao.data.task;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
+import com.tgithubc.kumao.util.RxMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 
@@ -20,51 +23,78 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
 
     @Override
     protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
-        Observable<Observable<Billboard>> all = Observable
-                .from(requestValues.getParameter())
-                .flatMap(values -> {
-                    Observable<Billboard> single =
-                            RepositoryProvider.getRepository().getBillboard(values.getUrl(), values.getParameter());
-                    return Observable.just(single);
-                });
-        return Observable
-                .merge(all)
-                .toList()
-                .flatMap(billboards -> {
-                            List<BaseData<Billboard>> list = new ArrayList<>();
-                            Observable.from(billboards).forEach(billboard -> {
-                                BaseData<Billboard> billboardData = new BaseData<>();
-                                billboardData.setType(BaseData.TYPE_BILLBOARD);
-                                billboardData.setData(billboard);
-                                list.add(billboardData);
-                            });
-                            return Observable.just(new ResponseValue(list));
-                        }
-                );
+        return RepositoryProvider.getRepository()
+                .getBillboardList(requestValues.getUrl(), requestValues.getParameter())
+                .flatMap(this::requestNewBillboard)
+                .flatMap(this::wrapperData);
     }
 
-    public static final class RequestValue implements Task.RequestValue {
-
-        private List<CommonRequestValue> parameters;
-
-        public RequestValue(List<CommonRequestValue> parameters) {
-            this.parameters = parameters;
+    // 得嵌套请求一次新歌榜的前三名的专辑封面图
+    private Observable<? extends List<Billboard>> requestNewBillboard(final List<Billboard> billboards) {
+        Billboard newBillboard = null;
+        for (Billboard billboard : billboards) {
+            if (billboard.getBillboardInfo().getBillboardType() == Constant.Api.BILLBOARD_TYPE_NEW) {
+                newBillboard = billboard;
+                break;
+            }
         }
+        if (newBillboard != null) {
+            List<Song> songArrary = newBillboard.getSongList();
+            if (songArrary != null && songArrary.size() >= 3) {
+                Observable<Song> s1 = requestSongInfo(songArrary.get(0));
+                Observable<Song> s2 = requestSongInfo(songArrary.get(1));
+                Observable<Song> s3 = requestSongInfo(songArrary.get(2));
+                Billboard finalNewBillboard = newBillboard;
+                // 聚合三首歌的详细信息，压合转换
+                return Observable.merge(s1, s2, s3)
+                        .toList()
+                        .concatMap(songList -> {
+                            finalNewBillboard.getSongList().clear();
+                            finalNewBillboard.setSongList(songList);
+                            return Observable.just(billboards);
+                        });
+            }
+        }
+        return Observable.just(billboards);
+    }
 
-        public List<CommonRequestValue> getParameter() {
-            return parameters;
+    // 包装成BaseData，类型区分，方便展示
+    private Observable<? extends ResponseValue> wrapperData(List<Billboard> result) {
+        List<BaseData> list = new ArrayList<>();
+        Observable.from(result).forEach(billboard -> {
+            BaseData<Billboard> billboardData = new BaseData<>();
+            if (billboard.getBillboardInfo().getBillboardType() == Constant.Api.BILLBOARD_TYPE_NEW) {
+                billboardData.setType(BaseData.TYPE_RANK_NEW_BILLBOARD);
+            } else {
+                billboardData.setType(BaseData.TYPE_RANK_BILLBOARD);
+            }
+            billboardData.setData(billboard);
+            list.add(billboardData);
+        });
+        return Observable.just(new ResponseValue(list));
+    }
+
+    private Observable<Song> requestSongInfo(Song song) {
+        return RepositoryProvider.getRepository()
+                .getSongInfo(Constant.Api.URL_SONGINFO, new RxMap<String, String>().put("songid", song.getSongId()).build());
+    }
+
+    public static final class RequestValue extends Task.CommonRequestValue {
+
+        public RequestValue(String url, Map<String, String> parameter) {
+            super(url, parameter);
         }
     }
 
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private List<BaseData<Billboard>> mResult;
+        private List<BaseData> mResult;
 
-        public ResponseValue(@NonNull List<BaseData<Billboard>> result) {
+        public ResponseValue(@NonNull List<BaseData> result) {
             mResult = result;
         }
 
-        public List<BaseData<Billboard>> getResult() {
+        public List<BaseData> getResult() {
             return mResult;
         }
     }

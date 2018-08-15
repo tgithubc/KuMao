@@ -17,7 +17,7 @@ public class BillboardProvider extends BaseItemProvider<BaseData, BaseViewHolder
 
     @Override
     public int viewType() {
-        return BaseData.TYPE_BILLBOARD;
+        return BaseData.TYPE_RANK_BILLBOARD;
     }
 
     @Override

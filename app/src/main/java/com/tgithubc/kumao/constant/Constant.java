@@ -9,10 +9,11 @@ public class Constant {
 
         String HOST = "http://tingapi.ting.baidu.com/v1/restserver/ting?";
         String URL_BANNER = HOST + "method=baidu.ting.plaza.getFocusPic";
-        String URL_BILLBOARD = HOST + "method=baidu.ting.billboard.billList";
         String URL_HOTWORD = HOST + "method=baidu.ting.search.hot";
         String URL_SEARCH = HOST + "method=baidu.ting.search.common";
         String URL_SONGINFO = HOST + "method=baidu.ting.song.play";
+        String URL_BILLBOARD = HOST + "method=baidu.ting.billboard.billList";
+        String URL_BILLBOARD_LIST = HOST + "method=baidu.ting.billboard.billCategory";
 
         /**
          * 榜单type

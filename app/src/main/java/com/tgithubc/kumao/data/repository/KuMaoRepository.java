@@ -49,6 +49,13 @@ public class KuMaoRepository implements KuMaoDataSource {
     }
 
     @Override
+    public Observable<List<Billboard>> getBillboardList(String url, Map<String, String> maps) {
+        return Observable
+                .concat(mLocalDataSource.getBillboardList(url, maps), mRemoteDataSource.getBillboardList(url, maps))
+                .first();
+    }
+
+    @Override
     public Observable<Song> getSongInfo(String url, Map<String, String> maps) {
         List<Observable<Song>> concatList =
                 Arrays.asList(mLocalDataSource.getSongInfo(url, maps), mRemoteDataSource.getSongInfo(url, maps));

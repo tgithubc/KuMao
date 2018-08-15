@@ -54,8 +54,7 @@ public interface ISearchContract {
         void clearSearchHistory();
 
         /**
-         * 单条删除搜索历史刷新
-         * @param position
+         * 单条删除搜索历史并刷新
          */
         void refreshSearchHistory(int position);
     }
@@ -82,9 +81,17 @@ public interface ISearchContract {
          */
         void getSearchHistory();
 
-
+        /**
+         * 清除搜索历史
+         */
         void clearSearchHistory();
 
+        /**
+         * 从数据库删除单条搜索历史
+         *
+         * @param keyword
+         * @param position
+         */
         void deleteSearchHistory(KeyWord keyword, int position);
     }
 }

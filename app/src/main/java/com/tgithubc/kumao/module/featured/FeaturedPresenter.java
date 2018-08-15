@@ -19,6 +19,13 @@ import rx.Observable;
 import rx.Subscription;
 
 /**
+ * 样式排序
+ * banner
+ * 热门歌单
+ * 推荐歌
+ * 电台
+ * 新专辑
+ * 新歌
  * Created by tc :)
  */
 public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implements IFeaturedContract.P {
@@ -29,42 +36,10 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     @Override
     public void getFeaturedData() {
         // 开始多个task，组合成一个数据流返回，不是自己的接口没办法
-        Subscription subscription =
-                Observable
-                        .merge(runBannerTask(), runBillboardListTask())
-                        .toList()
-                        .subscribe(new HttpSubscriber<List<Task.ResponseValue>>() {
-
-                            @Override
-                            public void onStart() {
-                                super.onStart();
-                                getView().showLoading();
-                            }
-
-                            @Override
-                            protected void onError(String msg, Throwable e) {
-                                getView().showError();
-                            }
-
-                            @Override
-                            public void onNext(List<Task.ResponseValue> responseValues) {
-                                super.onNext(responseValues);
-                                Observable.from(responseValues).forEach(value -> {
-                                    if (value instanceof GetBannerTask.ResponseValue) {
-                                        mFeedData.add(((GetBannerTask.ResponseValue) value).getResult());
-                                    } else if (value instanceof GetBillboardListTask.ResponseValue) {
-                                        BaseData baseData = new BaseData();
-                                        baseData.setType(BaseData.TYPE_TITLE_MORE);
-                                        baseData.setData("排行榜");
-                                        mFeedData.add(baseData);
-                                        mFeedData.addAll(((GetBillboardListTask.ResponseValue) value).getResult());
-                                    }
-                                });
-                                Log.d(TAG, "mFeedData :" + mFeedData);
-                                getView().showContent();
-                                getView().showFeatureView(mFeedData);
-                            }
-                        });
+        Subscription subscription = Observable
+                .merge(runBannerTask(), runBillboardListTask())
+                .toList()
+                .subscribe(new FeaturedHttpSubscriber());
         addSubscribe(subscription);
     }
 
@@ -78,20 +53,36 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     }
 
     private Observable<GetBillboardListTask.ResponseValue> runBillboardListTask() {
-        List<Task.CommonRequestValue> parameters = new ArrayList<>();
-        parameters.add(buildBillboardRequest(Constant.Api.BILLBOARD_TYPE_NEW));
-        parameters.add(buildBillboardRequest(Constant.Api.BILLBOARD_TYPE_HOT));
-        parameters.add(buildBillboardRequest(Constant.Api.BILLBOARD_TYPE_NET_HOT));
-        return new GetBillboardListTask().execute(new GetBillboardListTask.RequestValue(parameters));
+        // 其他类型
+        return null;
     }
 
-    private Task.CommonRequestValue buildBillboardRequest(int type) {
-        return new Task.CommonRequestValue(
-                Constant.Api.URL_BILLBOARD,
-                new RxMap<String, String>()
-                        .put("type", String.valueOf(type))
-                        .put("offset", "0")
-                        .put("size", "3")
-                        .build());
+    private class FeaturedHttpSubscriber extends HttpSubscriber<List<Task.ResponseValue>> {
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            getView().showLoading();
+        }
+
+        @Override
+        protected void onError(String msg, Throwable e) {
+            getView().showError();
+        }
+
+        @Override
+        public void onNext(List<Task.ResponseValue> responseValues) {
+            super.onNext(responseValues);
+            Observable.from(responseValues).forEach(value -> {
+                if (value instanceof GetBannerTask.ResponseValue) {
+                    mFeedData.add(((GetBannerTask.ResponseValue) value).getResult());
+                } else {
+                    // 其他类型
+                }
+            });
+            Log.d(TAG, "mFeedData :" + mFeedData);
+            getView().showContent();
+            getView().showFeatureView(mFeedData);
+        }
     }
 }

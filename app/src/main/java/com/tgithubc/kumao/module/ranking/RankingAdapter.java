@@ -1,21 +1,21 @@
-package com.tgithubc.kumao.module.featured;
+package com.tgithubc.kumao.module.ranking;
 
 import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
 import com.tgithubc.kumao.bean.BaseData;
-import com.tgithubc.kumao.viewProvider.BannerProvider;
-import com.tgithubc.kumao.viewProvider.TitleMoreProvider;
+import com.tgithubc.kumao.viewProvider.BillboardProvider;
+import com.tgithubc.kumao.viewProvider.NewBillboardProvider;
 
 import java.util.List;
 
 /**
  * Created by tc :)
  */
-public class FeaturedAdapter extends MultipleItemRvAdapter<BaseData, BaseViewHolder> {
+public class RankingAdapter extends MultipleItemRvAdapter<BaseData, BaseViewHolder> {
 
-    public FeaturedAdapter(@Nullable List<BaseData> data) {
+    public RankingAdapter(@Nullable List<BaseData> data) {
         super(data);
         finishInitialize();
     }
@@ -27,8 +27,8 @@ public class FeaturedAdapter extends MultipleItemRvAdapter<BaseData, BaseViewHol
 
     @Override
     public void registerItemProvider() {
-        mProviderDelegate.registerProvider(new TitleMoreProvider());
-        mProviderDelegate.registerProvider(new BannerProvider());
+        mProviderDelegate.registerProvider(new NewBillboardProvider());
+        mProviderDelegate.registerProvider(new BillboardProvider());
     }
 }
 

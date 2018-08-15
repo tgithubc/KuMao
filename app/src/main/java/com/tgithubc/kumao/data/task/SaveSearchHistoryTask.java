@@ -9,13 +9,13 @@ import rx.Observable;
 /**
  * Created by tc :)
  */
-public class SaveSearchHistoryTask extends Task<SaveSearchHistoryTask.RequestValue, SaveSearchHistoryTask.ResponseValue> {
+public class SaveSearchHistoryTask extends Task<SaveSearchHistoryTask.RequestValue, Task.EmptyResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
+    protected Observable<EmptyResponseValue> executeTask(RequestValue requestValues) {
         return Observable.create(subscriber -> {
             RepositoryProvider.getRepository().saveSearchHistory(requestValues.getParameter());
-            subscriber.onNext(new ResponseValue());
+            subscriber.onNext(new EmptyResponseValue());
             subscriber.onCompleted();
         });
     }
@@ -31,9 +31,5 @@ public class SaveSearchHistoryTask extends Task<SaveSearchHistoryTask.RequestVal
         public String getParameter() {
             return keyWord;
         }
-    }
-
-    public static final class ResponseValue implements Task.ResponseValue {
-
     }
 }

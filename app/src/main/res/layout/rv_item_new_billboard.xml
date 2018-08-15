@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_item_new_billboard"
+              android:orientation="vertical"
+              android:paddingBottom="20dp"
+              android:paddingTop="15dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="新歌榜"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/billboard_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingBottom="5dp"
+        tools:text="新歌榜描述新新歌榜描述新歌榜描述新歌榜描述歌榜描述新歌榜描述新歌榜描述新歌榜描述新歌榜描述新歌榜描述"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/billboard_pic2"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    fresco:viewAspectRatio="1"
+                    />
+
+                <ImageView
+                    android:id="@+id/billboard_play2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/billboard_pic2"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/outside_song_play"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/billboard_song_name2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                tools:text="卡路里"/>
+
+            <TextView
+                android:id="@+id/billboard_artist_name2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                tools:text="火箭少女101"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/billboard_pic1"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    fresco:viewAspectRatio="1"
+                    />
+
+                <ImageView
+                    android:id="@+id/billboard_play1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/billboard_pic1"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/outside_song_play"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/billboard_song_name1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                tools:text="卡路里卡路里卡路里卡路里卡路里卡路里"/>
+
+            <TextView
+                android:id="@+id/billboard_artist_name1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                tools:text="火箭少女101"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/billboard_pic3"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    fresco:viewAspectRatio="1"
+                    />
+
+                <ImageView
+                    android:id="@+id/billboard_play3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/billboard_pic3"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/outside_song_play"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/billboard_song_name3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                tools:text="卡路里"/>
+
+            <TextView
+                android:id="@+id/billboard_artist_name3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                tools:text="火箭少女101"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

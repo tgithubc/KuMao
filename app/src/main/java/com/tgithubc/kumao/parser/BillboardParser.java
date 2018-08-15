@@ -29,7 +29,7 @@ public class BillboardParser implements IParser<Billboard> {
         JSONObject infoJson = json.optJSONObject("billboard");
         if (infoJson != null) {
             Billboard.Info info = new Billboard.Info();
-            info.setBillboardType(infoJson.optString("billboard_type"));
+            info.setBillboardType(infoJson.optInt("billboard_type"));
             info.setUpdateDate(infoJson.optString("update_date"));
             info.setHavemore(infoJson.optInt("havemore"));
             info.setComment(infoJson.optString("comment"));

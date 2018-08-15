@@ -54,6 +54,11 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
     }
 
     @Override
+    public Observable<List<Billboard>> getBillboardList(String url, Map<String, String> maps) {
+        return createObservable(url, ParserFactory.PARSE_BILLBOARD_LIST);
+    }
+
+    @Override
     public Observable<Song> getSongInfo(String url, Map<String, String> maps) {
         String id = maps.get("songid");
         return Observable.create(subscriber -> {

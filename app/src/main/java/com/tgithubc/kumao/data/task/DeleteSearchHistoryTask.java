@@ -32,6 +32,5 @@ public class DeleteSearchHistoryTask extends Task<DeleteSearchHistoryTask.Reques
         public KeyWord getKeyWord() {
             return keyWord;
         }
-
     }
 }

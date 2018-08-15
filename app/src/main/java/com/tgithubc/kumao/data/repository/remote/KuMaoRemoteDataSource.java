@@ -46,6 +46,11 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
     }
 
     @Override
+    public Observable<List<Billboard>> getBillboardList(String url, Map<String, String> maps) {
+        return createObservable(url, maps, ParserFactory.PARSE_BILLBOARD_LIST, 12 * ACache.TIME_HOUR);
+    }
+
+    @Override
     public Observable<Song> getSongInfo(String url, Map<String, String> maps) {
         return createObservable(url, maps, ParserFactory.PARSE_SONG_INFO, ACache.TIME_DAY * 30);
     }

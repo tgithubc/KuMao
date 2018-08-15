@@ -2,11 +2,11 @@ package com.tgithubc.kumao;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -17,15 +17,15 @@ import com.tgithubc.kumao.fragment.OnFragmentStackChangeListener;
 import com.tgithubc.kumao.message.IObserver;
 import com.tgithubc.kumao.message.MessageBus;
 import com.tgithubc.kumao.module.HomePageAdapter;
-import com.tgithubc.kumao.module.playpage.PlayFragment;
 import com.tgithubc.kumao.module.featured.FeaturedFragment;
+import com.tgithubc.kumao.module.playpage.PlayFragment;
+import com.tgithubc.kumao.module.ranking.RankingFragment;
 import com.tgithubc.kumao.module.search.SearchFragment;
 import com.tgithubc.kumao.observer.IKuMaoObserver.IFragmentSwipeBackObserver;
 import com.tgithubc.kumao.widget.musicnote.MusicalNoteLayout;
 import com.tgithubc.view.lib.BottomTabItemView;
 import com.tgithubc.view.lib.BottomTabLayout;
 import com.tgithubc.view.lib.OnTabSelectedListener;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
         final List<Fragment> fragments = new ArrayList<>();
         fragments.add(TestFragment.newInstance("我的"));
         fragments.add(FeaturedFragment.newInstance());
-        fragments.add(TestFragment.newInstance("榜单"));
+        fragments.add(RankingFragment.newInstance());
         fragments.add(TestFragment.newInstance("设置"));
         mAdapter = new HomePageAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mAdapter);

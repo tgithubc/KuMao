@@ -50,11 +50,13 @@ public class WebFragment extends BaseFragment {
 
     @Override
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
-        /*mWebView = new WebView(getContext().getApplicationContext());
+        /*
+        mWebView = new WebView(getContext().getApplicationContext());
         mWebView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         LinearLayout parentLayout = view.findViewById(R.id.web_parent);
-        ((ViewGroup)parentLayout).addView(mWebView);*/
+        ((ViewGroup)parentLayout).addView(mWebView);
+        */
         mWebView = view.findViewById(R.id.web_view);
         if (!TextUtils.isEmpty(mUrl) && (mUrl.startsWith("http://") || mUrl.startsWith("https://"))) {
             mWebView.loadUrl(mUrl);
@@ -113,6 +115,11 @@ public class WebFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
+        releaseWebView();
+        super.onDestroy();
+    }
+
+    private void releaseWebView() {
         if (mWebView != null) {
             ViewParent parent = mWebView.getParent();
             if (parent != null) {
@@ -125,7 +132,6 @@ public class WebFragment extends BaseFragment {
             mWebView.removeAllViews();
             mWebView.destroy();
         }
-        super.onDestroy();
     }
 
     @Override

@@ -7,9 +7,10 @@ public class ParserFactory {
 
     public static final int PARSE_BANNER = 1;
     public static final int PARSE_BILLBOARD = 2;
-    public static final int PARSE_HOTWORD = 3;
-    public static final int PARSE_SEARCH_RESULT = 4;
-    public static final int PARSE_SONG_INFO = 5;
+    public static final int PARSE_BILLBOARD_LIST = 3;
+    public static final int PARSE_HOTWORD = 4;
+    public static final int PARSE_SEARCH_RESULT = 5;
+    public static final int PARSE_SONG_INFO = 6;
 
     public static IParser createParser(int type) {
         switch (type) {
@@ -17,6 +18,8 @@ public class ParserFactory {
                 return new BannerParser();
             case PARSE_BILLBOARD:
                 return new BillboardParser();
+            case PARSE_BILLBOARD_LIST:
+                return new BillboardListParser();
             case PARSE_HOTWORD:
                 return new HotWordParser();
             case PARSE_SEARCH_RESULT:

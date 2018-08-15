@@ -32,8 +32,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
 
     @Override
     public void getHotWord() {
-        Observable<GetHotWordTask.ResponseValue> hotWordTask
-                = new GetHotWordTask()
+        Observable<GetHotWordTask.ResponseValue> hotWordTask = new GetHotWordTask()
                 .execute(new GetHotWordTask.RequestValue(Constant.Api.URL_HOTWORD, null));
         Subscription subscription = hotWordTask
                 .subscribe(new HttpSubscriber<GetHotWordTask.ResponseValue>() {

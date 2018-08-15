@@ -46,7 +46,7 @@ public class Billboard {
     public static class Info {
 
         // 榜单类型
-        private String billboardType;
+        private int billboardType;
 
         // 榜单更新时间
         private String updateDate;
@@ -75,7 +75,7 @@ public class Billboard {
         // 这个应该是小的横的尺寸
         private String pic_s210;
 
-        public void setBillboardType(String billboardType) {
+        public void setBillboardType(int billboardType) {
             this.billboardType = billboardType;
         }
 
@@ -115,7 +115,7 @@ public class Billboard {
             this.pic_s210 = pic_s210;
         }
 
-        public String getBillboardType() {
+        public int getBillboardType() {
             return this.billboardType;
         }
 

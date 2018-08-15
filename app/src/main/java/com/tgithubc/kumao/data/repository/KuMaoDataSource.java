@@ -20,6 +20,8 @@ public interface KuMaoDataSource {
 
     Observable<Billboard> getBillboard(String url, Map<String, String> maps);
 
+    Observable<List<Billboard>> getBillboardList(String url, Map<String, String> maps);
+
     Observable<Song> getSongInfo(String url, Map<String, String> maps);
 
     Observable<List<String>> getHotWord(String url);
