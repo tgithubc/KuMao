@@ -6,9 +6,9 @@ import com.tgithubc.kumao.parser.ParserFactory;
 import org.json.JSONException;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by tc :)
@@ -45,9 +45,11 @@ public class RxHandler {
                 });
     }
 
-    public static <T> Observable.Transformer<T, T> applyScheduler() {
+    public static <T> Observable.Transformer<T, T> applyScheduler(Scheduler mBackgroundScheduler) {
         return observable -> observable
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(mBackgroundScheduler)
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+
 }

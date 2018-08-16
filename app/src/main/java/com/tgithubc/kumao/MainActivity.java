@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
         FragmentOperation.getInstance().bind(R.id.fragment_container_id, this);
         initView();
         registerMessage();
+        // 先简单来一下，后面适配权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
         }
@@ -71,7 +72,6 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
                 .addTab(newTab("榜单", R.drawable.ranking_normal, R.drawable.ranking_selected))
                 .addTab(newTab("设置", R.drawable.setting_normal, R.drawable.setting_selected))
                 .build();
-        tabLayout.setMessage(1, 999);
 
         final List<Fragment> fragments = new ArrayList<>();
         fragments.add(TestFragment.newInstance("我的"));

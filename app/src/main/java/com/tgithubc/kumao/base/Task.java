@@ -20,12 +20,12 @@ public abstract class Task<RQ extends Task.RequestValue, RP extends Task.Respons
     }
 
     protected Task() {
-        this.mBackgroundScheduler = Schedulers.io();
+        this(Schedulers.io());
     }
 
     public Observable<RP> execute(RQ requestValues) {
         return executeTask(requestValues)
-                .compose(RxHandler.applyScheduler());
+                .compose(RxHandler.applyScheduler(mBackgroundScheduler));
     }
 
     protected abstract Observable<RP> executeTask(RQ requestValues);
@@ -36,6 +36,9 @@ public abstract class Task<RQ extends Task.RequestValue, RP extends Task.Respons
     public interface ResponseValue {
     }
 
+    /**
+     * 通用请求参数
+     */
     public static class CommonRequestValue implements RequestValue {
 
         private String url;
@@ -55,10 +58,16 @@ public abstract class Task<RQ extends Task.RequestValue, RP extends Task.Respons
         }
     }
 
+    /**
+     * 空请求参数
+     */
     public static class EmptyRequestValue implements RequestValue {
 
     }
 
+    /**
+     * 空返回数据
+     */
     public static class EmptyResponseValue implements ResponseValue {
 
     }

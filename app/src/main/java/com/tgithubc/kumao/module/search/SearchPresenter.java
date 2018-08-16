@@ -16,8 +16,8 @@ import com.tgithubc.kumao.data.task.SaveSearchHistoryTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
 import com.tgithubc.kumao.util.RxMap;
 
-
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscription;
@@ -32,23 +32,23 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
 
     @Override
     public void getHotWord() {
-        Observable<GetHotWordTask.ResponseValue> hotWordTask = new GetHotWordTask()
-                .execute(new GetHotWordTask.RequestValue(Constant.Api.URL_HOTWORD, null));
-        Subscription subscription = hotWordTask
-                .subscribe(new HttpSubscriber<GetHotWordTask.ResponseValue>() {
+        Subscription subscription =
+                new GetHotWordTask()
+                        .execute(new GetHotWordTask.RequestValue(Constant.Api.URL_HOTWORD, null))
+                        .subscribe(new HttpSubscriber<GetHotWordTask.ResponseValue>() {
 
-                    @Override
-                    protected void onError(String msg, Throwable e) {
-                        getView().showHotWordErrorTip();
-                    }
+                            @Override
+                            protected void onError(String msg, Throwable e) {
+                                getView().showHotWordErrorTip();
+                            }
 
-                    @Override
-                    public void onNext(GetHotWordTask.ResponseValue responseValue) {
-                        super.onNext(responseValue);
-                        List<String> hotword = responseValue.getResult();
-                        getView().showHotWord(hotword);
-                    }
-                });
+                            @Override
+                            public void onNext(GetHotWordTask.ResponseValue responseValue) {
+                                super.onNext(responseValue);
+                                List<String> hotword = responseValue.getResult();
+                                getView().showHotWord(hotword);
+                            }
+                        });
         addSubscribe(subscription);
     }
 
@@ -66,7 +66,6 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                 new SaveSearchHistoryTask()
                         .execute(new SaveSearchHistoryTask.RequestValue(keyword))
                         .subscribe(responseValue -> {
-
                         });
         addSubscribe(saveSubscription);
 
@@ -87,11 +86,6 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                             }
                         });
         addSubscribe(querySubscription);
-    }
-
-    private void resetKeyWord() {
-        mCurrentKeyWord = "";
-        mCurrentPage = 1;
     }
 
     @Override
@@ -148,12 +142,16 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
     }
 
     private Observable<GetSearchResultTask.ResponseValue> getSearchTask(String keyword, int page) {
-        return new GetSearchResultTask()
-                .execute(new GetSearchResultTask.RequestValue(Constant.Api.URL_SEARCH,
-                        new RxMap<String, String>()
-                                .put("page_size", "25")
-                                .put("page_no", String.valueOf(page))
-                                .put("query", keyword)
-                                .build()));
+        Map<String, String> rq = new RxMap<String, String>()
+                .put("page_size", "25")
+                .put("page_no", String.valueOf(page))
+                .put("query", keyword)
+                .build();
+        return new GetSearchResultTask().execute(new GetSearchResultTask.RequestValue(Constant.Api.URL_SEARCH, rq));
+    }
+
+    private void resetKeyWord() {
+        mCurrentKeyWord = "";
+        mCurrentPage = 1;
     }
 }

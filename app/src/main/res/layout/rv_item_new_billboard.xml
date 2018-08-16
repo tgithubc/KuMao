@@ -54,6 +54,14 @@
                     fresco:viewAspectRatio="1"
                     />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/billboard_pic2"
+                    android:background="@drawable/shape_item_new_billboard_badge"
+                    android:gravity="center"
+                    android:text="2"/>
+
                 <ImageView
                     android:id="@+id/billboard_play2"
                     android:layout_width="wrap_content"
@@ -101,6 +109,14 @@
                     fresco:viewAspectRatio="1"
                     />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/shape_item_new_billboard_badge"
+                    android:gravity="center"
+                    android:text="1"/>
+
                 <ImageView
                     android:id="@+id/billboard_play1"
                     android:layout_width="wrap_content"
@@ -146,6 +162,14 @@
                     android:layout_height="120dp"
                     fresco:viewAspectRatio="1"
                     />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/shape_item_new_billboard_badge"
+                    android:gravity="center"
+                    android:text="3"/>
 
                 <ImageView
                     android:id="@+id/billboard_play3"

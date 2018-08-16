@@ -7,6 +7,7 @@ import com.tgithubc.kumao.bean.Song;
 /**
  * Created by tc :)
  */
+
 public interface IPlayPageContract {
 
     interface V  extends IView{
