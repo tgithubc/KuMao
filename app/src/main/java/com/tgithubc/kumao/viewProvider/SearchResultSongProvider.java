@@ -31,7 +31,6 @@ public class SearchResultSongProvider extends BaseItemProvider<BaseData, BaseVie
 
     @Override
     public void onClick(BaseViewHolder helper, BaseData data, int position) {
-        super.onClick(helper, data, position);
         PlayManager.getInstance().play((Song) data.getData());
     }
 

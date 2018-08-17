@@ -160,6 +160,9 @@ public abstract class BaseFragment extends SwipeBackFragment implements IStateVi
         return false;
     }
 
+    /**
+     * Fragment调整顶部沉浸式TitleBar高度
+     */
     private void adjustTitleBarHeight() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && getView() != null) {
             View titleBar = getView().findViewWithTag("titleBar");

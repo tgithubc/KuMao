@@ -7,6 +7,8 @@ import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.fragment.FragmentOperation;
+import com.tgithubc.kumao.module.songlist.SongListFragment;
 
 import java.util.List;
 
@@ -40,5 +42,11 @@ public class BillboardProvider extends BaseItemProvider<BaseData, BaseViewHolder
                 helper.setText(R.id.billboard_song_title_3, "3." + songs.get(2).getSongName());
             }
         }
+    }
+
+    @Override
+    public void onClick(BaseViewHolder helper, BaseData data, int position) {
+        SongListFragment fragment = SongListFragment.newInstance(data);
+        FragmentOperation.getInstance().showSubFragment(fragment);
     }
 }

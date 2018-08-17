@@ -45,6 +45,19 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        adjustTitleBarHeight();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MessageBus.instance().unRegister(mChangeStatusBarObserver);
+    }
+
+    /**
+     * activity调整顶部沉浸式TitleBar高度
+     */
+    private void adjustTitleBarHeight() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View titleBar = getWindow().getDecorView().findViewWithTag("titleBar");
             if (titleBar != null) {
@@ -57,11 +70,5 @@ public class BaseActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MessageBus.instance().unRegister(mChangeStatusBarObserver);
     }
 }

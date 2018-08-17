@@ -47,5 +47,4 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
     compile 'com.tgithubc:BottomTabLayout:1.0'
     compile 'com.tgithubc:fresco_wrapper:1.0'
-
 }

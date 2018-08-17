@@ -29,8 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="10dp"
             android:scaleType="center"
-            tools:src="@mipmap/title_back_up"/>
+            tools:src="@drawable/title_back_up"/>
     </FrameLayout>
 
     <FrameLayout
@@ -76,7 +77,7 @@
                 android:layout_centerInParent="true"
                 android:scaleType="center"
                 android:visibility="gone"
-                tools:src="@mipmap/ic_launcher"
+                tools:src="@drawable/ic_launcher"
                 tools:visibility="visible"/>
 
             <View
@@ -126,7 +127,7 @@
                 android:layout_centerInParent="true"
                 android:scaleType="center"
                 android:visibility="gone"
-                tools:src="@mipmap/ic_launcher"
+                tools:src="@drawable/ic_launcher"
                 tools:visibility="visible"/>
 
             <View
@@ -154,10 +155,10 @@
             android:id="@+id/main_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:textColor="@color/black"
-            android:singleLine="true"
             android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:textColor="@color/black"
             android:textSize="18dp"
             tools:text="主标题"/>
 

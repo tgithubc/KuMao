@@ -8,4 +8,6 @@
     <string name="search">搜索</string>
     <string name="search_history_empty_tip">暂无搜索历史</string>
     <string name="see_more">更多</string>
+    <string name="share">分享</string>
+    <string name="multi_chose">多选</string>
 </resources>

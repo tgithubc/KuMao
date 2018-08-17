@@ -21,9 +21,11 @@ public abstract class BasePresenter<V extends IView> {
         if (view.getClass().getInterfaces().length == 0) {
             throw new IllegalArgumentException("view must implement IView interface");
         }
-        mWeakReference = new WeakReference<V>(view);
-        mProxyView = (V) Proxy.newProxyInstance(view.getClass().getClassLoader(),
-                view.getClass().getInterfaces(), new ViewProxy(view));
+        mWeakReference = new WeakReference<>(view);
+        mProxyView = (V) Proxy.newProxyInstance(
+                view.getClass().getClassLoader(),
+                view.getClass().getInterfaces(),
+                new ViewProxy(view));
         mSubscription = new CompositeSubscription();
     }
 
