@@ -26,8 +26,7 @@ public abstract class BaseFragment extends SwipeBackFragment implements IStateVi
     private int mFragmentType = FragmentType.TYPE_NONE;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_base, container, false);
         FrameLayout titleContainer = root.findViewById(R.id.base_title_container);
         FrameLayout contentContainer = root.findViewById(R.id.base_content_container);

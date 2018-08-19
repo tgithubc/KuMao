@@ -8,7 +8,7 @@ import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Song;
 import com.tgithubc.kumao.fragment.FragmentOperation;
-import com.tgithubc.kumao.module.songlist.SongListFragment;
+import com.tgithubc.kumao.module.listpage.billboard.BillboardFragment;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class BillboardProvider extends BaseItemProvider<BaseData, BaseViewHolder
 
     @Override
     public void onClick(BaseViewHolder helper, BaseData data, int position) {
-        SongListFragment fragment = SongListFragment.newInstance(data);
+        BillboardFragment fragment = BillboardFragment.newInstance(data);
         FragmentOperation.getInstance().showSubFragment(fragment);
     }
 }

@@ -86,13 +86,28 @@ public class StickyHeaderLayout extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         if (getChildCount() < 2) {
-            throw new RuntimeException("KwDragLayout must contains two child views!");
+            throw new RuntimeException("StickyHeaderLayout must contains two child views!");
         }
         mHeaderView = getChildAt(0);
         mContentView = getChildAt(1);
         if (mHeaderHiddenListener != null) {
             mHeaderHiddenListener.onHeaderScroll(0, SCROLL_TO_NONE);
         }
+    }
+
+    /**
+     * 动态添加的部分，不同于xml里面初始化的，主要是不想增加多一层嵌套
+     * @param views
+     */
+    public void addView(View[] views) {
+        if (views.length < 2) {
+            throw new RuntimeException("StickyHeaderLayout must contains two child views!");
+        }
+        removeAllViews();
+        addView(views[0]);
+        addView(views[1]);
+        mHeaderView = getChildAt(0);
+        mContentView = getChildAt(1);
     }
 
     @Override

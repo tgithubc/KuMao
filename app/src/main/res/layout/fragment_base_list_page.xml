@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <com.tgithubc.kumao.widget.dragLayout.StickyHeaderLayout
+        android:id="@+id/sticky_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/list_page_head"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"/>
+
+        <FrameLayout
+            android:id="@+id/list_page_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.tgithubc.kumao.widget.dragLayout.StickyHeaderLayout>
+
+    <com.tgithubc.kumao.widget.TitleBar
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:tag="titleBar"/>
+</RelativeLayout>
