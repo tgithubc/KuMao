@@ -1,4 +1,4 @@
-package com.tgithubc.kumao.module.listpage.billboard;
+package com.tgithubc.kumao.module.detailpage.billboard;
 
 
 import com.tgithubc.kumao.base.IStateView;

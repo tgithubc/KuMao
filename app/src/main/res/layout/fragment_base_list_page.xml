@@ -22,6 +22,7 @@
     </com.tgithubc.kumao.widget.dragLayout.StickyHeaderLayout>
 
     <com.tgithubc.kumao.widget.TitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:tag="titleBar"/>

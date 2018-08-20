@@ -1,4 +1,4 @@
-package com.tgithubc.kumao.module.listpage.billboard;
+package com.tgithubc.kumao.module.detailpage.base;
 
 import android.support.annotation.Nullable;
 

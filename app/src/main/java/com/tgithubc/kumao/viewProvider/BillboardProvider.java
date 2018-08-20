@@ -8,7 +8,7 @@ import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Song;
 import com.tgithubc.kumao.fragment.FragmentOperation;
-import com.tgithubc.kumao.module.listpage.billboard.BillboardFragment;
+import com.tgithubc.kumao.module.detailpage.billboard.BillboardFragment;
 
 import java.util.List;
 
