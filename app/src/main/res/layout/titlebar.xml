@@ -31,7 +31,7 @@
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="10dp"
             android:scaleType="center"
-            tools:src="@drawable/title_back_up"/>
+            tools:src="@drawable/title_back_up_black"/>
     </FrameLayout>
 
     <FrameLayout

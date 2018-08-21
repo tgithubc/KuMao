@@ -95,21 +95,6 @@ public class StickyHeaderLayout extends LinearLayout {
         }
     }
 
-    /**
-     * 动态添加的部分，不同于xml里面初始化的，主要是不想增加多一层嵌套
-     * @param views
-     */
-    public void addView(View[] views) {
-        if (views.length < 2) {
-            throw new RuntimeException("StickyHeaderLayout must contains two child views!");
-        }
-        removeAllViews();
-        addView(views[0]);
-        addView(views[1]);
-        mHeaderView = getChildAt(0);
-        mContentView = getChildAt(1);
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();

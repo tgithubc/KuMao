@@ -36,7 +36,7 @@ public abstract class DetailListPageBaseFragment extends DetailPageBaseFragment 
 
     @Override
     public View onCreateContentView(LayoutInflater inflater, FrameLayout contentContainer) {
-        View view = inflater.inflate(R.layout.detail_page_content_list, contentContainer, false);
+        View view = inflater.inflate(R.layout.detail_page_content_list, contentContainer, true);
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -56,8 +56,6 @@ public abstract class DetailListPageBaseFragment extends DetailPageBaseFragment 
         // 统一请求
         mPresenter.getSongList(getType(), getRequestValue());
     }
-
-    public abstract int getType();
 
     public abstract Task.RequestValue getRequestValue();
 

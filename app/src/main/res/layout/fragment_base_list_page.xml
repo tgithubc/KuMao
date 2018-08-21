@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -9,10 +10,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/list_page_head"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"/>
+            android:layout_height="250dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/head_pic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <FrameLayout
+                android:id="@+id/list_page_head"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/list_page_content"
@@ -25,5 +36,6 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:tag="titleBar"/>
+        android:tag="titleBar"
+        app:leftIconId="@drawable/title_back_up_white"/>
 </RelativeLayout>

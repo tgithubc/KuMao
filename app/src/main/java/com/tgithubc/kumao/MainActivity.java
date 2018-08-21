@@ -18,6 +18,8 @@ import com.tgithubc.kumao.message.IObserver;
 import com.tgithubc.kumao.message.MessageBus;
 import com.tgithubc.kumao.module.HomePageAdapter;
 import com.tgithubc.kumao.module.featured.FeaturedFragment;
+import com.tgithubc.kumao.module.mine.MineFragment;
+import com.tgithubc.kumao.module.mv.MvFragment;
 import com.tgithubc.kumao.module.playpage.PlayFragment;
 import com.tgithubc.kumao.module.ranking.RankingFragment;
 import com.tgithubc.kumao.module.search.SearchFragment;
@@ -70,14 +72,14 @@ public class MainActivity extends BaseActivity implements OnFragmentStackChangeL
                 .addTab(newTab("我的", R.drawable.mine_normal, R.drawable.mine_selected))
                 .addTab(newTab("精选", R.drawable.featured_normal, R.drawable.featured_selected))
                 .addTab(newTab("榜单", R.drawable.ranking_normal, R.drawable.ranking_selected))
-                .addTab(newTab("设置", R.drawable.setting_normal, R.drawable.setting_selected))
+                .addTab(newTab("MV", R.drawable.setting_normal, R.drawable.setting_selected))
                 .build();
 
         final List<Fragment> fragments = new ArrayList<>();
-        fragments.add(TestFragment.newInstance("我的"));
+        fragments.add(MineFragment.newInstance());
         fragments.add(FeaturedFragment.newInstance());
         fragments.add(RankingFragment.newInstance());
-        fragments.add(TestFragment.newInstance("设置"));
+        fragments.add(MvFragment.newInstance());
         mAdapter = new HomePageAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(4);

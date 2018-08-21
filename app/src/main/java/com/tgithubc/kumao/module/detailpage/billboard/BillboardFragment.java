@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.tgithubc.fresco_wapper.ImageLoaderWrapper;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BaseData;
@@ -28,7 +26,6 @@ public class BillboardFragment extends DetailListPageBaseFragment implements IDe
     // 榜单的描述
     private static final String KEY_BILLBOARD_DESC = "key_billboard_desc";
 
-    private SimpleDraweeView mHeaderPicView;
     private TextView mDescView;
 
     private String mPicUrl;
@@ -62,12 +59,15 @@ public class BillboardFragment extends DetailListPageBaseFragment implements IDe
     }
 
     @Override
+    protected String getPicUrl() {
+        return mPicUrl;
+    }
+
+    @Override
     public View onCreateHeadView(LayoutInflater inflater, FrameLayout headContainer) {
-        View view = inflater.inflate(R.layout.detail_page_header_billboard, headContainer, false);
+        View view = inflater.inflate(R.layout.detail_page_header_billboard, headContainer, true);
         mDescView = view.findViewById(R.id.billboard_desc);
-        mHeaderPicView = view.findViewById(R.id.billboard_pic);
         mDescView.setText(mDesc);
-        ImageLoaderWrapper.getInstance().load(mHeaderPicView, mPicUrl);
         return view;
     }
 

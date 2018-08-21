@@ -3,8 +3,12 @@ package com.tgithubc.kumao.module.detailpage.base;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.tgithubc.fresco_wapper.ImageLoaderWrapper;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
 import com.tgithubc.kumao.widget.TitleBar;
@@ -29,8 +33,12 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
     // 基本的图片地址
     protected static final String KEY_LIST_PIC = "key_list_pic";
 
+    private View mHeadView;
+    private SimpleDraweeView mHeadPicView;
     private StickyHeaderLayout mStickyHeaderLayout;
     private TitleBar mTitleBar;
+    private Interpolator mInterpolator;
+
 
     @Override
     public int getLayoutId() {
@@ -40,15 +48,15 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
     @Override
     public void init(View view, LayoutInflater inflater, Bundle savedInstanceState) {
         mTitleBar = view.findViewById(R.id.title_bar);
+        mHeadPicView = view.findViewById(R.id.head_pic);
         mStickyHeaderLayout = view.findViewById(R.id.sticky_header_layout);
         FrameLayout headContainer = view.findViewById(R.id.list_page_head);
         FrameLayout contentContainer = view.findViewById(R.id.list_page_content);
-        View head = onCreateHeadView(inflater, headContainer);
-        View content = onCreateContentView(inflater, contentContainer);
-        // attachToRoot false 不想增加多一层嵌套
-        mStickyHeaderLayout.addView(new View[]{head, content});
+        onCreateContentView(inflater, contentContainer);
+        mHeadView = onCreateHeadView(inflater, headContainer);
         mStickyHeaderLayout.setGetTargetViewListener(this);
         mStickyHeaderLayout.setHeaderHiddenListener(this);
+        ImageLoaderWrapper.getInstance().load(mHeadPicView, getPicUrl());
     }
 
     @Override
@@ -56,9 +64,27 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
         return null;
     }
 
-    public abstract View onCreateContentView(LayoutInflater inflater, FrameLayout contentContainer);
+    /**
+     * 接收url统一处理顶部大图
+     */
+    protected abstract String getPicUrl();
 
-    public abstract View onCreateHeadView(LayoutInflater inflater, FrameLayout headContainer);
+    /**
+     * 具体类型（榜单/歌单/专辑/歌手）
+     */
+    protected abstract int getType();
+
+    /**
+     * 内容区
+     */
+    protected abstract View onCreateContentView(LayoutInflater inflater, FrameLayout contentContainer);
+
+    /**
+     * 头部信息区
+     *
+     * @return
+     */
+    protected abstract View onCreateHeadView(LayoutInflater inflater, FrameLayout headContainer);
 
     @Override
     public View getTargetView() {
@@ -77,6 +103,12 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
 
     @Override
     public void onHeaderScroll(float percent, int scrollDirection) {
-
+        if (mInterpolator == null) {
+            mInterpolator = new DecelerateInterpolator();
+        }
+        float curInterpolation = mInterpolator.getInterpolation(percent);
+        if (mHeadView != null) {
+            mHeadView.setAlpha(1 - curInterpolation);
+        }
     }
 }
