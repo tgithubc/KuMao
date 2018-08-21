@@ -90,9 +90,6 @@ public class StickyHeaderLayout extends LinearLayout {
         }
         mHeaderView = getChildAt(0);
         mContentView = getChildAt(1);
-        if (mHeaderHiddenListener != null) {
-            mHeaderHiddenListener.onHeaderScroll(0, SCROLL_TO_NONE);
-        }
     }
 
     @Override
@@ -111,6 +108,9 @@ public class StickyHeaderLayout extends LinearLayout {
                 }
             }
         });
+        if (mHeaderHiddenListener != null) {
+            mHeaderHiddenListener.onHeaderScroll(0, SCROLL_TO_NONE);
+        }
     }
 
     @Override

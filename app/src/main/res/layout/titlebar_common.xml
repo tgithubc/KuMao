@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="45dp"
     android:tag="titleBar"
-    app:leftIconId ="@drawable/title_back_up_black"
+    app:leftIconId ="@drawable/title_back_up_white"
     app:bgColor="@color/colorAccent"/>
 

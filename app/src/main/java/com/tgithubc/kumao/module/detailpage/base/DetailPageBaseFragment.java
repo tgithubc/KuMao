@@ -1,6 +1,7 @@
 package com.tgithubc.kumao.module.detailpage.base;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -9,6 +10,8 @@ import android.widget.FrameLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.tgithubc.fresco_wapper.ImageLoaderWrapper;
+import com.tgithubc.fresco_wapper.config.ImageLoadConfig;
+import com.tgithubc.fresco_wapper.util.BlurPostprocessor;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
 import com.tgithubc.kumao.widget.TitleBar;
@@ -26,6 +29,8 @@ import com.tgithubc.kumao.widget.dragLayout.StickyHeaderLayout;
 public abstract class DetailPageBaseFragment extends BaseFragment implements StickyHeaderLayout.IGetTargetViewListener,
         StickyHeaderLayout.IHeaderHiddenListener {
 
+    public static final int TYPE_LIST_BILLBOARD = 1;
+
     // 基本的id，请求用的，不能为空
     protected static final String KEY_LIST_ID = "key_list_id";
     // 基本的的名字
@@ -33,16 +38,25 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
     // 基本的图片地址
     protected static final String KEY_LIST_PIC = "key_list_pic";
 
+    protected int mId;
+    protected String mPicUrl;
+    protected String mName;
+
     private View mHeadView;
     private SimpleDraweeView mHeadPicView;
     private StickyHeaderLayout mStickyHeaderLayout;
     private TitleBar mTitleBar;
     private Interpolator mInterpolator;
 
-
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_base_list_page;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mId = bundle.getInt(KEY_LIST_ID);
+            mPicUrl = bundle.getString(KEY_LIST_PIC);
+            mName = bundle.getString(KEY_LIST_NAME);
+        }
     }
 
     @Override
@@ -56,35 +70,14 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
         mHeadView = onCreateHeadView(inflater, headContainer);
         mStickyHeaderLayout.setGetTargetViewListener(this);
         mStickyHeaderLayout.setHeaderHiddenListener(this);
-        ImageLoaderWrapper.getInstance().load(mHeadPicView, getPicUrl());
+        mTitleBar.setTitleColor(getActivity().getResources().getColor(R.color.white)).setMainTitle(mName);
+        initHeadPic();
     }
 
     @Override
     protected View onCreateTitleView(LayoutInflater inflater, FrameLayout titleContainer) {
         return null;
     }
-
-    /**
-     * 接收url统一处理顶部大图
-     */
-    protected abstract String getPicUrl();
-
-    /**
-     * 具体类型（榜单/歌单/专辑/歌手）
-     */
-    protected abstract int getType();
-
-    /**
-     * 内容区
-     */
-    protected abstract View onCreateContentView(LayoutInflater inflater, FrameLayout contentContainer);
-
-    /**
-     * 头部信息区
-     *
-     * @return
-     */
-    protected abstract View onCreateHeadView(LayoutInflater inflater, FrameLayout headContainer);
 
     @Override
     public View getTargetView() {
@@ -106,9 +99,52 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
         if (mInterpolator == null) {
             mInterpolator = new DecelerateInterpolator();
         }
+        double tmp;
+        if (percent < 0.5) {
+            tmp = 0;
+        } else {
+            tmp = (percent - 0.5) * 2;
+        }
+        mTitleBar.getTitlePanel().setAlpha(mInterpolator.getInterpolation((float) tmp));
         float curInterpolation = mInterpolator.getInterpolation(percent);
         if (mHeadView != null) {
             mHeadView.setAlpha(1 - curInterpolation);
         }
     }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_base_list_page;
+    }
+
+    private void initHeadPic() {
+        if (TYPE_LIST_BILLBOARD == getType()) {
+            ImageLoaderWrapper.getInstance().load(mHeadPicView, getPicUrl());
+        } else {
+            ImageLoaderWrapper.getInstance().load(mHeadPicView, getPicUrl(),
+                    new ImageLoadConfig.Builder(getActivity())
+                            .setPostprocessor(new BlurPostprocessor(50))
+                            .create());
+        }
+    }
+
+    /**
+     * 接收url统一处理顶部大图
+     */
+    protected abstract String getPicUrl();
+
+    /**
+     * 具体类型（榜单/歌单/专辑/歌手）
+     */
+    protected abstract int getType();
+
+    /**
+     * 内容区
+     */
+    protected abstract View onCreateContentView(LayoutInflater inflater, FrameLayout contentContainer);
+
+    /**
+     * 头部信息区
+     */
+    protected abstract View onCreateHeadView(LayoutInflater inflater, FrameLayout headContainer);
 }

@@ -20,7 +20,7 @@ public class SongAdapter extends BaseQuickAdapter<Song, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, Song item) {
-        helper.setText(R.id.song_name, item.getSongName());
-        helper.setText(R.id.song_artist, item.getAuthorName());
+        helper.setText(R.id.song_name, item.getSongName().trim());
+        helper.setText(R.id.song_artist, item.getAuthorName().trim());
     }
 }

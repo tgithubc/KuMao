@@ -1,5 +1,6 @@
 package com.tgithubc.kumao.base;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -13,34 +14,31 @@ import rx.subscriptions.CompositeSubscription;
 public abstract class BasePresenter<V extends IView> {
 
     private CompositeSubscription mSubscription;
-    private V mView;
-    private Class<? extends IView> mViewClass;
+    private V mProxyView;
+    private WeakReference<V> mWeakReference;
 
     public void attachView(V view) {
-        this.mView = view;
-        this.mViewClass = view.getClass();
-        this.mSubscription = new CompositeSubscription();
-        if (mViewClass.getInterfaces().length == 0) {
+        if (view.getClass().getInterfaces().length == 0) {
             throw new IllegalArgumentException("view must implement IView interface");
         }
+        mWeakReference = new WeakReference<>(view);
+        mProxyView = (V) Proxy.newProxyInstance(
+                view.getClass().getClassLoader(),
+                view.getClass().getInterfaces(),
+                new ViewProxy(view));
+        mSubscription = new CompositeSubscription();
     }
 
     public void detachView() {
-        mView = null;
+        if (mWeakReference != null) {
+            mWeakReference.clear();
+            mWeakReference = null;
+        }
         removeSubscribe();
     }
 
     public V getView() {
-        if (mView == null) {
-            return ViewProxy.newInstance(mViewClass);
-        }
-        return mView;
-    }
-
-    protected void addSubscribe(Subscription s) {
-        if (mSubscription != null) {
-            mSubscription.add(s);
-        }
+        return mProxyView;
     }
 
     private void removeSubscribe() {
@@ -49,21 +47,28 @@ public abstract class BasePresenter<V extends IView> {
         }
     }
 
-    private static class ViewProxy implements InvocationHandler {
+    protected void addSubscribe(Subscription s) {
+        if (mSubscription != null) {
+            mSubscription.add(s);
+        }
+    }
 
-        public static <V> V newInstance(Class<? extends IView> clazz) {
-            return (V) Proxy.newProxyInstance(
-                    clazz.getClassLoader(),
-                    clazz.getInterfaces(),
-                    new ViewProxy());
+    private boolean isAttachView() {
+        return mWeakReference != null && mWeakReference.get() != null;
+    }
+
+    private class ViewProxy implements InvocationHandler {
+
+        private IView mView;
+
+        ViewProxy(IView view) {
+            this.mView = view;
         }
 
         @Override
-        public Object invoke(Object o, Method method, Object[] objects) {
-            try {
-                return method.invoke(o, objects);
-            } catch (Throwable e) {
-                e.printStackTrace();
+        public Object invoke(Object o, Method method, Object[] args) throws Throwable {
+            if (isAttachView()) {
+                return method.invoke(mView, args);
             }
             return null;
         }

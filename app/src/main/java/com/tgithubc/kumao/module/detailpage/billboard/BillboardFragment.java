@@ -8,29 +8,26 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.tgithubc.kumao.R;
-import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Billboard;
-import com.tgithubc.kumao.constant.Constant;
-import com.tgithubc.kumao.data.task.GetBillboardTask;
-import com.tgithubc.kumao.module.detailpage.base.list.DetailListPageBaseFragment;
+import com.tgithubc.kumao.module.detailpage.base.list.DetailListPageFragment;
 import com.tgithubc.kumao.module.detailpage.base.list.IDetailListPageContract;
 import com.tgithubc.kumao.util.RxMap;
+
+import java.util.Map;
 
 /**
  * 榜单
  * Created by tc :)
  */
-public class BillboardFragment extends DetailListPageBaseFragment implements IDetailListPageContract.V {
+public class BillboardFragment extends DetailListPageFragment implements IDetailListPageContract.V {
 
     // 榜单的描述
     private static final String KEY_BILLBOARD_DESC = "key_billboard_desc";
 
-    private TextView mDescView;
+    private TextView mBillboardDescView;
+    private String mBillboardDesc;
 
-    private String mPicUrl;
-    private String mDesc;
-    private int mId;
 
     public static BillboardFragment newInstance(BaseData data) {
         BillboardFragment fragment = new BillboardFragment();
@@ -52,10 +49,21 @@ public class BillboardFragment extends DetailListPageBaseFragment implements IDe
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mId = bundle.getInt(KEY_LIST_ID);
-            mDesc = bundle.getString(KEY_BILLBOARD_DESC);
-            mPicUrl = bundle.getString(KEY_LIST_PIC);
+            mBillboardDesc = bundle.getString(KEY_BILLBOARD_DESC);
         }
+    }
+
+    @Override
+    public View onCreateHeadView(LayoutInflater inflater, FrameLayout headContainer) {
+        View view = inflater.inflate(R.layout.detail_page_header_billboard, headContainer, true);
+        mBillboardDescView = view.findViewById(R.id.billboard_desc);
+        mBillboardDescView.setText(mBillboardDesc);
+        return view;
+    }
+
+    @Override
+    public int getType() {
+        return TYPE_LIST_BILLBOARD;
     }
 
     @Override
@@ -64,22 +72,9 @@ public class BillboardFragment extends DetailListPageBaseFragment implements IDe
     }
 
     @Override
-    public View onCreateHeadView(LayoutInflater inflater, FrameLayout headContainer) {
-        View view = inflater.inflate(R.layout.detail_page_header_billboard, headContainer, true);
-        mDescView = view.findViewById(R.id.billboard_desc);
-        mDescView.setText(mDesc);
-        return view;
-    }
-
-    @Override
-    public int getType() {
-        return KEY_LIST_BILLBOARD;
-    }
-
-    @Override
-    public Task.RequestValue getRequestValue() {
-        return new GetBillboardTask.RequestValue(Constant.Api.URL_BILLBOARD, new RxMap<String, String>()
+    public Map<String, String> getRequestValue() {
+        return new RxMap<String, String>()
                 .put("type", String.valueOf(mId))
-                .build());
+                .build();
     }
 }

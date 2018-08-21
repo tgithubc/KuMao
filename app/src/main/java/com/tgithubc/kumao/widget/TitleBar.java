@@ -179,9 +179,19 @@ public class TitleBar extends RelativeLayout {
         return this;
     }
 
+    public TitleBar setMainTitleColor(int color) {
+        mMainTitle.setTextColor(color);
+        return this;
+    }
+
     public TitleBar setSubTitle(int resId) {
         mSubTitle.setText(resId);
         mSubTitle.setVisibility(VISIBLE);
+        return this;
+    }
+
+    public TitleBar setSubTitleColor(int color) {
+        mSubTitle.setTextColor(color);
         return this;
     }
 
@@ -297,5 +307,9 @@ public class TitleBar extends RelativeLayout {
             mCheckBox.setOnCheckedChangeListener(listener);
         }
         return this;
+    }
+
+    public LinearLayout getTitlePanel() {
+        return mTitlePanel;
     }
 }

@@ -9,28 +9,27 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.tgithubc.kumao.R;
-import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.Song;
 import com.tgithubc.kumao.module.detailpage.base.DetailPageBaseFragment;
 import com.tgithubc.kumao.module.detailpage.base.SongAdapter;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tc :)
  */
-public abstract class DetailListPageBaseFragment extends DetailPageBaseFragment implements IDetailListPageContract.V {
-
-    public static final int KEY_LIST_BILLBOARD = 1;
+public abstract class DetailListPageFragment extends DetailPageBaseFragment implements IDetailListPageContract.V {
 
     private RecyclerView mRecyclerView;
     private SongAdapter mSongAdapter;
     private DetailListPagePresenter mPresenter;
+    private FrameLayout mLoadingView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new DetailListPagePresenter();
+        mPresenter = new DetailListPagePresenter(getType());
         mPresenter.attachView(this);
     }
 
@@ -38,6 +37,7 @@ public abstract class DetailListPageBaseFragment extends DetailPageBaseFragment 
     public View onCreateContentView(LayoutInflater inflater, FrameLayout contentContainer) {
         View view = inflater.inflate(R.layout.detail_page_content_list, contentContainer, true);
         mRecyclerView = view.findViewById(R.id.recycler_view);
+        mLoadingView = view.findViewById(R.id.loading_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
@@ -53,11 +53,8 @@ public abstract class DetailListPageBaseFragment extends DetailPageBaseFragment 
         super.onViewCreated(view, savedInstanceState);
         mSongAdapter = new SongAdapter(null);
         mSongAdapter.bindToRecyclerView(mRecyclerView);
-        // 统一请求
-        mPresenter.getSongList(getType(), getRequestValue());
+        mPresenter.getSongList(getRequestValue());
     }
-
-    public abstract Task.RequestValue getRequestValue();
 
     @Override
     public void onDestroy() {
@@ -72,6 +69,16 @@ public abstract class DetailListPageBaseFragment extends DetailPageBaseFragment 
 
     @Override
     public void showSongList(List<Song> songList) {
+        mLoadingView.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
         mSongAdapter.setNewData(songList);
     }
+
+    @Override
+    public void showLoading() {
+        mLoadingView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
+    protected abstract Map<String, String> getRequestValue();
 }

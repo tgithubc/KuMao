@@ -3,47 +3,53 @@ package com.tgithubc.kumao.module.detailpage.base.list;
 import com.tgithubc.kumao.base.BasePresenter;
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBillboardTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
+import com.tgithubc.kumao.module.detailpage.base.DetailPageBaseFragment;
 
 import java.util.List;
+import java.util.Map;
 
-import rx.Observable;
 import rx.Subscription;
+
+import static android.R.attr.type;
 
 /**
  * Created by tc :)
  */
 public class DetailListPagePresenter extends BasePresenter<IDetailListPageContract.V> implements IDetailListPageContract.P {
 
-    @Override
-    public void getSongList(int type, Task.RequestValue requestValue) {
-        requestByType(type, (GetBillboardTask.RequestValue) requestValue);
+    private int mType;
+
+    public DetailListPagePresenter(int type) {
+        this.mType = type;
     }
 
-    private void requestByType(int type, GetBillboardTask.RequestValue requestValue) {
-        switch (type) {
-            case DetailListPageBaseFragment.KEY_LIST_BILLBOARD:
-                requestBillboard(type, requestValue);
+    @Override
+    public void getSongList(Map<String, String> requestValue) {
+        switch (mType) {
+            case DetailPageBaseFragment.TYPE_LIST_BILLBOARD:
+                requestBillboard(requestValue);
                 break;
             default:
                 break;
         }
     }
 
-    private void requestBillboard(int type, GetBillboardTask.RequestValue requestValue) {
-        Observable<GetBillboardTask.ResponseValue> observable = new GetBillboardTask().execute(requestValue);
-        Subscription subscription = observable.subscribe(new DetailListSubscriber(type));
+    private void requestBillboard(Map<String, String> requestValue) {
+        Subscription subscription = new GetBillboardTask()
+                .execute(new GetBillboardTask.RequestValue(Constant.Api.URL_BILLBOARD, requestValue))
+                .subscribe(new DetailListSubscriber());
         addSubscribe(subscription);
     }
 
     private class DetailListSubscriber extends HttpSubscriber<Task.ResponseValue> {
 
-        private int mType;
-
-        public DetailListSubscriber(int type) {
-            super();
-            this.mType = type;
+        @Override
+        public void onStart() {
+            super.onStart();
+            getView().showLoading();
         }
 
         @Override
@@ -60,7 +66,7 @@ public class DetailListPagePresenter extends BasePresenter<IDetailListPageContra
         private void responseByType(GetBillboardTask.ResponseValue responseValue) {
             List<Song> songList = null;
             switch (mType) {
-                case DetailListPageBaseFragment.KEY_LIST_BILLBOARD:
+                case DetailPageBaseFragment.TYPE_LIST_BILLBOARD:
                     songList = responseValue.getResult().getSongList();
                     break;
                 default:
