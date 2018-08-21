@@ -21,7 +21,6 @@ public class RankingPresenter extends BasePresenter<IRankingContract.V> implemen
 
             @Override
             public void onStart() {
-                super.onStart();
                 getView().showLoading();
             }
 
@@ -32,7 +31,6 @@ public class RankingPresenter extends BasePresenter<IRankingContract.V> implemen
 
             @Override
             public void onNext(GetBillboardListTask.ResponseValue responseValue) {
-                super.onNext(responseValue);
                 getView().showRankingView(responseValue.getResult());
             }
         });

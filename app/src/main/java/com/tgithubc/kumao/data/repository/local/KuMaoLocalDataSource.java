@@ -15,7 +15,6 @@ import com.tgithubc.kumao.util.ACache;
 import com.tgithubc.kumao.util.RxHandler;
 
 import org.greendao.autogen.KeyWordDao;
-import org.greendao.autogen.SongDao;
 
 import java.util.List;
 import java.util.Map;
@@ -29,11 +28,9 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
 
     private static KuMaoLocalDataSource INSTANCE;
     private KeyWordDao mKeyWordDao;
-    private SongDao mSongDao;
 
     private KuMaoLocalDataSource() {
         mKeyWordDao = DbCore.getInstance().getDaoSession().getKeyWordDao();
-        mSongDao = DbCore.getInstance().getDaoSession().getSongDao();
     }
 
     public static KuMaoLocalDataSource getInstance() {
@@ -45,37 +42,27 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
 
     @Override
     public Observable<List<Banner>> getBanner(String url, Map<String, String> maps) {
-        return createObservable(url, ParserFactory.PARSE_BANNER);
+        return createObservable(url, maps, ParserFactory.PARSE_BANNER);
     }
 
     @Override
     public Observable<Billboard> getBillboard(String url, Map<String, String> maps) {
-        return createObservable(url, ParserFactory.PARSE_BILLBOARD);
+        return createObservable(url, maps, ParserFactory.PARSE_BILLBOARD);
     }
 
     @Override
     public Observable<List<Billboard>> getBillboardList(String url, Map<String, String> maps) {
-        return createObservable(url, ParserFactory.PARSE_BILLBOARD_LIST);
+        return createObservable(url, maps, ParserFactory.PARSE_BILLBOARD_LIST);
     }
 
     @Override
     public Observable<Song> getSongInfo(String url, Map<String, String> maps) {
-        String id = maps.get("songid");
-        return Observable.create(subscriber -> {
-            Song song = mSongDao.queryBuilder().where(SongDao.Properties.SongId.eq(id)).unique();
-            if (song != null) {
-                // 本地数据库有
-                subscriber.onNext(song);
-            }
-            // 本地数据库无发射onComplete
-            // concat只有前一个 Observable 终止(onComplete) 后才会订阅下一个 Observable
-            subscriber.onCompleted();
-        });
+        return createObservable(url, maps, ParserFactory.PARSE_SONG_INFO);
     }
 
     @Override
     public Observable<List<String>> getHotWord(String url) {
-        return createObservable(url, ParserFactory.PARSE_HOTWORD);
+        return createObservable(url, null, ParserFactory.PARSE_HOTWORD);
     }
 
     @Override
@@ -124,13 +111,16 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
         mKeyWordDao.deleteAll();
     }
 
-    private <T> Observable<T> createObservable(String url, int type) {
+    private <T> Observable<T> createObservable(String url, Map<String, String> maps, int type) {
         return Observable.create((Observable.OnSubscribe<String>) subscriber -> {
-            String cache = ACache.get(KuMao.getContext()).getAsString(url);
+            String cacheKey = maps == null ? url : url + maps.toString();
+            String cache = ACache.get(KuMao.getContext()).getAsString(cacheKey);
             if (!TextUtils.isEmpty(cache)) {
                 subscriber.onNext(cache);
+            } else {
+                // concat只有前一个 Observable 终止(onComplete) 后才会订阅下一个 Observable
+                subscriber.onCompleted();
             }
-            subscriber.onCompleted();
         }).compose(RxHandler.handlerResult(type));
     }
 }
