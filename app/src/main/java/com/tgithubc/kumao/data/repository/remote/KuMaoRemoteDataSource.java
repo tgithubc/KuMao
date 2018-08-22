@@ -75,17 +75,17 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
 
     @Override
     public void saveSearchHistory(String keyWord) {
-
+        // remote do noting
     }
 
     @Override
     public void deleteSearchHistory(KeyWord keyWords) {
-
+        // remote do noting
     }
 
     @Override
     public void clearSearchHistory() {
-
+        // remote do noting
     }
 
     private <T> Observable<T> createObservable(String url,

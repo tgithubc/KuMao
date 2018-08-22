@@ -50,6 +50,4 @@ public class RxHandler {
                 .subscribeOn(mBackgroundScheduler)
                 .observeOn(AndroidSchedulers.mainThread());
     }
-
-
 }

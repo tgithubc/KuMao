@@ -67,6 +67,7 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
 
     @Override
     public Observable<SearchResult> getSearchResult(String url, Map<String, String> maps) {
+        // local do noting
         return null;
     }
 

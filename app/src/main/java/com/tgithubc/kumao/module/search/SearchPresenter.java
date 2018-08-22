@@ -107,8 +107,9 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                                 List<BaseData> data = responseValue.getResult();
                                 if (data.isEmpty()) {
                                     getView().loadMoreFinish();
+                                } else {
+                                    getView().loadMoreRefresh(data);
                                 }
-                                getView().loadMoreRefresh(data);
                             }
                         });
         addSubscribe(subscription);

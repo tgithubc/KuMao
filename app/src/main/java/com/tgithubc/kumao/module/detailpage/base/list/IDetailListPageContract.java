@@ -15,10 +15,18 @@ public interface IDetailListPageContract {
     interface V extends IStateView {
 
         void showSongList(List<Song> songList);
+
+        void loadMoreError();
+
+        void loadMoreFinish();
+
+        void loadMoreRefresh(List<Song> more);
     }
 
     interface P {
 
-        void getSongList(Map<String, String> requestValue);
+        void getSongList(Map<String, String> requestValue, int offset);
+
+        void loadMore(Map<String, String> requestValue);
     }
 }

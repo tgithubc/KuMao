@@ -28,7 +28,6 @@ public class BillboardFragment extends DetailListPageFragment implements IDetail
     private TextView mBillboardDescView;
     private String mBillboardDesc;
 
-
     public static BillboardFragment newInstance(BaseData data) {
         BillboardFragment fragment = new BillboardFragment();
         Object obj = data.getData();
@@ -67,7 +66,7 @@ public class BillboardFragment extends DetailListPageFragment implements IDetail
     }
 
     @Override
-    protected String getPicUrl() {
+    public String getPicUrl() {
         return mPicUrl;
     }
 

@@ -61,7 +61,6 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
 
         @Override
         public void onStart() {
-            super.onStart();
             getView().showLoading();
         }
 

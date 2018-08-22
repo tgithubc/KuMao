@@ -37,7 +37,6 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> {
     private static final String MSG_UNKNOWN_ERROR = "未知错误";
 
     public void onStart() {
-        super.onStart();
     }
 
     @Override

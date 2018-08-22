@@ -53,7 +53,8 @@ public abstract class DetailListPageFragment extends DetailPageBaseFragment impl
         super.onViewCreated(view, savedInstanceState);
         mSongAdapter = new SongAdapter(null);
         mSongAdapter.bindToRecyclerView(mRecyclerView);
-        mPresenter.getSongList(getRequestValue());
+        mSongAdapter.setOnLoadMoreListener(() -> mPresenter.loadMore(getRequestValue()), mRecyclerView);
+        mPresenter.getSongList(getRequestValue(), 0);
     }
 
     @Override
@@ -80,5 +81,24 @@ public abstract class DetailListPageFragment extends DetailPageBaseFragment impl
         mRecyclerView.setVisibility(View.GONE);
     }
 
+    @Override
+    public void loadMoreFinish() {
+        mSongAdapter.loadMoreEnd(true);
+    }
+
+    @Override
+    public void loadMoreRefresh(List<Song> more) {
+        mSongAdapter.addData(more);
+        mSongAdapter.loadMoreComplete();
+    }
+
+    @Override
+    public void loadMoreError() {
+        mSongAdapter.loadMoreFail();
+    }
+
+    /**
+     * 个性化的请求参数
+     */
     protected abstract Map<String, String> getRequestValue();
 }
