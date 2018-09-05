@@ -33,8 +33,8 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
     @Override
     public void getHotWord() {
         Subscription subscription =
-                new GetHotWordTask()
-                        .execute(new GetHotWordTask.RequestValue(Constant.Api.URL_HOTWORD, null))
+               new GetHotWordTask()
+                        .execute(new Task.CommonRequestValue(Constant.Api.URL_HOTWORD, null))
                         .subscribe(new HttpSubscriber<GetHotWordTask.ResponseValue>() {
 
                             @Override
@@ -148,7 +148,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                 .put("page_no", String.valueOf(page))
                 .put("query", keyword)
                 .build();
-        return new GetSearchResultTask().execute(new GetSearchResultTask.RequestValue(Constant.Api.URL_SEARCH, rq));
+        return new GetSearchResultTask().execute(new Task.CommonRequestValue(Constant.Api.URL_SEARCH, rq));
     }
 
     private void resetKeyWord() {

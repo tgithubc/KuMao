@@ -6,39 +6,30 @@ import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.Song;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
-import java.util.Map;
-
 import rx.Observable;
 
 /**
  * Created by tc :)
  */
-public class GetSongInfoTask extends Task<GetSongInfoTask.RequestValue, GetSongInfoTask.ResponseValue> {
+public class GetSongInfoTask extends Task<Task.CommonRequestValue, GetSongInfoTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
+    protected Observable<ResponseValue> executeTask(CommonRequestValue requestValues) {
         return RepositoryProvider.getRepository()
                 .getSongInfo(requestValues.getUrl(), requestValues.getParameter())
                 .map(ResponseValue::new);
     }
 
-    public static final class RequestValue extends Task.CommonRequestValue {
-
-        public RequestValue(String url, Map<String, String> parameter) {
-            super(url, parameter);
-        }
-    }
-
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private Song mResult;
+        private Song result;
 
         public ResponseValue(@NonNull Song result) {
-            mResult = result;
+            this.result = result;
         }
 
         public Song getResult() {
-            return mResult;
+            return result;
         }
     }
 }

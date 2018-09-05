@@ -9,6 +9,7 @@ public class BaseData<E> {
     // 推荐页
     public static final int TYPE_BANNER = 1000;// 轮播图
     public static final int TYPE_TITLE_MORE = 1001;// title,更多
+    public static final int TYPE_HOT_SONG_LIST = 1002;// 热门歌单
 
     // 搜索结果页
     public static final int TYPE_SEARCH_RESULT_ARTIST = 2000;// 搜索结果的歌手

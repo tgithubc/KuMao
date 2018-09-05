@@ -12,17 +12,16 @@ import com.tgithubc.kumao.util.RxMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import rx.Observable;
 
 /**
  * Created by tc :)
  */
-public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue, GetBillboardListTask.ResponseValue> {
+public class GetBillboardListTask extends Task<Task.CommonRequestValue, GetBillboardListTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
+    protected Observable<ResponseValue> executeTask(CommonRequestValue requestValues) {
         return RepositoryProvider.getRepository()
                 .getBillboardList(requestValues.getUrl(), requestValues.getParameter())
                 .flatMap(this::requestNewBillboard)
@@ -79,23 +78,16 @@ public class GetBillboardListTask extends Task<GetBillboardListTask.RequestValue
                 .getSongInfo(Constant.Api.URL_SONGINFO, new RxMap<String, String>().put("songid", song.getSongId()).build());
     }
 
-    public static final class RequestValue extends Task.CommonRequestValue {
-
-        public RequestValue(String url, Map<String, String> parameter) {
-            super(url, parameter);
-        }
-    }
-
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private List<BaseData> mResult;
+        private List<BaseData> result;
 
         public ResponseValue(@NonNull List<BaseData> result) {
-            mResult = result;
+            this.result = result;
         }
 
         public List<BaseData> getResult() {
-            return mResult;
+            return result;
         }
     }
 }

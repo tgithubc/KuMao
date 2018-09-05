@@ -2,7 +2,6 @@ package com.tgithubc.kumao.bean;
 
 
 /**
- * 单条Banner
  * Created by tc :)
  */
 public class Banner {

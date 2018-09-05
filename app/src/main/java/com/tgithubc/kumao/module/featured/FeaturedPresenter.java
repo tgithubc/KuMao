@@ -7,16 +7,16 @@ import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBannerTask;
-import com.tgithubc.kumao.data.task.GetBillboardListTask;
+import com.tgithubc.kumao.data.task.GetHostSongListTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
 import com.tgithubc.kumao.util.RxMap;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
 import rx.Subscription;
+
 
 /**
  * 样式排序
@@ -37,24 +37,28 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     public void getFeaturedData() {
         // 开始多个task，组合成一个数据流返回，不是自己的接口没办法
         Subscription subscription = Observable
-                .merge(runBannerTask(), runBillboardListTask())
+                .merge(runBannerTask(), runHotSongListTask())
                 .toList()
                 .subscribe(new FeaturedHttpSubscriber());
         addSubscribe(subscription);
     }
 
+    /**
+     * banner
+     */
     private Observable<GetBannerTask.ResponseValue> runBannerTask() {
-        return new GetBannerTask()
-                .execute(new GetBannerTask.RequestValue(
-                        Constant.Api.URL_BANNER,
-                        new RxMap<String, String>()
-                                .put("num", "10")
-                                .build()));
+        Task.CommonRequestValue rq = new Task.CommonRequestValue(Constant.Api.URL_BANNER,
+                new RxMap<String, String>().put("num", "10").build());
+        return new GetBannerTask().execute(rq);
     }
 
-    private Observable<GetBillboardListTask.ResponseValue> runBillboardListTask() {
-        // 其他类型
-        return null;
+    /**
+     * hot song list
+     */
+    private Observable<GetHostSongListTask.ResponseValue> runHotSongListTask() {
+        Task.CommonRequestValue rq = new Task.CommonRequestValue(Constant.Api.URL_HOT_SONG_LIST,
+                new RxMap<String, String>().put("num", "6").build());
+        return new GetHostSongListTask().execute(rq);
     }
 
     private class FeaturedHttpSubscriber extends HttpSubscriber<List<Task.ResponseValue>> {

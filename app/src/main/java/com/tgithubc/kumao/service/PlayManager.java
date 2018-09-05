@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 
 import com.tgithubc.kumao.IPlayAidl;
 import com.tgithubc.kumao.IPlayCallbackAidl;
 import com.tgithubc.kumao.KuMao;
+import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.Song;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetSongInfoTask;
@@ -279,7 +279,7 @@ public class PlayManager {
         }
         Song requestSong = mCurrentSongList.get(index);
         new GetSongInfoTask()
-                .execute(new GetSongInfoTask.RequestValue(
+                .execute(new Task.CommonRequestValue(
                         Constant.Api.URL_SONGINFO,
                         new RxMap<String, String>().put("songid", requestSong.getSongId()).build()))
                 .subscribe(responseValue -> {

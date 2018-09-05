@@ -8,6 +8,7 @@ import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.bean.SongList;
 import com.tgithubc.kumao.data.repository.KuMaoDataSource;
 import com.tgithubc.kumao.db.DbCore;
 import com.tgithubc.kumao.parser.ParserFactory;
@@ -66,6 +67,11 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
     }
 
     @Override
+    public Observable<List<SongList>> getHotSongList(String url, Map<String, String> maps) {
+        return createObservable(url, maps, ParserFactory.PARSE_HOT_SONG_LIST);
+    }
+
+    @Override
     public Observable<SearchResult> getSearchResult(String url, Map<String, String> maps) {
         // local do noting
         return null;
@@ -74,11 +80,8 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
     @Override
     public Observable<List<KeyWord>> getSearchHistory() {
         return Observable.create(subscriber -> {
-            List<KeyWord> historyList = mKeyWordDao
-                    .queryBuilder()
-                    .orderDesc(KeyWordDao.Properties.SearchTime)
-                    .build()
-                    .list();
+            List<KeyWord> historyList =
+                    mKeyWordDao.queryBuilder().orderDesc(KeyWordDao.Properties.SearchTime).build().list();
             subscriber.onNext(historyList);
             subscriber.onCompleted();
         });
@@ -86,11 +89,8 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
 
     @Override
     public void saveSearchHistory(String keyWord) {
-        KeyWord query = mKeyWordDao
-                .queryBuilder()
-                .where(KeyWordDao.Properties.KeyWord.eq(keyWord))
-                .build()
-                .unique();
+        KeyWord query =
+                mKeyWordDao.queryBuilder().where(KeyWordDao.Properties.KeyWord.eq(keyWord)).build().unique();
         if (query == null) {
             KeyWord entity = new KeyWord();
             entity.setKeyWord(keyWord);

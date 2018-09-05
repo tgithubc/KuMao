@@ -11,17 +11,16 @@ import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import rx.Observable;
 
 /**
  * Created by tc :)
  */
-public class GetSearchResultTask extends Task<GetSearchResultTask.RequestValue, GetSearchResultTask.ResponseValue> {
+public class GetSearchResultTask extends Task<Task.CommonRequestValue, GetSearchResultTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
+    protected Observable<ResponseValue> executeTask(CommonRequestValue requestValues) {
         return RepositoryProvider.getRepository()
                 .getSearchResult(requestValues.getUrl(), requestValues.getParameter())
                 .map(result -> {
@@ -51,23 +50,16 @@ public class GetSearchResultTask extends Task<GetSearchResultTask.RequestValue, 
                 });
     }
 
-    public static final class RequestValue extends Task.CommonRequestValue {
-
-        public RequestValue(String url, Map<String, String> parameter) {
-            super(url, parameter);
-        }
-    }
-
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private List<BaseData> mResult;
+        private List<BaseData> result;
 
         public ResponseValue(@NonNull List<BaseData> result) {
-            mResult = result;
+            this.result = result;
         }
 
         public List<BaseData> getResult() {
-            return mResult;
+            return result;
         }
     }
 }

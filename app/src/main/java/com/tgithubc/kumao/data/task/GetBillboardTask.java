@@ -6,39 +6,30 @@ import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
-import java.util.Map;
-
 import rx.Observable;
 
 /**
  * Created by tc :)
  */
-public class GetBillboardTask extends Task<GetBillboardTask.RequestValue, GetBillboardTask.ResponseValue> {
+public class GetBillboardTask extends Task<Task.CommonRequestValue, GetBillboardTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
+    protected Observable<ResponseValue> executeTask(CommonRequestValue requestValues) {
         return RepositoryProvider.getRepository()
                 .getBillboard(requestValues.getUrl(), requestValues.getParameter())
                 .map(ResponseValue::new);
     }
 
-    public static final class RequestValue extends Task.CommonRequestValue {
-
-        public RequestValue(String url, Map<String, String> parameter) {
-            super(url, parameter);
-        }
-    }
-
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private Billboard mResult;
+        private Billboard billboard;
 
-        public ResponseValue(@NonNull Billboard result) {
-            mResult = result;
+        public ResponseValue(@NonNull Billboard billboard) {
+            this.billboard = billboard;
         }
 
         public Billboard getResult() {
-            return mResult;
+            return billboard;
         }
     }
 }

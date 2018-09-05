@@ -24,14 +24,14 @@ public class GetSearchHistoryTask extends Task<Task.EmptyRequestValue, GetSearch
 
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private List<KeyWord> mResult;
+        private List<KeyWord> result;
 
         public ResponseValue(@NonNull List<KeyWord> result) {
-            mResult = result;
+            this.result = result;
         }
 
         public List<KeyWord> getResult() {
-            return mResult;
+            return result;
         }
     }
 }

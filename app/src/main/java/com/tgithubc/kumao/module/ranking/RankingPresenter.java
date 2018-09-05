@@ -1,6 +1,7 @@
 package com.tgithubc.kumao.module.ranking;
 
 import com.tgithubc.kumao.base.BasePresenter;
+import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBillboardListTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
@@ -16,7 +17,7 @@ public class RankingPresenter extends BasePresenter<IRankingContract.V> implemen
     @Override
     public void getRankingData() {
         Observable<GetBillboardListTask.ResponseValue> task = new GetBillboardListTask()
-                .execute(new GetBillboardListTask.RequestValue(Constant.Api.URL_BILLBOARD_LIST, null));
+                .execute(new Task.CommonRequestValue(Constant.Api.URL_BILLBOARD_LIST, null));
         Subscription subscription = task.subscribe(new HttpSubscriber<GetBillboardListTask.ResponseValue>() {
 
             @Override

@@ -76,8 +76,7 @@ public class DetailListPagePresenter extends BasePresenter<IDetailListPageContra
     }
 
     private Observable requestBillboard(Map<String, String> requestValue) {
-        return new GetBillboardTask()
-                .execute(new GetBillboardTask.RequestValue(Constant.Api.URL_BILLBOARD, requestValue));
+       return new GetBillboardTask().execute(new Task.CommonRequestValue(Constant.Api.URL_BILLBOARD, requestValue));
     }
 
     private class LoadMoreSubscriber extends HttpSubscriber<Task.ResponseValue> {

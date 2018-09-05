@@ -11,12 +11,12 @@
         android:background="@android:color/white">
 
         <ProgressBar
-            android:layout_marginBottom="180dp"
             android:id="@+id/progress_wheel"
             style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginBottom="180dp"/>
     </FrameLayout>
 
     <android.support.v7.widget.RecyclerView

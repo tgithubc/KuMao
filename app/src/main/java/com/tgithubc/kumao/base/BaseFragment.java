@@ -70,11 +70,11 @@ public abstract class BaseFragment extends SwipeBackFragment implements IStateVi
         return null;
     }
 
-    /**
-     * 是否需要多状态视图管理
-     */
-    protected boolean isShowLCEE() {
-        return false;
+    protected void closeFragment() {
+        Fragment top = FragmentOperation.getInstance().getTopFragment();
+        if (this == top) {
+            FragmentOperation.getInstance().pop();
+        }
     }
 
     /**
@@ -124,18 +124,12 @@ public abstract class BaseFragment extends SwipeBackFragment implements IStateVi
         closeFragment();
     }
 
-    protected void closeFragment() {
-        Fragment top = FragmentOperation.getInstance().getTopFragment();
-        if (this == top) {
-            FragmentOperation.getInstance().pop();
-        }
-    }
-
+    /**
+     * 默认viewpager里面的子tab都不添加左滑层级，同时所有sub的和full的默认可以左滑，不需要的话自己复写返回false
+     * @return true 添加左滑层级 false 不添加左滑层级
+     */
     @Override
     public boolean isNeedSwipeBack() {
-        // 默认viewpager里面的子tab都不添加左滑层级，
-        // 同时所有sub的和full的默认可以左滑，
-        // 不需要的话自己复写返回false
         return getFragmentType() != FragmentType.TYPE_NONE;
     }
 
@@ -149,13 +143,25 @@ public abstract class BaseFragment extends SwipeBackFragment implements IStateVi
     }
 
     public void onRetry() {
+
     }
 
     public void onNewIntent(Bundle bundle) {
+
     }
 
-    //返回true表示不向下传递消息了
+    /**
+     * 拦截onKeyDown事件
+     * @return 返回true表示不向下传递消息了
+     */
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return false;
+    }
+
+    /**
+     * 是否需要多状态视图管理
+     */
+    public boolean isShowLCEE() {
         return false;
     }
 

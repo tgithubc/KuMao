@@ -6,39 +6,31 @@ import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
 import java.util.List;
-import java.util.Map;
 
 import rx.Observable;
 
 /**
  * Created by tc :)
  */
-public class GetHotWordTask extends Task<GetHotWordTask.RequestValue, GetHotWordTask.ResponseValue> {
+public class GetHotWordTask extends Task<Task.CommonRequestValue, GetHotWordTask.ResponseValue> {
 
     @Override
-    protected Observable<ResponseValue> executeTask(RequestValue requestValues) {
+    protected Observable<ResponseValue> executeTask(CommonRequestValue requestValues) {
         return RepositoryProvider.getRepository()
                 .getHotWord(requestValues.getUrl())
                 .map(ResponseValue::new);
     }
 
-    public static final class RequestValue extends Task.CommonRequestValue {
-
-        public RequestValue(String url, Map<String, String> parameter) {
-            super(url, parameter);
-        }
-    }
-
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private List<String> mResult;
+        private List<String> hotWord;
 
-        public ResponseValue(@NonNull List<String> result) {
-            mResult = result;
+        public ResponseValue(@NonNull List<String> hotWord) {
+            this.hotWord = hotWord;
         }
 
         public List<String> getResult() {
-            return mResult;
+            return hotWord;
         }
     }
 }
