@@ -4,7 +4,7 @@ package com.tgithubc.kumao.bean;
 /**
  * Created by tc :)
  */
-public class BaseData<E> {
+public class BaseData {
 
     // 推荐页
     public static final int TYPE_BANNER = 1000;// 轮播图
@@ -20,8 +20,7 @@ public class BaseData<E> {
     public static final int TYPE_RANK_NEW_BILLBOARD = 3000;// 新歌展示
     public static final int TYPE_RANK_BILLBOARD = 3001;// 普通
 
-    private int type;
-    private E data;
+    protected int type;// 必须的
 
     public int getType() {
         return type;
@@ -31,19 +30,10 @@ public class BaseData<E> {
         this.type = type;
     }
 
-    public E getData() {
-        return data;
-    }
-
-    public void setData(E data) {
-        this.data = data;
-    }
-
     @Override
     public String toString() {
         return "BaseData{" +
                 "type=" + type +
-                ", data=" + data +
                 '}';
     }
 }

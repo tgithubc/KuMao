@@ -13,7 +13,7 @@ import com.tgithubc.kumao.bean.BaseData;
 /**
  * Created by tc :)
  */
-public class SearchResultAlbumProvider extends BaseItemProvider<BaseData, BaseViewHolder> {
+public class SearchResultAlbumProvider extends BaseItemProvider<Album, BaseViewHolder> {
 
     @Override
     public int viewType() {
@@ -26,8 +26,7 @@ public class SearchResultAlbumProvider extends BaseItemProvider<BaseData, BaseVi
     }
 
     @Override
-    public void convert(BaseViewHolder helper, BaseData data, int position) {
-        Album album = (Album) data.getData();
+    public void convert(BaseViewHolder helper, Album album, int position) {
         helper.setText(R.id.search_result_album_publish_time,
                 "发行时间：" + (TextUtils.isEmpty(album.getPublishTime()) ? "未知" : album.getPublishTime()));
         helper.setText(R.id.search_result_album_name, album.getName());

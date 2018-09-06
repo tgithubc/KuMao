@@ -1,36 +1,38 @@
 package com.tgithubc.kumao.bean;
 
 
+import java.util.List;
+
 /**
  * Created by tc :)
  */
-public class Banner {
+public class Banner extends BaseData{
 
-    private String bannerPic;
+    private List<String> bannerPicList;
 
-    private String url;
+    private List<String> urlList;
 
-    public String getBannerPic() {
-        return bannerPic;
+    public List<String> getBannerPicList() {
+        return bannerPicList;
     }
 
-    public void setBannerPic(String bannerPic) {
-        this.bannerPic = bannerPic;
+    public void setBannerPicList(List<String> bannerPicList) {
+        this.bannerPicList = bannerPicList;
     }
 
-    public String getUrl() {
-        return url;
+    public List<String> getUrlList() {
+        return urlList;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrlList(List<String> urlList) {
+        this.urlList = urlList;
     }
 
     @Override
     public String toString() {
         return "Banner{" +
-                "bannerPic='" + bannerPic + '\'' +
-                ", url='" + url + '\'' +
+                "bannerPicList='" + bannerPicList + '\'' +
+                ", urlList='" + urlList + '\'' +
                 '}';
     }
 }

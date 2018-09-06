@@ -2,7 +2,7 @@ package com.tgithubc.kumao.module.ranking;
 
 
 import com.tgithubc.kumao.base.IStateView;
-import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.Billboard;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface IRankingContract {
         /**
          * 展示榜单列表
          */
-        void showRankingView(List<BaseData> result);
+        void showRankingView(List<Billboard> result);
     }
 
     interface P {

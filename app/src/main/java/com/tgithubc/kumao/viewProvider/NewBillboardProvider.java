@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class NewBillboardProvider extends BaseItemProvider<BaseData, BaseViewHolder> {
+public class NewBillboardProvider extends BaseItemProvider<Billboard, BaseViewHolder> {
 
     @Override
     public int viewType() {
@@ -26,24 +26,22 @@ public class NewBillboardProvider extends BaseItemProvider<BaseData, BaseViewHol
     }
 
     @Override
-    public void convert(BaseViewHolder helper, BaseData data, int position) {
-        if (data.getData() instanceof Billboard) {
-            Billboard.Info info = ((Billboard) data.getData()).getBillboardInfo();
-            if (info != null) {
-                helper.setText(R.id.billboard_desc, info.getComment());
-            }
-            List<Song> songs = ((Billboard) data.getData()).getSongList();
-            if (songs != null && songs.size() >= 3) {
-                helper.setText(R.id.billboard_song_name1, songs.get(0).getSongName());
-                helper.setText(R.id.billboard_song_name2, songs.get(1).getSongName());
-                helper.setText(R.id.billboard_song_name3, songs.get(2).getSongName());
-                helper.setText(R.id.billboard_artist_name1, songs.get(0).getAuthorName());
-                helper.setText(R.id.billboard_artist_name2, songs.get(1).getAuthorName());
-                helper.setText(R.id.billboard_artist_name3, songs.get(2).getAuthorName());
-                ImageLoaderWrapper.getInstance().load(helper.getView(R.id.billboard_pic1), songs.get(0).getBigPic());
-                ImageLoaderWrapper.getInstance().load(helper.getView(R.id.billboard_pic2), songs.get(1).getBigPic());
-                ImageLoaderWrapper.getInstance().load(helper.getView(R.id.billboard_pic3), songs.get(2).getBigPic());
-            }
+    public void convert(BaseViewHolder helper, Billboard data, int position) {
+        Billboard.Info info = data.getBillboardInfo();
+        if (info != null) {
+            helper.setText(R.id.billboard_desc, info.getComment());
+        }
+        List<Song> songs = data.getSongList();
+        if (songs != null && songs.size() >= 3) {
+            helper.setText(R.id.billboard_song_name1, songs.get(0).getSongName());
+            helper.setText(R.id.billboard_song_name2, songs.get(1).getSongName());
+            helper.setText(R.id.billboard_song_name3, songs.get(2).getSongName());
+            helper.setText(R.id.billboard_artist_name1, songs.get(0).getAuthorName());
+            helper.setText(R.id.billboard_artist_name2, songs.get(1).getAuthorName());
+            helper.setText(R.id.billboard_artist_name3, songs.get(2).getAuthorName());
+            ImageLoaderWrapper.getInstance().load(helper.getView(R.id.billboard_pic1), songs.get(0).getBigPic());
+            ImageLoaderWrapper.getInstance().load(helper.getView(R.id.billboard_pic2), songs.get(1).getBigPic());
+            ImageLoaderWrapper.getInstance().load(helper.getView(R.id.billboard_pic3), songs.get(2).getBigPic());
         }
     }
 }

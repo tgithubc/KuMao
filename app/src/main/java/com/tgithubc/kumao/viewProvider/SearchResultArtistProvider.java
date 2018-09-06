@@ -9,12 +9,11 @@ import com.tgithubc.fresco_wapper.config.ImageLoadConfig;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.Artist;
 import com.tgithubc.kumao.bean.BaseData;
-import com.tgithubc.kumao.bean.Billboard;
 
 /**
  * Created by tc :)
  */
-public class SearchResultArtistProvider extends BaseItemProvider<BaseData, BaseViewHolder> {
+public class SearchResultArtistProvider extends BaseItemProvider<Artist, BaseViewHolder> {
 
     private ImageLoadConfig mConfig;
 
@@ -33,8 +32,7 @@ public class SearchResultArtistProvider extends BaseItemProvider<BaseData, BaseV
     }
 
     @Override
-    public void convert(BaseViewHolder helper, BaseData data, int position) {
-        Artist artist = (Artist) data.getData();
+    public void convert(BaseViewHolder helper, Artist artist, int position) {
         helper.setText(R.id.search_result_artist_number, "单曲 " + artist.getSongCount() + " 专辑 " + artist.getAlbumCount());
         helper.setText(R.id.search_result_artist_name, artist.getName());
         ImageLoaderWrapper.getInstance().load(helper.getView(R.id.search_result_artist_pic), artist.getPic(), mConfig);

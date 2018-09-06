@@ -3,7 +3,7 @@ package com.tgithubc.kumao.bean;
 /**
  * Created by tc :)
  */
-public class Artist {
+public class Artist extends BaseData{
 
     private String name;
 

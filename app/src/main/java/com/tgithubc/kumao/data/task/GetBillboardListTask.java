@@ -10,7 +10,6 @@ import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 import com.tgithubc.kumao.util.RxMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -57,20 +56,16 @@ public class GetBillboardListTask extends Task<Task.CommonRequestValue, GetBillb
         return Observable.just(billboards);
     }
 
-    // 包装成BaseData，类型区分，方便展示
+    // 类型区分，方便展示
     private Observable<? extends ResponseValue> wrapperData(List<Billboard> result) {
-        List<BaseData> list = new ArrayList<>();
         Observable.from(result).forEach(billboard -> {
-            BaseData<Billboard> billboardData = new BaseData<>();
             if (billboard.getBillboardInfo().getBillboardType() == Constant.Api.BILLBOARD_TYPE_NEW) {
-                billboardData.setType(BaseData.TYPE_RANK_NEW_BILLBOARD);
+                billboard.setType(BaseData.TYPE_RANK_NEW_BILLBOARD);
             } else {
-                billboardData.setType(BaseData.TYPE_RANK_BILLBOARD);
+                billboard.setType(BaseData.TYPE_RANK_BILLBOARD);
             }
-            billboardData.setData(billboard);
-            list.add(billboardData);
         });
-        return Observable.just(new ResponseValue(list));
+        return Observable.just(new ResponseValue(result));
     }
 
     private Observable<Song> requestSongInfo(Song song) {
@@ -80,13 +75,13 @@ public class GetBillboardListTask extends Task<Task.CommonRequestValue, GetBillb
 
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private List<BaseData> result;
+        private List<Billboard> result;
 
-        public ResponseValue(@NonNull List<BaseData> result) {
+        public ResponseValue(@NonNull List<Billboard> result) {
             this.result = result;
         }
 
-        public List<BaseData> getResult() {
+        public List<Billboard> getResult() {
             return result;
         }
     }

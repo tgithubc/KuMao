@@ -26,24 +26,20 @@ public class GetSearchResultTask extends Task<Task.CommonRequestValue, GetSearch
                 .map(result -> {
                     List<BaseData> list = new ArrayList<>();
                     if (result.isArtist()) {
-                        BaseData<Artist> artist = new BaseData<>();
+                        Artist artist = result.getArtist();
                         artist.setType(BaseData.TYPE_SEARCH_RESULT_ARTIST);
-                        artist.setData(result.getArtist());
                         list.add(artist);
                     }
                     if (result.isAlbum()) {
-                        BaseData<Album> album = new BaseData<>();
+                        Album album = result.getAlbum();
                         album.setType(BaseData.TYPE_SEARCH_RESULT_ALBUM);
-                        album.setData(result.getAlbum());
                         list.add(album);
                     }
                     List<Song> songList = result.getSongList();
                     if (songList != null && !songList.isEmpty()) {
                         for (Song s : songList) {
-                            BaseData<Song> song = new BaseData<>();
-                            song.setType(BaseData.TYPE_SEARCH_RESULT_SONG);
-                            song.setData(s);
-                            list.add(song);
+                            s.setType(BaseData.TYPE_SEARCH_RESULT_SONG);
+                            list.add(s);
                         }
                     }
                     return new ResponseValue(list);

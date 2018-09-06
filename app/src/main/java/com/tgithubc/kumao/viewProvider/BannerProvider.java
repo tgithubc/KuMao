@@ -17,12 +17,10 @@ import com.tgithubc.kumao.widget.banner.BannerHolder;
 import com.tgithubc.kumao.widget.banner.BannerHolderCreator;
 import com.tgithubc.kumao.widget.banner.BannerRecyclerView;
 
-import java.util.List;
-
 /**
  * Created by tc :)
  */
-public class BannerProvider extends BaseItemProvider<BaseData, BaseViewHolder> {
+public class BannerProvider extends BaseItemProvider<Banner, BaseViewHolder> {
 
     @Override
     public int viewType() {
@@ -35,8 +33,7 @@ public class BannerProvider extends BaseItemProvider<BaseData, BaseViewHolder> {
     }
 
     @Override
-    public void convert(BaseViewHolder helper, BaseData data, int pos) {
-        List<Banner> bannerList = (List<Banner>) data.getData();
+    public void convert(BaseViewHolder helper, Banner banner, int pos) {
         BannerRecyclerView bannerView = helper.getView(R.id.banner_view);
         bannerView.setBannerList(new BannerHolderCreator() {
             @Override
@@ -49,14 +46,14 @@ public class BannerProvider extends BaseItemProvider<BaseData, BaseViewHolder> {
             public int createItemViewType(int pos) {
                 return 0;
             }
-        }, bannerList);
+        }, banner.getBannerPicList());
         bannerView.setOnBannerItemClickListener(position -> {
-            WebFragment fragment = WebFragment.newInstance(bannerList.get(position).getUrl());
+            WebFragment fragment = WebFragment.newInstance(banner.getUrlList().get(position));
             FragmentOperation.getInstance().showFullFragment(fragment);
         });
     }
 
-    private static class BannerViewHolder extends BannerHolder<Banner> {
+    private static class BannerViewHolder extends BannerHolder<String> {
 
         private SimpleDraweeView mBannerPic;
 
@@ -70,8 +67,8 @@ public class BannerProvider extends BaseItemProvider<BaseData, BaseViewHolder> {
         }
 
         @Override
-        public void updateView(Banner data) {
-            ImageLoaderWrapper.getInstance().load(mBannerPic, data.getBannerPic());
+        public void updateView(String pic) {
+            ImageLoaderWrapper.getInstance().load(mBannerPic, pic);
         }
     }
 }

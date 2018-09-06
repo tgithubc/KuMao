@@ -11,32 +11,36 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.banner;
+
 /**
  * Created by tc :)
  */
-public class BannerParser implements IParser<List<Banner>> {
+public class BannerParser implements IParser<Banner> {
 
     @Override
-    public List<Banner> parse(String data) throws JSONException {
+    public Banner parse(String data) throws JSONException {
         if (TextUtils.isEmpty(data)) {
             return null;
         }
-        List<Banner> result = null;
         JSONObject json = new JSONObject(data);
         JSONArray pic = json.optJSONArray("pic");
+        Banner banner = null;
         if (pic != null && pic.length() > 0) {
-            result = new ArrayList<>();
+            banner = new Banner();
+            List<String> picList = new ArrayList<>();
+            List<String> urlList = new ArrayList<>();
             for (int i = 0, len = pic.length(); i < len; i++) {
                 JSONObject object = pic.optJSONObject(i);
                 if (object == null) {
                     continue;
                 }
-                Banner banner = new Banner();
-                banner.setBannerPic(object.optString("randpic"));
-                banner.setUrl(object.optString("code"));
-                result.add(banner);
+                picList.add(object.optString("randpic"));
+                urlList.add(object.optString("code"));
             }
+            banner.setBannerPicList(picList);
+            banner.setUrlList(urlList);
         }
-        return result;
+        return banner;
     }
 }

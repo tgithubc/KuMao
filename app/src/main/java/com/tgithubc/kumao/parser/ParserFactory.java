@@ -28,7 +28,7 @@ public class ParserFactory {
             case PARSE_SONG_INFO:
                 return new SongInfoParser();
             case PARSE_HOT_SONG_LIST:
-                return new SongListParser();
+                return new HotSongListParser();
         }
         return null;
     }

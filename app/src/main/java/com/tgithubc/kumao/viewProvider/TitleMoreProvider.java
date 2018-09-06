@@ -4,11 +4,12 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.Title;
 
 /**
  * Created by tc :)
  */
-public class TitleMoreProvider extends BaseItemProvider<BaseData, BaseViewHolder> {
+public class TitleMoreProvider extends BaseItemProvider<Title, BaseViewHolder> {
 
     @Override
     public int viewType() {
@@ -21,8 +22,8 @@ public class TitleMoreProvider extends BaseItemProvider<BaseData, BaseViewHolder
     }
 
     @Override
-    public void convert(BaseViewHolder helper, BaseData data, int position) {
-        helper.setText(R.id.title, (String) data.getData());
+    public void convert(BaseViewHolder helper, Title title, int position) {
+        helper.setText(R.id.title, title.getTitle());
         helper.addOnClickListener(R.id.title_see_more);
     }
 }

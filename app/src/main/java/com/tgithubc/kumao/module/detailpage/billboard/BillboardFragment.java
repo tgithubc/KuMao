@@ -8,7 +8,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.tgithubc.kumao.R;
-import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.module.detailpage.base.list.DetailListPageFragment;
 import com.tgithubc.kumao.module.detailpage.base.list.IDetailListPageContract;
@@ -28,17 +27,14 @@ public class BillboardFragment extends DetailListPageFragment implements IDetail
     private TextView mBillboardDescView;
     private String mBillboardDesc;
 
-    public static BillboardFragment newInstance(BaseData data) {
+    public static BillboardFragment newInstance(Billboard data) {
         BillboardFragment fragment = new BillboardFragment();
-        Object obj = data.getData();
         Bundle bundle = new Bundle();
-        if (obj instanceof Billboard) {
-            Billboard.Info info = ((Billboard) obj).getBillboardInfo();
-            bundle.putInt(KEY_LIST_ID, info.getBillboardType());
-            bundle.putString(KEY_LIST_PIC, info.getPic_s444());
-            bundle.putString(KEY_LIST_NAME, info.getName());
-            bundle.putString(KEY_BILLBOARD_DESC, info.getComment());
-        }
+        Billboard.Info info = data.getBillboardInfo();
+        bundle.putInt(KEY_LIST_ID, info.getBillboardType());
+        bundle.putString(KEY_LIST_PIC, info.getPic_s444());
+        bundle.putString(KEY_LIST_NAME, info.getName());
+        bundle.putString(KEY_BILLBOARD_DESC, info.getComment());
         fragment.setArguments(bundle);
         return fragment;
     }

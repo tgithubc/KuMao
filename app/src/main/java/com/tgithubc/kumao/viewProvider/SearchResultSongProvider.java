@@ -10,7 +10,7 @@ import com.tgithubc.kumao.service.PlayManager;
 /**
  * Created by tc :)
  */
-public class SearchResultSongProvider extends BaseItemProvider<BaseData, BaseViewHolder> {
+public class SearchResultSongProvider extends BaseItemProvider<Song, BaseViewHolder> {
 
     @Override
     public int viewType() {
@@ -23,15 +23,15 @@ public class SearchResultSongProvider extends BaseItemProvider<BaseData, BaseVie
     }
 
     @Override
-    public void convert(BaseViewHolder helper, BaseData data, int position) {
-        Song song = (Song) data.getData();
+    public void convert(BaseViewHolder helper, Song song, int position) {
         helper.setText(R.id.search_result_song_name, replaceIllegal(song.getSongName()));
-        helper.setText(R.id.search_result_song_artist_album, replaceIllegal(song.getAuthorName() + "-" + song.getAlbumName()));
+        helper.setText(R.id.search_result_song_artist_album,
+                replaceIllegal(song.getAuthorName() + "-" + song.getAlbumName()));
     }
 
     @Override
-    public void onClick(BaseViewHolder helper, BaseData data, int position) {
-        PlayManager.getInstance().play((Song) data.getData());
+    public void onClick(BaseViewHolder helper, Song song, int position) {
+        PlayManager.getInstance().play(song);
     }
 
     private String replaceIllegal(String name) {

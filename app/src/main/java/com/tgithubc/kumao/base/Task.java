@@ -33,7 +33,9 @@ public abstract class Task<RQ extends Task.RequestValue, RP extends Task.Respons
     public interface RequestValue {
     }
 
-    public interface ResponseValue {
+    public interface ResponseValue<T> {
+
+        T getResult();
     }
 
     /**
@@ -70,5 +72,9 @@ public abstract class Task<RQ extends Task.RequestValue, RP extends Task.Respons
      */
     public static class EmptyResponseValue implements ResponseValue {
 
+        @Override
+        public Object getResult() {
+            return null;
+        }
     }
 }

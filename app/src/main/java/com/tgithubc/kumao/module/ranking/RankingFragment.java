@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.base.BaseFragment;
-import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.Billboard;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class RankingFragment extends BaseFragment implements IRankingContract.V 
     }
 
     @Override
-    public void showRankingView(List<BaseData> result) {
+    public void showRankingView(List<Billboard> result) {
         mAdapter.setNewData(result);
     }
 }

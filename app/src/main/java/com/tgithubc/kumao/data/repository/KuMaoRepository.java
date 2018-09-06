@@ -3,10 +3,10 @@ package com.tgithubc.kumao.data.repository;
 
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.HotSongListArrary;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.bean.Song;
-import com.tgithubc.kumao.bean.SongList;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class KuMaoRepository implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<List<Banner>> getBanner(String url, Map<String, String> maps) {
+    public Observable<Banner> getBanner(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getBanner(url, maps), mRemoteDataSource.getBanner(url, maps))
                 .first();
@@ -70,7 +70,7 @@ public class KuMaoRepository implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<List<SongList>> getHotSongList(String url, Map<String, String> maps) {
+    public Observable<HotSongListArrary> getHotSongList(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getHotSongList(url, maps), mRemoteDataSource.getHotSongList(url, maps))
                 .first();

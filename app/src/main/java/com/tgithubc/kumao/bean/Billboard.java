@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class Billboard {
+public class Billboard extends BaseData{
     /**
      * 榜单的歌曲列表
      */

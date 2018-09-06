@@ -12,7 +12,7 @@ import org.greenrobot.greendao.annotation.Generated;
  * Created by tc :)
  */
 @Entity
-public class Song implements Parcelable {
+public class Song extends BaseData implements Parcelable {
 
     @Id(autoincrement = true)
     private Long ID;

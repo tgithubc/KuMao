@@ -2,6 +2,7 @@ package com.tgithubc.kumao.parser;
 
 import android.text.TextUtils;
 
+import com.tgithubc.kumao.bean.HotSongListArrary;
 import com.tgithubc.kumao.bean.SongList;
 
 import org.json.JSONArray;
@@ -14,10 +15,10 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class HotSongListParser implements IParser<List<SongList>> {
+public class HotSongListParser implements IParser<HotSongListArrary> {
 
     @Override
-    public List<SongList> parse(String data) throws JSONException {
+    public HotSongListArrary parse(String data) throws JSONException {
         if (TextUtils.isEmpty(data)) {
             return null;
         }
@@ -26,10 +27,10 @@ public class HotSongListParser implements IParser<List<SongList>> {
         if (contentJson == null) {
             return null;
         }
-        JSONArray songListArrary = contentJson.optJSONArray("song_list");
-        List<SongList> songLists = null;
+        JSONArray songListArrary = contentJson.optJSONArray("list");
+        HotSongListArrary arrary = new HotSongListArrary();
         if (songListArrary != null && songListArrary.length() > 0) {
-            songLists = new ArrayList<>();
+            List<SongList> songLists = new ArrayList<>();
             for (int i = 0, len = songListArrary.length(); i < len; i++) {
                 JSONObject object = songListArrary.optJSONObject(i);
                 if (object == null) {
@@ -38,8 +39,9 @@ public class HotSongListParser implements IParser<List<SongList>> {
                 SongListParser songListParser = new SongListParser();
                 SongList songList = songListParser.parse(object.toString());
                 songLists.add(songList);
+                arrary.setSongLists(songLists);
             }
         }
-        return songLists;
+        return arrary;
     }
 }

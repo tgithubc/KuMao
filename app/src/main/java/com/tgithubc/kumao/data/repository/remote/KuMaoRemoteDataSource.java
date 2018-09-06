@@ -4,10 +4,10 @@ package com.tgithubc.kumao.data.repository.remote;
 import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.HotSongListArrary;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.bean.Song;
-import com.tgithubc.kumao.bean.SongList;
 import com.tgithubc.kumao.data.repository.KuMaoDataSource;
 import com.tgithubc.kumao.http.RetrofitManager;
 import com.tgithubc.kumao.parser.ParserFactory;
@@ -37,7 +37,7 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<List<Banner>> getBanner(String url, Map<String, String> maps) {
+    public Observable<Banner> getBanner(String url, Map<String, String> maps) {
         return createObservable(url, maps, ParserFactory.PARSE_BANNER, 12 * ACache.TIME_HOUR);
     }
 
@@ -62,7 +62,7 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<List<SongList>> getHotSongList(String url, Map<String, String> maps) {
+    public Observable<HotSongListArrary> getHotSongList(String url, Map<String, String> maps) {
         return createObservable(url, maps, ParserFactory.PARSE_HOT_SONG_LIST, 12 * ACache.TIME_HOUR);
     }
 
