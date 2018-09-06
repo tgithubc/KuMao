@@ -117,7 +117,7 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
         mSearchHistoryRV.setHasFixedSize(true);
         mSearchHistoryRV.setLayoutManager(new LinearLayoutManager(getContext()));
         mHistoryAdapter = new SearchHistoryAdapter(null);
-        mHistoryAdapter.setOnItemChildClickListener(getAdapterItemClickListener());
+        mHistoryAdapter.setOnItemChildClickListener(new SearchHistoryItemClickListener());
         mHistoryAdapter.bindToRecyclerView(mSearchHistoryRV);
         mHistoryAdapter.setEmptyView(R.layout.rv_item_search_history_empty);
         mPresenter.getHotWord();
@@ -239,8 +239,10 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
         mPresenter.search(key);
     }
 
-    private BaseQuickAdapter.OnItemChildClickListener getAdapterItemClickListener() {
-        return (adapter, view, position) -> {
+    private class SearchHistoryItemClickListener implements BaseQuickAdapter.OnItemChildClickListener {
+
+        @Override
+        public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
             List<KeyWord> data = adapter.getData();
             if (data.isEmpty() || position < 0 || position >= data.size()) {
                 return;
@@ -248,13 +250,13 @@ public class SearchFragment extends BaseFragment implements ISearchContract.V, T
             switch (view.getId()) {
                 case R.id.search_history_item:
                     String key = data.get(position).getKeyWord();
-                    searchGo(key);
+                    SearchFragment.this.searchGo(key);
                     break;
                 case R.id.search_history_del_btn:
                     KeyWord keyword = data.get(position);
                     mPresenter.deleteSearchHistory(keyword, position);
                     break;
             }
-        };
+        }
     }
 }

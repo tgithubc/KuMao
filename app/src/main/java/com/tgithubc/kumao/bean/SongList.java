@@ -59,4 +59,16 @@ public class SongList {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "SongList{" +
+                "songListId='" + songListId + '\'' +
+                ", pic='" + pic + '\'' +
+                ", listenNum='" + listenNum + '\'' +
+                ", collectNum='" + collectNum + '\'' +
+                ", tag='" + tag + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

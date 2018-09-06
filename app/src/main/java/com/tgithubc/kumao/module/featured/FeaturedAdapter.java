@@ -1,5 +1,6 @@
 package com.tgithubc.kumao.module.featured;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -16,8 +17,11 @@ import java.util.List;
  */
 public class FeaturedAdapter extends MultipleItemRvAdapter<BaseData, BaseViewHolder> {
 
-    public FeaturedAdapter(@Nullable List<BaseData> data) {
+    private Context mContext;
+
+    public FeaturedAdapter(Context context, @Nullable List<BaseData> data) {
         super(data);
+        this.mContext = context;
         finishInitialize();
     }
 
@@ -30,7 +34,7 @@ public class FeaturedAdapter extends MultipleItemRvAdapter<BaseData, BaseViewHol
     public void registerItemProvider() {
         mProviderDelegate.registerProvider(new TitleMoreProvider());
         mProviderDelegate.registerProvider(new BannerProvider());
-        mProviderDelegate.registerProvider(new HotSongListProvider());
+        mProviderDelegate.registerProvider(new HotSongListProvider(mContext));
     }
 }
 

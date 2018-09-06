@@ -44,7 +44,7 @@ public class FeaturedFragment extends BaseFragment implements IFeaturedContract.
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new FeaturedAdapter(null);
+        mAdapter = new FeaturedAdapter(getActivity(), null);
         mAdapter.bindToRecyclerView(mRecyclerView);
         mPresenter.getFeaturedData();
     }
