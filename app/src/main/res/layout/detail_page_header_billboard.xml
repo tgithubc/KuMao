@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="250dp">
 
@@ -37,7 +38,7 @@
         android:layout_toLeftOf="@id/chose_layout"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="描述啊啊啊啊啊啊啊啊描述啊啊啊啊啊啊啊啊描述啊啊啊啊啊啊啊啊"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        tools:text="描述啊啊啊啊啊啊啊啊描述啊啊啊啊啊啊啊啊描述啊啊啊啊啊啊啊啊"/>
 
 </RelativeLayout>

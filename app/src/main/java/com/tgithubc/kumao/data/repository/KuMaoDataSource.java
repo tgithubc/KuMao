@@ -6,6 +6,7 @@ import com.tgithubc.kumao.bean.HotSongListArrary;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.bean.SongList;
 
 import java.util.List;
 import java.util.Map;
@@ -37,5 +38,7 @@ public interface KuMaoDataSource {
 
     void clearSearchHistory();
 
-    Observable<HotSongListArrary> getHotSongList(String url, Map<String, String> maps);
+    Observable<HotSongListArrary> getHotSongListArrary(String url, Map<String, String> maps);
+
+    Observable<SongList> getSongList(String url, Map<String, String> maps);
 }

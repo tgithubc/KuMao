@@ -20,6 +20,8 @@ import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.HotSongListArrary;
 import com.tgithubc.kumao.bean.SongList;
+import com.tgithubc.kumao.fragment.FragmentOperation;
+import com.tgithubc.kumao.module.detailpage.songlist.SongListFragment;
 
 import java.util.List;
 
@@ -77,6 +79,10 @@ public class HotSongListProvider extends BaseItemProvider<HotSongListArrary, Bas
                         }
                     }
             );
+            helper.itemView.setOnClickListener(v -> {
+                SongListFragment fragment = SongListFragment.newInstance(item);
+                FragmentOperation.getInstance().showSubFragment(fragment);
+            });
         }
 
         private void resetImageViewWH(ImageInfo result, SimpleDraweeView imgView) {

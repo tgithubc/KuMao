@@ -8,7 +8,7 @@ import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Title;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBannerTask;
-import com.tgithubc.kumao.data.task.GetHostSongListTask;
+import com.tgithubc.kumao.data.task.GetHostSongListArraryTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
 import com.tgithubc.kumao.util.RxMap;
 
@@ -57,11 +57,11 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     /**
      * hot song list
      */
-    private Observable<GetHostSongListTask.ResponseValue> executeHotSongListTask() {
+    private Observable<GetHostSongListArraryTask.ResponseValue> executeHotSongListTask() {
         Task.CommonRequestValue rq = new Task.CommonRequestValue(
-                Constant.Api.URL_HOT_SONG_LIST,
+                Constant.Api.URL_HOT_SONG_LIST_ARRARY,
                 new RxMap<String, String>().put("num", "6").build());
-        return new GetHostSongListTask().execute(rq);
+        return new GetHostSongListArraryTask().execute(rq);
     }
 
     private class FeaturedHttpSubscriber extends HttpSubscriber<List<Task.ResponseValue>> {
@@ -83,7 +83,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                     continue;
                 }
                 // 组装title数据
-                if (value instanceof GetHostSongListTask.ResponseValue) {
+                if (value instanceof GetHostSongListArraryTask.ResponseValue) {
                     Title title = new Title();
                     title.setTitle("热门歌单");
                     title.setType(BaseData.TYPE_TITLE_MORE);

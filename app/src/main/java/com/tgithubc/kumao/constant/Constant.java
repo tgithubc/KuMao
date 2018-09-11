@@ -14,7 +14,8 @@ public class Constant {
         String URL_SONGINFO = HOST + "method=baidu.ting.song.play";
         String URL_BILLBOARD = HOST + "method=baidu.ting.billboard.billList";
         String URL_BILLBOARD_LIST = HOST + "method=baidu.ting.billboard.billCategory";
-        String URL_HOT_SONG_LIST = HOST + "method=baidu.ting.diy.getHotGeDanAndOfficial";
+        String URL_HOT_SONG_LIST_ARRARY = HOST + "method=baidu.ting.diy.getHotGeDanAndOfficial";
+        String URL_SONG_LIST = HOST + "method=baidu.ting.diy.gedanInfo";
 
         /**
          * 榜单type

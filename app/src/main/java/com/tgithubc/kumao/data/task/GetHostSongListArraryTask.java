@@ -12,13 +12,12 @@ import rx.Observable;
 /**
  * Created by tc :)
  */
-
-public class GetHostSongListTask extends Task<Task.CommonRequestValue, GetHostSongListTask.ResponseValue> {
+public class GetHostSongListArraryTask extends Task<Task.CommonRequestValue, GetHostSongListArraryTask.ResponseValue> {
 
     @Override
     protected Observable<ResponseValue> executeTask(CommonRequestValue requestValues) {
         return RepositoryProvider.getRepository()
-                .getHotSongList(requestValues.getUrl(), requestValues.getParameter())
+                .getHotSongListArrary(requestValues.getUrl(), requestValues.getParameter())
                 .map(result -> {
                     result.setType(BaseData.TYPE_HOT_SONG_LIST);
                     return new ResponseValue(result);

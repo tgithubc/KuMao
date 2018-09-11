@@ -259,6 +259,14 @@ public class Song extends BaseData implements Parcelable {
         this.bigMorePic = bigMorePic;
     }
 
+    public Long getID() {
+        return this.ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -362,6 +370,67 @@ public class Song extends BaseData implements Parcelable {
         }
     };
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Song song = (Song) o;
+
+        if (duration != song.duration) return false;
+        if (fileSize != song.fileSize) return false;
+        if (ID != null ? !ID.equals(song.ID) : song.ID != null) return false;
+        if (songId != null ? !songId.equals(song.songId) : song.songId != null) return false;
+        if (songName != null ? !songName.equals(song.songName) : song.songName != null) return false;
+        if (authorName != null ? !authorName.equals(song.authorName) : song.authorName != null) return false;
+        if (artistId != null ? !artistId.equals(song.artistId) : song.artistId != null) return false;
+        if (albumId != null ? !albumId.equals(song.albumId) : song.albumId != null) return false;
+        if (albumName != null ? !albumName.equals(song.albumName) : song.albumName != null) return false;
+        if (smallPic != null ? !smallPic.equals(song.smallPic) : song.smallPic != null) return false;
+        if (bigPic != null ? !bigPic.equals(song.bigPic) : song.bigPic != null) return false;
+        if (bigMorePic != null ? !bigMorePic.equals(song.bigMorePic) : song.bigMorePic != null) return false;
+        if (lrclink != null ? !lrclink.equals(song.lrclink) : song.lrclink != null) return false;
+        if (filelink != null ? !filelink.equals(song.filelink) : song.filelink != null) return false;
+        if (isNew != null ? !isNew.equals(song.isNew) : song.isNew != null) return false;
+        if (hot != null ? !hot.equals(song.hot) : song.hot != null) return false;
+        if (rateArrary != null ? !rateArrary.equals(song.rateArrary) : song.rateArrary != null) return false;
+        if (rate != null ? !rate.equals(song.rate) : song.rate != null) return false;
+        if (freeBitrate != null ? !freeBitrate.equals(song.freeBitrate) : song.freeBitrate != null) return false;
+        if (biaoshi != null ? !biaoshi.equals(song.biaoshi) : song.biaoshi != null) return false;
+        if (info != null ? !info.equals(song.info) : song.info != null) return false;
+        if (company != null ? !company.equals(song.company) : song.company != null) return false;
+        return content != null ? content.equals(song.content) : song.content == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ID != null ? ID.hashCode() : 0;
+        result = 31 * result + (songId != null ? songId.hashCode() : 0);
+        result = 31 * result + (songName != null ? songName.hashCode() : 0);
+        result = 31 * result + (authorName != null ? authorName.hashCode() : 0);
+        result = 31 * result + (artistId != null ? artistId.hashCode() : 0);
+        result = 31 * result + (albumId != null ? albumId.hashCode() : 0);
+        result = 31 * result + (albumName != null ? albumName.hashCode() : 0);
+        result = 31 * result + (smallPic != null ? smallPic.hashCode() : 0);
+        result = 31 * result + (bigPic != null ? bigPic.hashCode() : 0);
+        result = 31 * result + (bigMorePic != null ? bigMorePic.hashCode() : 0);
+        result = 31 * result + (lrclink != null ? lrclink.hashCode() : 0);
+        result = 31 * result + (filelink != null ? filelink.hashCode() : 0);
+        result = 31 * result + (isNew != null ? isNew.hashCode() : 0);
+        result = 31 * result + (hot != null ? hot.hashCode() : 0);
+        result = 31 * result + (rateArrary != null ? rateArrary.hashCode() : 0);
+        result = 31 * result + (rate != null ? rate.hashCode() : 0);
+        result = 31 * result + duration;
+        result = 31 * result + (freeBitrate != null ? freeBitrate.hashCode() : 0);
+        result = 31 * result + (biaoshi != null ? biaoshi.hashCode() : 0);
+        result = 31 * result + (info != null ? info.hashCode() : 0);
+        result = 31 * result + (company != null ? company.hashCode() : 0);
+        result = 31 * result + (content != null ? content.hashCode() : 0);
+        result = 31 * result + (int) (fileSize ^ (fileSize >>> 32));
+        return result;
+    }
+
     @Override
     public String toString() {
         return "Song{" +
@@ -387,11 +456,4 @@ public class Song extends BaseData implements Parcelable {
                 '}';
     }
 
-    public Long getID() {
-        return this.ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
-    }
 }

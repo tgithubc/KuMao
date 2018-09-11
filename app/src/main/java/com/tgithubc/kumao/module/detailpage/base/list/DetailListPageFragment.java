@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.tgithubc.kumao.R;
@@ -14,7 +15,6 @@ import com.tgithubc.kumao.module.detailpage.base.DetailPageBaseFragment;
 import com.tgithubc.kumao.module.detailpage.base.SongAdapter;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by tc :)
@@ -25,13 +25,16 @@ public abstract class DetailListPageFragment extends DetailPageBaseFragment impl
     private SongAdapter mSongAdapter;
     private DetailListPagePresenter mPresenter;
     private FrameLayout mLoadingView;
+    private View mRootView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new DetailListPagePresenter(getType());
+        mPresenter = createPresenter();
         mPresenter.attachView(this);
     }
+
+    protected abstract DetailListPagePresenter createPresenter();
 
     @Override
     public View onCreateContentView(LayoutInflater inflater, FrameLayout contentContainer) {
@@ -40,6 +43,7 @@ public abstract class DetailListPageFragment extends DetailPageBaseFragment impl
         mLoadingView = view.findViewById(R.id.loading_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRootView = view;
         return view;
     }
 
@@ -53,8 +57,10 @@ public abstract class DetailListPageFragment extends DetailPageBaseFragment impl
         super.onViewCreated(view, savedInstanceState);
         mSongAdapter = new SongAdapter(null);
         mSongAdapter.bindToRecyclerView(mRecyclerView);
-        mSongAdapter.setOnLoadMoreListener(() -> mPresenter.loadMore(getRequestValue()), mRecyclerView);
-        mPresenter.getSongList(getRequestValue(), 0);
+        if (DetailPageBaseFragment.TYPE_LIST_SONGLIST != getType()) {
+            mSongAdapter.setOnLoadMoreListener(() -> mPresenter.loadMore(), mRecyclerView);
+        }
+        mPresenter.getSongList();
     }
 
     @Override
@@ -82,6 +88,15 @@ public abstract class DetailListPageFragment extends DetailPageBaseFragment impl
     }
 
     @Override
+    public void showError() {
+        mLoadingView.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.detail_page_empty_content,
+                (ViewGroup) mRootView, false);
+        mSongAdapter.setEmptyView(view);
+    }
+
+    @Override
     public void loadMoreFinish() {
         mSongAdapter.loadMoreEnd(true);
     }
@@ -96,9 +111,4 @@ public abstract class DetailListPageFragment extends DetailPageBaseFragment impl
     public void loadMoreError() {
         mSongAdapter.loadMoreFail();
     }
-
-    /**
-     * 个性化的请求参数
-     */
-    protected abstract Map<String, String> getRequestValue();
 }

@@ -7,6 +7,7 @@ import com.tgithubc.kumao.bean.HotSongListArrary;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.bean.SongList;
 
 import java.util.List;
 import java.util.Map;
@@ -70,9 +71,16 @@ public class KuMaoRepository implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<HotSongListArrary> getHotSongList(String url, Map<String, String> maps) {
+    public Observable<HotSongListArrary> getHotSongListArrary(String url, Map<String, String> maps) {
         return Observable
-                .concat(mLocalDataSource.getHotSongList(url, maps), mRemoteDataSource.getHotSongList(url, maps))
+                .concat(mLocalDataSource.getHotSongListArrary(url, maps), mRemoteDataSource.getHotSongListArrary(url, maps))
+                .first();
+    }
+
+    @Override
+    public Observable<SongList> getSongList(String url, Map<String, String> maps) {
+        return Observable
+                .concat(mLocalDataSource.getSongList(url, maps), mRemoteDataSource.getSongList(url, maps))
                 .first();
     }
 

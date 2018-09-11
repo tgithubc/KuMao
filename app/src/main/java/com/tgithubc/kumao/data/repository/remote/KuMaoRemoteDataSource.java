@@ -8,6 +8,7 @@ import com.tgithubc.kumao.bean.HotSongListArrary;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.bean.SongList;
 import com.tgithubc.kumao.data.repository.KuMaoDataSource;
 import com.tgithubc.kumao.http.RetrofitManager;
 import com.tgithubc.kumao.parser.ParserFactory;
@@ -62,8 +63,13 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<HotSongListArrary> getHotSongList(String url, Map<String, String> maps) {
-        return createObservable(url, maps, ParserFactory.PARSE_HOT_SONG_LIST, 12 * ACache.TIME_HOUR);
+    public Observable<HotSongListArrary> getHotSongListArrary(String url, Map<String, String> maps) {
+        return createObservable(url, maps, ParserFactory.PARSE_HOT_SONG_LIST_ARRARY, 12 * ACache.TIME_HOUR);
+    }
+
+    @Override
+    public Observable<SongList> getSongList(String url, Map<String, String> maps) {
+        return createObservable(url, maps, ParserFactory.PARSE_SONG_LIST, 12 * ACache.TIME_HOUR);
     }
 
     @Override

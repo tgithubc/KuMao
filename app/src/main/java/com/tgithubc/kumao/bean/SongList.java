@@ -1,5 +1,7 @@
 package com.tgithubc.kumao.bean;
 
+import java.util.List;
+
 /**
  * Created by tc :)
  */
@@ -11,6 +13,7 @@ public class SongList {
     private String collectNum;
     private String tag;
     private String name;
+    private List<Song> songList;
 
     public String getSongListId() {
         return songListId;
@@ -60,6 +63,14 @@ public class SongList {
         this.name = name;
     }
 
+    public List<Song> getSongList() {
+        return songList;
+    }
+
+    public void setSongList(List<Song> songList) {
+        this.songList = songList;
+    }
+
     @Override
     public String toString() {
         return "SongList{" +
@@ -69,6 +80,7 @@ public class SongList {
                 ", collectNum='" + collectNum + '\'' +
                 ", tag='" + tag + '\'' +
                 ", name='" + name + '\'' +
+                ", songList=" + songList +
                 '}';
     }
 }

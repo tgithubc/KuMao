@@ -10,10 +10,9 @@ import android.widget.TextView;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.module.detailpage.base.list.DetailListPageFragment;
+import com.tgithubc.kumao.module.detailpage.base.list.DetailListPagePresenter;
 import com.tgithubc.kumao.module.detailpage.base.list.IDetailListPageContract;
 import com.tgithubc.kumao.util.RxMap;
-
-import java.util.Map;
 
 /**
  * 榜单
@@ -31,7 +30,7 @@ public class BillboardFragment extends DetailListPageFragment implements IDetail
         BillboardFragment fragment = new BillboardFragment();
         Bundle bundle = new Bundle();
         Billboard.Info info = data.getBillboardInfo();
-        bundle.putInt(KEY_LIST_ID, info.getBillboardType());
+        bundle.putString(KEY_LIST_ID, String.valueOf(info.getBillboardType()));
         bundle.putString(KEY_LIST_PIC, info.getPic_s444());
         bundle.putString(KEY_LIST_NAME, info.getName());
         bundle.putString(KEY_BILLBOARD_DESC, info.getComment());
@@ -49,6 +48,13 @@ public class BillboardFragment extends DetailListPageFragment implements IDetail
     }
 
     @Override
+    protected DetailListPagePresenter createPresenter() {
+        return new DetailListPagePresenter(TYPE_LIST_BILLBOARD, new RxMap<String, String>()
+                .put("type", mId)
+                .build());
+    }
+
+    @Override
     public View onCreateHeadView(LayoutInflater inflater, FrameLayout headContainer) {
         View view = inflater.inflate(R.layout.detail_page_header_billboard, headContainer, true);
         mBillboardDescView = view.findViewById(R.id.billboard_desc);
@@ -59,17 +65,5 @@ public class BillboardFragment extends DetailListPageFragment implements IDetail
     @Override
     public int getType() {
         return TYPE_LIST_BILLBOARD;
-    }
-
-    @Override
-    public String getPicUrl() {
-        return mPicUrl;
-    }
-
-    @Override
-    public Map<String, String> getRequestValue() {
-        return new RxMap<String, String>()
-                .put("type", String.valueOf(mId))
-                .build();
     }
 }

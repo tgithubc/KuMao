@@ -5,7 +5,6 @@ import com.tgithubc.kumao.base.IStateView;
 import com.tgithubc.kumao.bean.Song;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by tc :)
@@ -25,8 +24,8 @@ public interface IDetailListPageContract {
 
     interface P {
 
-        void getSongList(Map<String, String> requestValue, int offset);
+        void getSongList();
 
-        void loadMore(Map<String, String> requestValue);
+        void loadMore();
     }
 }
