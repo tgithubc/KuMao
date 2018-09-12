@@ -65,12 +65,12 @@ public class HotSongListProvider extends BaseItemProvider<HotSongListArrary, Bas
         @Override
         protected void convert(BaseViewHolder helper, SongList item) {
             SimpleDraweeView imgView = helper.getView(R.id.song_list_pic);
-            helper.setText(R.id.song_list_name, item.getName());
             ImageLoaderWrapper.getInstance().load(imgView, item.getPic(),
                     new IDisplayImageListener<ImageInfo>() {
                         @Override
                         public void onSuccess(ImageInfo result, Animatable animatable) {
                             resetImageViewWH(result, imgView);
+                            helper.setText(R.id.song_list_name, item.getName());
                         }
 
                         @Override

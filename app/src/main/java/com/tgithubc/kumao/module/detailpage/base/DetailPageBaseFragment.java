@@ -66,7 +66,7 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
         mHeadPicView = view.findViewById(R.id.head_pic);
         mStickyHeaderLayout = view.findViewById(R.id.sticky_header_layout);
         FrameLayout headContainer = view.findViewById(R.id.list_page_head);
-        FrameLayout  contentContainer = view.findViewById(R.id.list_page_content);
+        FrameLayout contentContainer = view.findViewById(R.id.list_page_content);
         onCreateContentView(inflater, contentContainer);
         mHeadView = onCreateHeadView(inflater, headContainer);
         mStickyHeaderLayout.setGetTargetViewListener(this);
@@ -119,14 +119,13 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
     }
 
     private void initHeadPic() {
-        if (TYPE_LIST_BILLBOARD == getType()) {
-            ImageLoaderWrapper.getInstance().load(mHeadPicView, mPicUrl);
-        } else {
-            ImageLoaderWrapper.getInstance().load(mHeadPicView, mPicUrl,
-                    new ImageLoadConfig.Builder(getActivity())
-                            .setPostprocessor(new BlurPostprocessor(80))
-                            .create());
-        }
+        int blur = TYPE_LIST_BILLBOARD == getType() ? 10 : 150;
+        ImageLoaderWrapper.getInstance().load(mHeadPicView, mPicUrl,
+                new ImageLoadConfig.Builder(getActivity())
+                        .setLoadingDrawable(R.drawable.pic_loading)
+                        .setFailureDrawable(R.drawable.pic_loading)
+                        .setPostprocessor(new BlurPostprocessor(blur))
+                        .create());
     }
 
 

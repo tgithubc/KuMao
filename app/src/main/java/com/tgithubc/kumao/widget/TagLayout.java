@@ -174,6 +174,13 @@ public class TagLayout extends ViewGroup {
         }
     }
 
+    public void setTags(String[] tagList) {
+        removeAllViews();
+        for (String tag : tagList) {
+            appendTag(tag);
+        }
+    }
+
     public TagView getTagAt(int index) {
         return (TagView) getChildAt(index);
     }

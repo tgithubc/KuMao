@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    tools:background="@color/colorAccent">
+
+    <include
+        android:id="@+id/opt_layout"
+        layout="@layout/detail_page_head_opt_include_layout"/>
+
+    <FrameLayout
+        android:id="@+id/pic_layout"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_above="@id/opt_layout"
+        android:layout_marginBottom="5dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/songlist_pic"
+            android:layout_width="120dp"
+            android:layout_height="120dp"/>
+
+        <TextView
+            android:id="@+id/songlist_listen_num"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom|left"
+            android:background="@drawable/text_shadow"
+            android:drawableLeft="@drawable/earphone_numb"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:paddingLeft="3dp"
+            android:paddingTop="5dp"
+            android:text="10000"
+            android:textColor="@color/white"
+            android:textSize="9dp"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_above="@id/opt_layout"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/pic_layout"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/songlist_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="4dp"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            tools:text="阿斯顿说"/>
+
+        <com.tgithubc.kumao.widget.TagLayout
+            android:id="@+id/songlist_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:tag_border_color="@color/white_alpha_20"
+            app:tag_corner_radius="3px"
+            app:tag_lr_padding="7px"
+            app:tag_style="FILL"
+            app:tag_tb_padding="2px"
+            app:tag_text_color="@color/white"
+            app:tag_text_size="11dp"/>
+    </LinearLayout>
+
+</RelativeLayout>

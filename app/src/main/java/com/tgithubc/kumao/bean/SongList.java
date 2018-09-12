@@ -11,7 +11,7 @@ public class SongList {
     private String pic;
     private String listenNum;
     private String collectNum;
-    private String tag;
+    private String[] tags;
     private String name;
     private List<Song> songList;
 
@@ -47,14 +47,6 @@ public class SongList {
         this.collectNum = collectNum;
     }
 
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
     public String getName() {
         return name;
     }
@@ -71,6 +63,14 @@ public class SongList {
         this.songList = songList;
     }
 
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "SongList{" +
@@ -78,7 +78,7 @@ public class SongList {
                 ", pic='" + pic + '\'' +
                 ", listenNum='" + listenNum + '\'' +
                 ", collectNum='" + collectNum + '\'' +
-                ", tag='" + tag + '\'' +
+                ", tags='" + tags + '\'' +
                 ", name='" + name + '\'' +
                 ", songList=" + songList +
                 '}';

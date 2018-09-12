@@ -49,9 +49,10 @@ public class BillboardFragment extends DetailListPageFragment implements IDetail
 
     @Override
     protected DetailListPagePresenter createPresenter() {
-        return new DetailListPagePresenter(TYPE_LIST_BILLBOARD, new RxMap<String, String>()
-                .put("type", mId)
-                .build());
+        return new DetailListPagePresenter(TYPE_LIST_BILLBOARD,
+                new RxMap<String, String>()
+                        .put("type", mId)
+                        .build());
     }
 
     @Override

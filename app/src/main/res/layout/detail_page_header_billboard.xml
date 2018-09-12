@@ -1,44 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp">
+    android:layout_height="250dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
 
-    <LinearLayout
-        android:id="@+id/chose_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="20dp"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:src="@drawable/songlist_chose"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/multi_chose"
-            android:textColor="@color/white"/>
-    </LinearLayout>
+    <include
+        android:id="@+id/opt_layout"
+        layout="@layout/detail_page_head_opt_include_layout"/>
 
     <TextView
         android:id="@+id/billboard_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/opt_layout"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="30dp"
-        android:layout_toLeftOf="@id/chose_layout"
+        android:layout_marginRight="20dp"
         android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="@color/white"
-        tools:text="描述啊啊啊啊啊啊啊啊描述啊啊啊啊啊啊啊啊描述啊啊啊啊啊啊啊啊"/>
+        android:maxLines="3"
+        android:textColor="@color/white_alpha_70"/>
 
 </RelativeLayout>

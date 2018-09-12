@@ -28,7 +28,11 @@ public class SongListParser implements IParser<SongList> {
         songList.setListenNum(object.optString("listenum"));
         songList.setPic(object.optString("pic"));
         songList.setSongListId(object.optString("listid"));
-        songList.setTag(object.optString("tag"));
+        String tag = object.optString("tag");
+        if (!TextUtils.isEmpty(tag)) {
+            String[] tags = tag.split(",");
+            songList.setTags(tags);
+        }
         songList.setName(object.optString("title"));
         JSONArray songArrary = object.optJSONArray("content");
         if (songArrary != null && songArrary.length() > 0) {
