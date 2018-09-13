@@ -5,8 +5,10 @@ package com.tgithubc.kumao.constant;
  */
 public class Constant {
 
+    /**
+     * URL Constant
+     */
     public interface Api {
-
         String HOST = "http://tingapi.ting.baidu.com/v1/restserver/ting?";
         String URL_BANNER = HOST + "method=baidu.ting.plaza.getFocusPic";
         String URL_HOTWORD = HOST + "method=baidu.ting.search.hot";
@@ -14,28 +16,16 @@ public class Constant {
         String URL_SONGINFO = HOST + "method=baidu.ting.song.play";
         String URL_BILLBOARD = HOST + "method=baidu.ting.billboard.billList";
         String URL_BILLBOARD_LIST = HOST + "method=baidu.ting.billboard.billCategory";
-        String URL_HOT_SONG_LIST_ARRARY = HOST + "method=baidu.ting.diy.getHotGeDanAndOfficial";
+        String URL_SONG_LIST_ARRARY = HOST + "method=baidu.ting.diy.gedan";
         String URL_SONG_LIST = HOST + "method=baidu.ting.diy.gedanInfo";
 
-        /**
-         * 榜单type
-         * 1，新歌榜
-         * 2，热歌榜
-         * 6，KTV热歌榜
-         * 7，叱咤歌曲榜
-         * 8，美国Billboard单曲榜
-         * 9，雪碧音碰音榜
-         * 11，摇滚榜
-         * 14，影视金曲榜
-         * 18，Hito中文榜
-         * 20，华语金曲榜
-         * 21，欧美金曲榜
-         * 22，经典老歌榜
-         * 23，情歌对唱榜
-         * 25，网络歌曲榜
-         * 32，韩语榜
-         */
         int BILLBOARD_TYPE_NEW = 1;
-        int BILLBOARD_TYPE_HOT = 2;
+    }
+
+    /**
+     * ui type 对应在Task复用，但是优需要在解析得到数据的时候，设置不同的ui展示类型的情况
+     */
+    public interface UIType {
+
     }
 }

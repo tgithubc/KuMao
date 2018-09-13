@@ -2,7 +2,7 @@ package com.tgithubc.kumao.data.repository;
 
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
-import com.tgithubc.kumao.bean.HotSongListArrary;
+import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.bean.Song;
@@ -38,7 +38,7 @@ public interface KuMaoDataSource {
 
     void clearSearchHistory();
 
-    Observable<HotSongListArrary> getHotSongListArrary(String url, Map<String, String> maps);
+    Observable<SongListArray> getSongListArrary(String url, Map<String, String> maps);
 
     Observable<SongList> getSongList(String url, Map<String, String> maps);
 }

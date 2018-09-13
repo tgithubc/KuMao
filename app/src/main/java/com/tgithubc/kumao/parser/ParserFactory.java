@@ -11,7 +11,7 @@ public class ParserFactory {
     public static final int PARSE_HOTWORD = 4;
     public static final int PARSE_SEARCH_RESULT = 5;
     public static final int PARSE_SONG_INFO = 6;
-    public static final int PARSE_HOT_SONG_LIST_ARRARY = 7;
+    public static final int PARSE_SONG_LIST_ARRARY = 7;
     public static final int PARSE_SONG_LIST = 8;
 
     public static IParser createParser(int type) {
@@ -28,8 +28,8 @@ public class ParserFactory {
                 return new SearchResultParser();
             case PARSE_SONG_INFO:
                 return new SongInfoParser();
-            case PARSE_HOT_SONG_LIST_ARRARY:
-                return new HotSongListArraryParser();
+            case PARSE_SONG_LIST_ARRARY:
+                return new SongListArraryParser();
             case PARSE_SONG_LIST:
                 return new SongListParser();
         }

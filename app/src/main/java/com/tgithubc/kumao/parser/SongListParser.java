@@ -27,6 +27,7 @@ public class SongListParser implements IParser<SongList> {
         songList.setCollectNum(object.optString("collectnum"));
         songList.setListenNum(object.optString("listenum"));
         songList.setPic(object.optString("pic"));
+        songList.setPic(object.optString("pic_300"));
         songList.setSongListId(object.optString("listid"));
         String tag = object.optString("tag");
         if (!TextUtils.isEmpty(tag)) {

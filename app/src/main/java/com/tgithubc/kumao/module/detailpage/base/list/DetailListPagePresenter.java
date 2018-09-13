@@ -47,6 +47,7 @@ public class DetailListPagePresenter extends BasePresenter<IDetailListPageContra
         loadData(new LoadMoreSubscriber());
     }
 
+    @SuppressWarnings("unchecked")
     private void loadData(Subscriber subscriber) {
         Observable observable = requestByType();
         if (observable != null) {

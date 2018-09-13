@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BaseData;
-import com.tgithubc.kumao.bean.HotSongListArrary;
+import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
 import rx.Observable;
@@ -12,27 +12,27 @@ import rx.Observable;
 /**
  * Created by tc :)
  */
-public class GetHostSongListArraryTask extends Task<Task.CommonRequestValue, GetHostSongListArraryTask.ResponseValue> {
+public class GetSongListArrayTask extends Task<Task.CommonRequestValue, GetSongListArrayTask.ResponseValue> {
 
     @Override
     protected Observable<ResponseValue> executeTask(CommonRequestValue requestValues) {
         return RepositoryProvider.getRepository()
-                .getHotSongListArrary(requestValues.getUrl(), requestValues.getParameter())
+                .getSongListArrary(requestValues.getUrl(), requestValues.getParameter())
                 .map(result -> {
-                    result.setType(BaseData.TYPE_HOT_SONG_LIST);
+                    result.setType(BaseData.TYPE_SONG_LIST_3S);
                     return new ResponseValue(result);
                 });
     }
 
     public static final class ResponseValue implements Task.ResponseValue {
 
-        private HotSongListArrary result;
+        private SongListArray result;
 
-        public ResponseValue(@NonNull HotSongListArrary result) {
+        public ResponseValue(@NonNull SongListArray result) {
             this.result = result;
         }
 
-        public HotSongListArrary getResult() {
+        public SongListArray getResult() {
             return result;
         }
     }

@@ -2,7 +2,7 @@ package com.tgithubc.kumao.parser;
 
 import android.text.TextUtils;
 
-import com.tgithubc.kumao.bean.HotSongListArrary;
+import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.SongList;
 
 import org.json.JSONArray;
@@ -15,20 +15,16 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class HotSongListArraryParser implements IParser<HotSongListArrary> {
+public class SongListArraryParser implements IParser<SongListArray> {
 
     @Override
-    public HotSongListArrary parse(String data) throws JSONException {
+    public SongListArray parse(String data) throws JSONException {
         if (TextUtils.isEmpty(data)) {
             return null;
         }
         JSONObject json = new JSONObject(data);
-        JSONObject contentJson = json.optJSONObject("content");
-        if (contentJson == null) {
-            return null;
-        }
-        JSONArray songListArrary = contentJson.optJSONArray("list");
-        HotSongListArrary arrary = new HotSongListArrary();
+        JSONArray songListArrary = json.optJSONArray("content");
+        SongListArray arrary = new SongListArray();
         if (songListArrary != null && songListArrary.length() > 0) {
             List<SongList> songLists = new ArrayList<>();
             for (int i = 0, len = songListArrary.length(); i < len; i++) {

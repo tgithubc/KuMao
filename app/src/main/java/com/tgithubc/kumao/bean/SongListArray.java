@@ -6,7 +6,7 @@ import java.util.List;
  * Created by tc :)
  */
 
-public class HotSongListArrary extends BaseData {
+public class SongListArray extends BaseData {
 
     private List<SongList> songLists;
 
@@ -20,7 +20,7 @@ public class HotSongListArrary extends BaseData {
 
     @Override
     public String toString() {
-        return "HotSongListArrary{" +
+        return "SongListArray{" +
                 "songLists=" + songLists +
                 '}';
     }

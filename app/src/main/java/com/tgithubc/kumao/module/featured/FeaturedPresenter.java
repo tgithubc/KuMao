@@ -8,7 +8,7 @@ import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Title;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBannerTask;
-import com.tgithubc.kumao.data.task.GetHostSongListArraryTask;
+import com.tgithubc.kumao.data.task.GetSongListArrayTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
 import com.tgithubc.kumao.util.RxMap;
 
@@ -22,8 +22,8 @@ import rx.Subscription;
 /**
  * 样式排序
  * banner
- * 热门歌单
- * 推荐歌
+ * 推荐歌单（全部歌单）
+ * 推荐单曲？？
  * 电台
  * 新专辑
  * 新歌
@@ -57,11 +57,14 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     /**
      * hot song list
      */
-    private Observable<GetHostSongListArraryTask.ResponseValue> executeHotSongListTask() {
+    private Observable<GetSongListArrayTask.ResponseValue> executeHotSongListTask() {
         Task.CommonRequestValue rq = new Task.CommonRequestValue(
-                Constant.Api.URL_HOT_SONG_LIST_ARRARY,
-                new RxMap<String, String>().put("num", "6").build());
-        return new GetHostSongListArraryTask().execute(rq);
+                Constant.Api.URL_SONG_LIST_ARRARY,
+                new RxMap<String, String>()
+                        .put("page_no", "1")
+                        .put("page_size", "6")
+                        .build());
+        return new GetSongListArrayTask().execute(rq);
     }
 
     private class FeaturedHttpSubscriber extends HttpSubscriber<List<Task.ResponseValue>> {
@@ -83,7 +86,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                     continue;
                 }
                 // 组装title数据
-                if (value instanceof GetHostSongListArraryTask.ResponseValue) {
+                if (value instanceof GetSongListArrayTask.ResponseValue) {
                     Title title = new Title();
                     title.setTitle("热门歌单");
                     title.setType(BaseData.TYPE_TITLE_MORE);

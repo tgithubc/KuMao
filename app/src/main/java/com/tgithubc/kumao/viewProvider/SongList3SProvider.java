@@ -15,10 +15,11 @@ import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.tgithubc.fresco_wapper.ImageLoaderWrapper;
+import com.tgithubc.fresco_wapper.config.ImageLoadConfig;
 import com.tgithubc.fresco_wapper.listener.IDisplayImageListener;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.BaseData;
-import com.tgithubc.kumao.bean.HotSongListArrary;
+import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.SongList;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.module.detailpage.songlist.SongListFragment;
@@ -29,17 +30,22 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class HotSongListProvider extends BaseItemProvider<HotSongListArrary, BaseViewHolder> {
+public class SongList3SProvider extends BaseItemProvider<SongListArray, BaseViewHolder> {
 
     private Context mContext;
+    private ImageLoadConfig mConfig;
 
-    public HotSongListProvider(Context context) {
+    public SongList3SProvider(Context context) {
         this.mContext = context;
+        this.mConfig = new ImageLoadConfig.Builder(context)
+                .setLoadingDrawable(R.drawable.pic_loading)
+                .setFailureDrawable(R.drawable.pic_loading)
+                .create();
     }
 
     @Override
     public int viewType() {
-        return BaseData.TYPE_HOT_SONG_LIST;
+        return BaseData.TYPE_SONG_LIST_3S;
     }
 
     @Override
@@ -48,24 +54,24 @@ public class HotSongListProvider extends BaseItemProvider<HotSongListArrary, Bas
     }
 
     @Override
-    public void convert(BaseViewHolder helper, HotSongListArrary arrary, int pos) {
+    public void convert(BaseViewHolder helper, SongListArray arrary, int pos) {
         RecyclerView recyclerView = helper.getView(R.id.square_3s_view);
         List<SongList> songLists = arrary.getSongLists();
-        HotSongListAdapter adapter = new HotSongListAdapter(songLists);
+        SongListAdapter adapter = new SongListAdapter(songLists);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
     }
 
-    private class HotSongListAdapter extends BaseQuickAdapter<SongList, BaseViewHolder> {
+    private class SongListAdapter extends BaseQuickAdapter<SongList, BaseViewHolder> {
 
-        HotSongListAdapter(@Nullable List<SongList> data) {
+        SongListAdapter(@Nullable List<SongList> data) {
             super(R.layout.rv_item_3s_square_item, data);
         }
 
         @Override
         protected void convert(BaseViewHolder helper, SongList item) {
             SimpleDraweeView imgView = helper.getView(R.id.song_list_pic);
-            ImageLoaderWrapper.getInstance().load(imgView, item.getPic(),
+            ImageLoaderWrapper.getInstance().load(imgView, item.getPic(), mConfig,
                     new IDisplayImageListener<ImageInfo>() {
                         @Override
                         public void onSuccess(ImageInfo result, Animatable animatable) {
@@ -75,7 +81,7 @@ public class HotSongListProvider extends BaseItemProvider<HotSongListArrary, Bas
 
                         @Override
                         public void onFailure(Throwable throwable) {
-
+                            helper.setText(R.id.song_list_name, item.getName());
                         }
                     }
             );

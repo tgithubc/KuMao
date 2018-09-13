@@ -128,7 +128,6 @@ public abstract class DetailPageBaseFragment extends BaseFragment implements Sti
                         .create());
     }
 
-
     /**
      * 具体类型（榜单/歌单/专辑/歌手）
      */
