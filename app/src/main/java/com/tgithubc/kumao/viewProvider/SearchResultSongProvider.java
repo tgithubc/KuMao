@@ -5,6 +5,7 @@ import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.service.PlayManager;
 
 /**
@@ -14,7 +15,7 @@ public class SearchResultSongProvider extends BaseItemProvider<Song, BaseViewHol
 
     @Override
     public int viewType() {
-        return BaseData.TYPE_SEARCH_RESULT_SONG;
+        return Constant.UIType.TYPE_SEARCH_RESULT_SONG;
     }
 
     @Override

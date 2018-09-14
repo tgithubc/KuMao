@@ -45,6 +45,15 @@ public abstract class Task<RQ extends Task.RequestValue, RP extends Task.Respons
 
         private String url;
         private Map<String, String> parameter;
+        // 对应在Task复用，但是拿到数据又需要设置不同的ui展示类型的情况下
+        // 从请求参数携带过去你想要的展示类型，传递给返回数据，构造出不同的type作ui展示区分
+        private int uiType;
+
+        public CommonRequestValue(String url, Map<String, String> parameter, int uiType) {
+            this.url = url;
+            this.parameter = parameter;
+            this.uiType = uiType;
+        }
 
         public CommonRequestValue(String url, Map<String, String> parameter) {
             this.url = url;
@@ -53,6 +62,10 @@ public abstract class Task<RQ extends Task.RequestValue, RP extends Task.Respons
 
         public String getUrl() {
             return url;
+        }
+
+        public int getUiType() {
+            return uiType;
         }
 
         public Map<String, String> getParameter() {

@@ -3,13 +3,13 @@ package com.tgithubc.kumao.data.task;
 import android.support.annotation.NonNull;
 
 import com.tgithubc.kumao.base.Task;
-import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
 import rx.Observable;
 
 /**
+ *
  * Created by tc :)
  */
 public class GetSongListArrayTask extends Task<Task.CommonRequestValue, GetSongListArrayTask.ResponseValue> {
@@ -19,7 +19,8 @@ public class GetSongListArrayTask extends Task<Task.CommonRequestValue, GetSongL
         return RepositoryProvider.getRepository()
                 .getSongListArrary(requestValues.getUrl(), requestValues.getParameter())
                 .map(result -> {
-                    result.setType(BaseData.TYPE_SONG_LIST_3S);
+                    // 有可能2列有可能3列
+                    result.setType(requestValues.getUiType());
                     return new ResponseValue(result);
                 });
     }

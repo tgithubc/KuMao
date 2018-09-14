@@ -21,6 +21,7 @@ import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.SongList;
+import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.module.detailpage.songlist.SongListFragment;
 
@@ -40,12 +41,13 @@ public class SongList3SProvider extends BaseItemProvider<SongListArray, BaseView
         this.mConfig = new ImageLoadConfig.Builder(context)
                 .setLoadingDrawable(R.drawable.pic_loading)
                 .setFailureDrawable(R.drawable.pic_loading)
+                .roundedCorner(8)
                 .create();
     }
 
     @Override
     public int viewType() {
-        return BaseData.TYPE_SONG_LIST_3S;
+        return Constant.UIType.TYPE_SONG_LIST_3S;
     }
 
     @Override

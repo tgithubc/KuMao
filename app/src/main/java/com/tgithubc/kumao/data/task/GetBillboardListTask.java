@@ -60,9 +60,9 @@ public class GetBillboardListTask extends Task<Task.CommonRequestValue, GetBillb
     private Observable<? extends ResponseValue> wrapperData(List<Billboard> result) {
         Observable.from(result).forEach(billboard -> {
             if (billboard.getBillboardInfo().getBillboardType() == Constant.Api.BILLBOARD_TYPE_NEW) {
-                billboard.setType(BaseData.TYPE_RANK_NEW_BILLBOARD);
+                billboard.setType(Constant.UIType.TYPE_RANK_NEW_BILLBOARD);
             } else {
-                billboard.setType(BaseData.TYPE_RANK_BILLBOARD);
+                billboard.setType(Constant.UIType.TYPE_RANK_BILLBOARD);
             }
         });
         return Observable.just(new ResponseValue(result));

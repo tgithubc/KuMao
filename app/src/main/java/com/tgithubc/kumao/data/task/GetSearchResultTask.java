@@ -7,6 +7,7 @@ import com.tgithubc.kumao.bean.Album;
 import com.tgithubc.kumao.bean.Artist;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
 import java.util.ArrayList;
@@ -27,18 +28,18 @@ public class GetSearchResultTask extends Task<Task.CommonRequestValue, GetSearch
                     List<BaseData> list = new ArrayList<>();
                     if (result.isArtist()) {
                         Artist artist = result.getArtist();
-                        artist.setType(BaseData.TYPE_SEARCH_RESULT_ARTIST);
+                        artist.setType(Constant.UIType.TYPE_SEARCH_RESULT_ARTIST);
                         list.add(artist);
                     }
                     if (result.isAlbum()) {
                         Album album = result.getAlbum();
-                        album.setType(BaseData.TYPE_SEARCH_RESULT_ALBUM);
+                        album.setType(Constant.UIType.TYPE_SEARCH_RESULT_ALBUM);
                         list.add(album);
                     }
                     List<Song> songList = result.getSongList();
                     if (songList != null && !songList.isEmpty()) {
                         for (Song s : songList) {
-                            s.setType(BaseData.TYPE_SEARCH_RESULT_SONG);
+                            s.setType(Constant.UIType.TYPE_SEARCH_RESULT_SONG);
                             list.add(s);
                         }
                     }

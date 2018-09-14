@@ -7,6 +7,7 @@ import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Song;
+import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.module.detailpage.billboard.BillboardFragment;
 
@@ -19,7 +20,7 @@ public class BillboardProvider extends BaseItemProvider<Billboard, BaseViewHolde
 
     @Override
     public int viewType() {
-        return BaseData.TYPE_RANK_BILLBOARD;
+        return Constant.UIType.TYPE_RANK_BILLBOARD;
     }
 
     @Override

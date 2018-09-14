@@ -5,6 +5,7 @@ import android.util.Log;
 import com.tgithubc.kumao.base.BasePresenter;
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.Title;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBannerTask;
@@ -63,7 +64,9 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                 new RxMap<String, String>()
                         .put("page_no", "1")
                         .put("page_size", "6")
-                        .build());
+                        .build(),
+                Constant.UIType.TYPE_SONG_LIST_3S
+        );
         return new GetSongListArrayTask().execute(rq);
     }
 
@@ -88,8 +91,8 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                 // 组装title数据
                 if (value instanceof GetSongListArrayTask.ResponseValue) {
                     Title title = new Title();
-                    title.setTitle("热门歌单");
-                    title.setType(BaseData.TYPE_TITLE_MORE);
+                    title.setTitle("推荐歌单");
+                    title.setType(Constant.UIType.TYPE_TITLE_MORE);
                     mFeedData.add(title);
                 }
                 mFeedData.add((BaseData) value.getResult());

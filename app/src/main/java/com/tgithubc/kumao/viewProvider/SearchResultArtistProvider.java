@@ -9,6 +9,7 @@ import com.tgithubc.fresco_wapper.config.ImageLoadConfig;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.Artist;
 import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.constant.Constant;
 
 /**
  * Created by tc :)
@@ -23,7 +24,7 @@ public class SearchResultArtistProvider extends BaseItemProvider<Artist, BaseVie
 
     @Override
     public int viewType() {
-        return BaseData.TYPE_SEARCH_RESULT_ARTIST;
+        return Constant.UIType.TYPE_SEARCH_RESULT_ARTIST;
     }
 
     @Override

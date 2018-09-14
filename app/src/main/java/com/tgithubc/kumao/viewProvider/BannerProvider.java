@@ -11,6 +11,7 @@ import com.tgithubc.fresco_wapper.ImageLoaderWrapper;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.module.WebFragment;
 import com.tgithubc.kumao.widget.banner.BannerHolder;
@@ -24,7 +25,7 @@ public class BannerProvider extends BaseItemProvider<Banner, BaseViewHolder> {
 
     @Override
     public int viewType() {
-        return BaseData.TYPE_BANNER;
+        return Constant.UIType.TYPE_BANNER;
     }
 
     @Override

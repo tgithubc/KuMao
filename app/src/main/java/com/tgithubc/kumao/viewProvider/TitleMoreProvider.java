@@ -5,6 +5,7 @@ import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Title;
+import com.tgithubc.kumao.constant.Constant;
 
 /**
  * Created by tc :)
@@ -13,7 +14,7 @@ public class TitleMoreProvider extends BaseItemProvider<Title, BaseViewHolder> {
 
     @Override
     public int viewType() {
-        return BaseData.TYPE_TITLE_MORE;
+        return Constant.UIType.TYPE_TITLE_MORE;
     }
 
     @Override

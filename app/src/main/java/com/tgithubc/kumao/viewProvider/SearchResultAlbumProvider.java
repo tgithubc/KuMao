@@ -9,6 +9,7 @@ import com.tgithubc.fresco_wapper.ImageLoaderWrapper;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.Album;
 import com.tgithubc.kumao.bean.BaseData;
+import com.tgithubc.kumao.constant.Constant;
 
 /**
  * Created by tc :)
@@ -17,7 +18,7 @@ public class SearchResultAlbumProvider extends BaseItemProvider<Album, BaseViewH
 
     @Override
     public int viewType() {
-        return BaseData.TYPE_SEARCH_RESULT_ALBUM;
+        return Constant.UIType.TYPE_SEARCH_RESULT_ALBUM;
     }
 
     @Override
