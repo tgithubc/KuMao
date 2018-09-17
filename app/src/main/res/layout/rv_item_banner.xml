@@ -4,5 +4,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/banner_view"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="120dp"
     tools:background="@color/colorPrimaryDark"/>

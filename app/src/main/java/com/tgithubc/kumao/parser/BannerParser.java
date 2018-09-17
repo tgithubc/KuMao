@@ -16,7 +16,7 @@ import static android.R.attr.banner;
 /**
  * Created by tc :)
  */
-public class BannerParser implements IParser<Banner> {
+class BannerParser implements IParser<Banner> {
 
     @Override
     public Banner parse(String data) throws JSONException {

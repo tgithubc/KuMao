@@ -9,6 +9,7 @@ import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.Title;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBannerTask;
+import com.tgithubc.kumao.data.task.GetRecommendSongArrayTask;
 import com.tgithubc.kumao.data.task.GetSongListArrayTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
 import com.tgithubc.kumao.util.RxMap;
@@ -23,6 +24,7 @@ import rx.Subscription;
 /**
  * 样式排序
  * banner
+ * 本地入口
  * 推荐歌单（全部歌单）
  * 推荐单曲？？
  * 电台
@@ -38,8 +40,12 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     @Override
     public void getFeaturedData() {
         // 开始多个task，组合成一个数据流返回，不是自己的接口没办法
+        List<Observable<? extends Task.ResponseValue>> observableList = new ArrayList<>();
+        observableList.add(executeBannerTask());
+        observableList.add(executeHotSongListTask());
+        observableList.add(executeRecommendSongArrayTask());
         Subscription subscription = Observable
-                .concat(executeBannerTask(), executeHotSongListTask())
+                .concatDelayError(observableList)
                 .toList()
                 .subscribe(new FeaturedHttpSubscriber());
         addSubscribe(subscription);
@@ -56,7 +62,7 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
     }
 
     /**
-     * hot song list
+     * recommend song list
      */
     private Observable<GetSongListArrayTask.ResponseValue> executeHotSongListTask() {
         Task.CommonRequestValue rq = new Task.CommonRequestValue(
@@ -68,6 +74,14 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                 Constant.UIType.TYPE_SONG_LIST_3S
         );
         return new GetSongListArrayTask().execute(rq);
+    }
+
+    /**
+     * recommend song
+     */
+    private Observable<GetRecommendSongArrayTask.ResponseValue> executeRecommendSongArrayTask() {
+        Task.CommonRequestValue rq = new Task.CommonRequestValue(Constant.Api.URL_RECOMMEND_SONG_ARRAY, null);
+        return new GetRecommendSongArrayTask().execute(rq);
     }
 
     private class FeaturedHttpSubscriber extends HttpSubscriber<List<Task.ResponseValue>> {
@@ -92,6 +106,12 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
                 if (value instanceof GetSongListArrayTask.ResponseValue) {
                     Title title = new Title();
                     title.setTitle("推荐歌单");
+                    title.setAddMore(true);
+                    title.setType(Constant.UIType.TYPE_TITLE_MORE);
+                    mFeedData.add(title);
+                } else if (value instanceof GetRecommendSongArrayTask.ResponseValue) {
+                    Title title = new Title();
+                    title.setTitle("推荐单曲");
                     title.setType(Constant.UIType.TYPE_TITLE_MORE);
                     mFeedData.add(title);
                 }

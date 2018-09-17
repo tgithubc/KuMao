@@ -91,7 +91,7 @@ public class DetailListPagePresenter extends BasePresenter<IDetailListPageContra
     }
 
     private Observable requestSongList(Map<String, String> requestValue) {
-        return new GetSongListTask().execute(new Task.CommonRequestValue(Constant.Api.URL_SONG_LIST, requestValue));
+        return new GetSongListTask().execute(new Task.CommonRequestValue(Constant.Api.URL_SONG_LIST_INFO, requestValue));
     }
 
     private class LoadMoreSubscriber extends HttpSubscriber<Task.ResponseValue> {

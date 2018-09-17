@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class HotWordParser implements IParser<List<String>> {
+class HotWordParser implements IParser<List<String>> {
 
     @Override
     public List<String> parse(String data) throws JSONException {

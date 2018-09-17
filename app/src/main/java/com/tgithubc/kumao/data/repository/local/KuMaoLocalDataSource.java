@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.RecommendSongArray;
 import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
@@ -74,7 +75,12 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
 
     @Override
     public Observable<SongList> getSongList(String url, Map<String, String> maps) {
-        return createObservable(url, maps, ParserFactory.PARSE_SONG_LIST);
+        return createObservable(url, maps, ParserFactory.PARSE_SONG_LIST_INFO);
+    }
+
+    @Override
+    public Observable<RecommendSongArray> getRecommendSongArray(String url, Map<String, String> maps) {
+        return createObservable(url, maps, ParserFactory.PARSE_RECOMMEND_SONG_ARRAY);
     }
 
     @Override

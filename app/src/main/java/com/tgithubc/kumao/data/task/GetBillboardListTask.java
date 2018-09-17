@@ -3,7 +3,6 @@ package com.tgithubc.kumao.data.task;
 import android.support.annotation.NonNull;
 
 import com.tgithubc.kumao.base.Task;
-import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.bean.Billboard;
 import com.tgithubc.kumao.bean.Song;
 import com.tgithubc.kumao.constant.Constant;
@@ -70,7 +69,7 @@ public class GetBillboardListTask extends Task<Task.CommonRequestValue, GetBillb
 
     private Observable<Song> requestSongInfo(Song song) {
         return RepositoryProvider.getRepository()
-                .getSongInfo(Constant.Api.URL_SONGINFO, new RxMap<String, String>().put("songid", song.getSongId()).build());
+                .getSongInfo(Constant.Api.URL_SONG_INFO, new RxMap<String, String>().put("songid", song.getSongId()).build());
     }
 
     public static final class ResponseValue implements Task.ResponseValue {

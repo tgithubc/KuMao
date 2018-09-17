@@ -12,7 +12,8 @@ public class ParserFactory {
     public static final int PARSE_SEARCH_RESULT = 5;
     public static final int PARSE_SONG_INFO = 6;
     public static final int PARSE_SONG_LIST_ARRARY = 7;
-    public static final int PARSE_SONG_LIST = 8;
+    public static final int PARSE_SONG_LIST_INFO = 8;
+    public static final int PARSE_RECOMMEND_SONG_ARRAY = 9;
 
     public static IParser createParser(int type) {
         switch (type) {
@@ -30,8 +31,10 @@ public class ParserFactory {
                 return new SongInfoParser();
             case PARSE_SONG_LIST_ARRARY:
                 return new SongListArraryParser();
-            case PARSE_SONG_LIST:
+            case PARSE_SONG_LIST_INFO:
                 return new SongListParser();
+            case PARSE_RECOMMEND_SONG_ARRAY:
+                return new RecommendSongArrayParser();
         }
         return null;
     }

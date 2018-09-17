@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class SearchResultParser implements IParser<SearchResult> {
+class SearchResultParser implements IParser<SearchResult> {
 
     @Override
     public SearchResult parse(String data) throws JSONException {

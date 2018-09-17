@@ -4,6 +4,7 @@ package com.tgithubc.kumao.data.repository.remote;
 import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.RecommendSongArray;
 import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
@@ -69,7 +70,12 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
 
     @Override
     public Observable<SongList> getSongList(String url, Map<String, String> maps) {
-        return createObservable(url, maps, ParserFactory.PARSE_SONG_LIST, 12 * ACache.TIME_HOUR);
+        return createObservable(url, maps, ParserFactory.PARSE_SONG_LIST_INFO, 12 * ACache.TIME_HOUR);
+    }
+
+    @Override
+    public Observable<RecommendSongArray> getRecommendSongArray(String url, Map<String, String> maps) {
+        return createObservable(url, maps, ParserFactory.PARSE_RECOMMEND_SONG_ARRAY, 12 * ACache.TIME_HOUR);
     }
 
     @Override
@@ -104,6 +110,7 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
                                                Map<String, String> maps,
                                                int type,
                                                int cacheTime) {
+
         return RetrofitManager.getInstance()
                 .executeGet(url, maps)
                 .doOnNext(data -> {

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /**
  * Created by tc :)
  */
-public class SongParser implements IParser<Song> {
+class SongParser implements IParser<Song> {
 
     @Override
     public Song parse(String data) throws JSONException {

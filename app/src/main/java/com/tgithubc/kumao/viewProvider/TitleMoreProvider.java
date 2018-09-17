@@ -25,6 +25,11 @@ public class TitleMoreProvider extends BaseItemProvider<Title, BaseViewHolder> {
     @Override
     public void convert(BaseViewHolder helper, Title title, int position) {
         helper.setText(R.id.title, title.getTitle());
-        helper.addOnClickListener(R.id.title_see_more);
+        if (title.isAddMore()) {
+            helper.setVisible(R.id.title_see_more, true);
+            helper.addOnClickListener(R.id.title_see_more);
+        } else {
+            helper.setVisible(R.id.title_see_more, false);
+        }
     }
 }

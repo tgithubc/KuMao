@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:gravity="center_vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/song_pic"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/song_pic">
+
+        <TextView
+            android:id="@+id/song_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            tools:text="@string/app_name" />
+
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:id="@+id/song_album"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:textColor="#3a3a3a"
+            android:textSize="11dp"
+            tools:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/song_artist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/song_album"
+            android:textColor="#3a3a3a"
+            android:textSize="11dp"
+            tools:text="@string/app_name" />
+
+
+    </RelativeLayout>
+
+    <View style="@style/Widget.DivideLine" />
+</RelativeLayout>

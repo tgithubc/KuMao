@@ -280,7 +280,7 @@ public class PlayManager {
         Song requestSong = mCurrentSongList.get(index);
         new GetSongInfoTask()
                 .execute(new Task.CommonRequestValue(
-                        Constant.Api.URL_SONGINFO,
+                        Constant.Api.URL_SONG_INFO,
                         new RxMap<String, String>().put("songid", requestSong.getSongId()).build()))
                 .subscribe(responseValue -> {
                     Song song = responseValue.getResult();

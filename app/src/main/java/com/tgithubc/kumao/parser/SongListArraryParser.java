@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by tc :)
  */
-public class SongListArraryParser implements IParser<SongListArray> {
+class SongListArraryParser implements IParser<SongListArray> {
 
     @Override
     public SongListArray parse(String data) throws JSONException {

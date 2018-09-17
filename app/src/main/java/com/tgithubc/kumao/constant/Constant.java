@@ -13,11 +13,12 @@ public class Constant {
         String URL_BANNER = HOST + "method=baidu.ting.plaza.getFocusPic";
         String URL_HOTWORD = HOST + "method=baidu.ting.search.hot";
         String URL_SEARCH = HOST + "method=baidu.ting.search.common";
-        String URL_SONGINFO = HOST + "method=baidu.ting.song.play";
+        String URL_SONG_INFO = HOST + "method=baidu.ting.song.play";
         String URL_BILLBOARD = HOST + "method=baidu.ting.billboard.billList";
         String URL_BILLBOARD_LIST = HOST + "method=baidu.ting.billboard.billCategory";
         String URL_SONG_LIST_ARRARY = HOST + "method=baidu.ting.diy.gedan";
-        String URL_SONG_LIST = HOST + "method=baidu.ting.diy.gedanInfo";
+        String URL_SONG_LIST_INFO = HOST + "method=baidu.ting.diy.gedanInfo";
+        String URL_RECOMMEND_SONG_ARRAY = HOST + "method=baidu.ting.song.getEditorRecommend";
 
         int BILLBOARD_TYPE_NEW = 1;
     }
@@ -31,6 +32,7 @@ public class Constant {
         int TYPE_BANNER = 1000;// 轮播图
         int TYPE_TITLE_MORE = 1001;// title,更多
         int TYPE_SONG_LIST_3S = 1002;// 歌单3列
+        int TYPE_RECOMMEND_SONG = 1003;// 推荐单曲
 
         // 搜索结果页
         int TYPE_SEARCH_RESULT_ARTIST = 2000;// 搜索结果的歌手
