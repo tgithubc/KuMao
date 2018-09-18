@@ -7,7 +7,8 @@ import com.tgithubc.kumao.bean.RecommendSongArray;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by tc :)

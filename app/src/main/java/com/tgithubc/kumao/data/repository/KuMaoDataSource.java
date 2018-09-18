@@ -2,6 +2,7 @@ package com.tgithubc.kumao.data.repository;
 
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.RadioArray;
 import com.tgithubc.kumao.bean.RecommendSongArray;
 import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.KeyWord;
@@ -12,7 +13,8 @@ import com.tgithubc.kumao.bean.SongList;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by tc :)
@@ -44,4 +46,6 @@ public interface KuMaoDataSource {
     Observable<SongList> getSongList(String url, Map<String, String> maps);
 
     Observable<RecommendSongArray> getRecommendSongArray(String url, Map<String, String> maps);
+
+    Observable<RadioArray> getRadioList(String url, Map<String, String> maps);
 }

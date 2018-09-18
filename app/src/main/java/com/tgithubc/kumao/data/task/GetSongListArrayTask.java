@@ -6,7 +6,7 @@ import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  *

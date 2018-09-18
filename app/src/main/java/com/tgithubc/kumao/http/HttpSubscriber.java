@@ -4,14 +4,15 @@ package com.tgithubc.kumao.http;
 import android.util.Log;
 
 
+
 import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Locale;
 
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Subscriber;
+import io.reactivex.observers.DisposableObserver;
+import retrofit2.HttpException;
 
 
 /**
@@ -19,7 +20,7 @@ import rx.Subscriber;
  * 其实还有些不是服务端错误的code，比如登陆失败的业务错误也应该提前预处理了丢个异常转到onError里来，不应该再走到onNext
  * Created by tc :)
  */
-public abstract class HttpSubscriber<T> extends Subscriber<T> {
+public abstract class HttpSubscriber<T> extends DisposableObserver<T> {
 
     private static final String TAG = "ApiException";
 
@@ -36,8 +37,6 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> {
     private static final String MSG_NETWORK_CONNECTION_ERROR = "网络连接不可用，请检查或稍后重试";
     private static final String MSG_UNKNOWN_ERROR = "未知错误";
 
-    public void onStart() {
-    }
 
     @Override
     public void onNext(T t) {
@@ -45,7 +44,7 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> {
     }
 
     @Override
-    public void onCompleted() {
+    public void onComplete() {
         onFinally();
     }
 

@@ -13,7 +13,7 @@ import com.tgithubc.kumao.data.repository.RepositoryProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by tc :)

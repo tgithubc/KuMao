@@ -5,7 +5,7 @@ import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by tc :)
@@ -17,7 +17,7 @@ public class DeleteSearchHistoryTask extends Task<DeleteSearchHistoryTask.Reques
         return Observable.create(subscriber -> {
             RepositoryProvider.getRepository().deleteSearchHistory(requestValues.getKeyWord());
             subscriber.onNext(new EmptyResponseValue());
-            subscriber.onCompleted();
+            subscriber.onComplete();
         });
     }
 

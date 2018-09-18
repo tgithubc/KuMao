@@ -4,9 +4,10 @@ import com.tgithubc.kumao.util.RxHandler;
 
 import java.util.Map;
 
-import rx.Observable;
-import rx.Scheduler;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by tc :)

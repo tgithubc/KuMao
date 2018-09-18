@@ -3,6 +3,7 @@ package com.tgithubc.kumao.data.repository;
 
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.RadioArray;
 import com.tgithubc.kumao.bean.RecommendSongArray;
 import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.KeyWord;
@@ -13,7 +14,7 @@ import com.tgithubc.kumao.bean.SongList;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by tc :)
@@ -40,56 +41,69 @@ public class KuMaoRepository implements KuMaoDataSource {
     public Observable<Banner> getBanner(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getBanner(url, maps), mRemoteDataSource.getBanner(url, maps))
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     @Override
     public Observable<Billboard> getBillboard(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getBillboard(url, maps), mRemoteDataSource.getBillboard(url, maps))
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     @Override
     public Observable<List<Billboard>> getBillboardList(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getBillboardList(url, maps), mRemoteDataSource.getBillboardList(url, maps))
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     @Override
     public Observable<Song> getSongInfo(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getSongInfo(url, maps), mRemoteDataSource.getSongInfo(url, maps))
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     @Override
     public Observable<List<String>> getHotWord(String url) {
         return Observable
                 .concat(mLocalDataSource.getHotWord(url), mRemoteDataSource.getHotWord(url))
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     @Override
     public Observable<SongListArray> getSongListArrary(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getSongListArrary(url, maps), mRemoteDataSource.getSongListArrary(url, maps))
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     @Override
     public Observable<SongList> getSongList(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getSongList(url, maps), mRemoteDataSource.getSongList(url, maps))
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     @Override
     public Observable<RecommendSongArray> getRecommendSongArray(String url, Map<String, String> maps) {
         return Observable
                 .concat(mLocalDataSource.getRecommendSongArray(url, maps), mRemoteDataSource.getRecommendSongArray(url, maps))
-                .first();
+                .firstElement()
+                .toObservable();
+    }
+
+    @Override
+    public Observable<RadioArray> getRadioList(String url, Map<String, String> maps) {
+        return null;
     }
 
     @Override

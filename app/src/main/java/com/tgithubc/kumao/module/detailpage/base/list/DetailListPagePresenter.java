@@ -11,11 +11,14 @@ import com.tgithubc.kumao.data.task.GetSongListTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
 import com.tgithubc.kumao.module.detailpage.base.DetailPageBaseFragment;
 
+
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
-import rx.Subscriber;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
+
 
 /**
  * Created by tc :)
@@ -48,10 +51,11 @@ public class DetailListPagePresenter extends BasePresenter<IDetailListPageContra
     }
 
     @SuppressWarnings("unchecked")
-    private void loadData(Subscriber subscriber) {
+    private void loadData(DisposableObserver observer) {
         Observable observable = requestByType();
         if (observable != null) {
-            addSubscribe(observable.subscribe(subscriber));
+            Disposable disposable = (Disposable) observable.subscribeWith(observer);
+            addSubscribe(disposable);
         }
     }
 

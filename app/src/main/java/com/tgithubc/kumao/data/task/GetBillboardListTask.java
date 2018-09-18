@@ -11,7 +11,7 @@ import com.tgithubc.kumao.util.RxMap;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by tc :)
@@ -45,6 +45,7 @@ public class GetBillboardListTask extends Task<Task.CommonRequestValue, GetBillb
                 // 聚合三首歌的详细信息，压合转换
                 return Observable.merge(s1, s2, s3)
                         .toList()
+                        .toObservable()
                         .concatMap(songList -> {
                             finalNewBillboard.getSongList().clear();
                             finalNewBillboard.setSongList(songList);
@@ -57,7 +58,7 @@ public class GetBillboardListTask extends Task<Task.CommonRequestValue, GetBillb
 
     // 类型区分，方便展示
     private Observable<? extends ResponseValue> wrapperData(List<Billboard> result) {
-        Observable.from(result).forEach(billboard -> {
+        Observable.fromIterable(result).forEach(billboard -> {
             if (billboard.getBillboardInfo().getBillboardType() == Constant.Api.BILLBOARD_TYPE_NEW) {
                 billboard.setType(Constant.UIType.TYPE_RANK_NEW_BILLBOARD);
             } else {

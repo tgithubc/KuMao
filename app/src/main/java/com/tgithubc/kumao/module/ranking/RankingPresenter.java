@@ -6,8 +6,9 @@ import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBillboardListTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
 
-import rx.Observable;
-import rx.Subscription;
+
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by tc :)
@@ -18,23 +19,24 @@ public class RankingPresenter extends BasePresenter<IRankingContract.V> implemen
     public void getRankingData() {
         Observable<GetBillboardListTask.ResponseValue> task = new GetBillboardListTask()
                 .execute(new Task.CommonRequestValue(Constant.Api.URL_BILLBOARD_LIST, null));
-        Subscription subscription = task.subscribe(new HttpSubscriber<GetBillboardListTask.ResponseValue>() {
+        Disposable disposable = task.subscribeWith(
+                new HttpSubscriber<GetBillboardListTask.ResponseValue>() {
 
-            @Override
-            public void onStart() {
-                getView().showLoading();
-            }
+                    @Override
+                    protected void onError(String msg, Throwable e) {
+                        getView().showError();
+                    }
 
-            @Override
-            protected void onError(String msg, Throwable e) {
-                getView().showError();
-            }
+                    @Override
+                    public void onStart() {
+                        getView().showLoading();
+                    }
 
-            @Override
-            public void onNext(GetBillboardListTask.ResponseValue responseValue) {
-                getView().showRankingView(responseValue.getResult());
-            }
-        });
-        addSubscribe(subscription);
+                    @Override
+                    public void onNext(GetBillboardListTask.ResponseValue responseValue) {
+                        getView().showRankingView(responseValue.getResult());
+                    }
+                });
+        addSubscribe(disposable);
     }
 }

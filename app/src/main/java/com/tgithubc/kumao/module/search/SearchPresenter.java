@@ -19,8 +19,9 @@ import com.tgithubc.kumao.util.RxMap;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
-import rx.Subscription;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+
 
 /**
  * Created by tc :)
@@ -32,10 +33,10 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
 
     @Override
     public void getHotWord() {
-        Subscription subscription =
-               new GetHotWordTask()
+        Disposable disposable =
+                new GetHotWordTask()
                         .execute(new Task.CommonRequestValue(Constant.Api.URL_HOTWORD, null))
-                        .subscribe(new HttpSubscriber<GetHotWordTask.ResponseValue>() {
+                        .subscribeWith(new HttpSubscriber<GetHotWordTask.ResponseValue>() {
 
                             @Override
                             protected void onError(String msg, Throwable e) {
@@ -49,7 +50,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                                 getView().showHotWord(hotword);
                             }
                         });
-        addSubscribe(subscription);
+        addSubscribe(disposable);
     }
 
     @Override
@@ -62,17 +63,17 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
         mCurrentKeyWord = keyword;
         getView().showLoading();
         // 存储合法的搜索词到数据库
-        Subscription saveSubscription =
+        Disposable saveDisposable =
                 new SaveSearchHistoryTask()
                         .execute(new SaveSearchHistoryTask.RequestValue(keyword))
                         .subscribe(responseValue -> {
                         });
-        addSubscribe(saveSubscription);
+        addSubscribe(saveDisposable);
 
         // 开个task去请求搜索结果
-        Subscription querySubscription =
+        Disposable queryDisposable =
                 getSearchTask(keyword, 1)
-                        .subscribe(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
+                        .subscribeWith(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
                             @Override
                             protected void onError(String msg, Throwable e) {
                                 getView().showError();
@@ -85,7 +86,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                                 getView().showSearchResult(responseValue.getResult());
                             }
                         });
-        addSubscribe(querySubscription);
+        addSubscribe(queryDisposable);
     }
 
     @Override
@@ -93,9 +94,9 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
         if (TextUtils.isEmpty(mCurrentKeyWord) || mCurrentKeyWord.replaceAll(" ", "").length() <= 0) {
             return;
         }
-        Subscription subscription =
+        Disposable disposable =
                 getSearchTask(mCurrentKeyWord, ++mCurrentPage)
-                        .subscribe(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
+                        .subscribeWith(new HttpSubscriber<GetSearchResultTask.ResponseValue>() {
                             @Override
                             protected void onError(String msg, Throwable e) {
                                 getView().loadMoreError();
@@ -112,34 +113,34 @@ public class SearchPresenter extends BasePresenter<ISearchContract.V> implements
                                 }
                             }
                         });
-        addSubscribe(subscription);
+        addSubscribe(disposable);
     }
 
     @Override
     public void getSearchHistory() {
-        Subscription subscription =
+        Disposable disposable =
                 new GetSearchHistoryTask()
                         .execute(new Task.EmptyRequestValue())
                         .subscribe(responseValue -> getView().showSearchHistory(responseValue.getResult()));
-        addSubscribe(subscription);
+        addSubscribe(disposable);
     }
 
     @Override
     public void clearSearchHistory() {
-        Subscription subscription =
+        Disposable disposable =
                 new DeleteAllSearchHistoryTask()
                         .execute(new Task.EmptyRequestValue())
                         .subscribe(responseValue -> getView().clearSearchHistory());
-        addSubscribe(subscription);
+        addSubscribe(disposable);
     }
 
     @Override
     public void deleteSearchHistory(KeyWord keyword, int position) {
-        Subscription subscription =
+        Disposable disposable =
                 new DeleteSearchHistoryTask()
                         .execute(new DeleteSearchHistoryTask.RequestValue(keyword))
                         .subscribe(responseValue -> getView().refreshSearchHistory(position));
-        addSubscribe(subscription);
+        addSubscribe(disposable);
     }
 
     private Observable<GetSearchResultTask.ResponseValue> getSearchTask(String keyword, int page) {

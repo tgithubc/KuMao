@@ -10,7 +10,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.tgithubc.fresco_wapper.ImageLoaderWrapper;
 import com.tgithubc.kumao.R;
 import com.tgithubc.kumao.bean.Banner;
-import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.module.WebFragment;

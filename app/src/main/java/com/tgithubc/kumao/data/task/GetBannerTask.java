@@ -4,11 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.Banner;
-import com.tgithubc.kumao.bean.BaseData;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by tc :)

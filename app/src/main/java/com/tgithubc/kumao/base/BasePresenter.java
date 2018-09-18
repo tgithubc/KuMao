@@ -5,15 +5,16 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 
 /**
  * Created by tc :)
  */
 public abstract class BasePresenter<V extends IView> {
 
-    private CompositeSubscription mSubscription;
+    private CompositeDisposable mDisposable;
     private V mProxyView;
     private WeakReference<V> mWeakReference;
 
@@ -26,7 +27,7 @@ public abstract class BasePresenter<V extends IView> {
                 view.getClass().getClassLoader(),
                 view.getClass().getInterfaces(),
                 new ViewProxy(view));
-        mSubscription = new CompositeSubscription();
+        mDisposable = new CompositeDisposable();
     }
 
     public void detachView() {
@@ -42,14 +43,14 @@ public abstract class BasePresenter<V extends IView> {
     }
 
     private void removeSubscribe() {
-        if (mSubscription != null && mSubscription.hasSubscriptions()) {
-            mSubscription.unsubscribe();
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
     }
 
-    protected void addSubscribe(Subscription s) {
-        if (mSubscription != null) {
-            mSubscription.add(s);
+    protected void addSubscribe(Disposable s) {
+        if (mDisposable != null) {
+            mDisposable.add(s);
         }
     }
 

@@ -5,10 +5,13 @@ import com.tgithubc.kumao.parser.ParserFactory;
 
 import org.json.JSONException;
 
-import rx.Observable;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+
 
 /**
  * Created by tc :)
@@ -27,11 +30,11 @@ public class RxHandler {
 
     // gson对非RESTful的结果解析不太好用，手动解析吧
     @SuppressWarnings("unchecked")
-    public static <T> Observable.Transformer<String, T> handlerResult(int type) {
+    public static <T> ObservableTransformer<String, T> handlerResult(int type) {
         return observable -> observable
-                .flatMap(new Func1<String, Observable<T>>() {
+                .flatMap(new Function<String, Observable<T>>() {
                     @Override
-                    public Observable<T> call(String s) {
+                    public Observable<T> apply(@NonNull String s) throws Exception {
                         IParser<T> parser = ParserFactory.createParser(type);
                         if (parser != null) {
                             try {
@@ -45,8 +48,8 @@ public class RxHandler {
                 });
     }
 
-    public static <T> Observable.Transformer<T, T> applyScheduler(Scheduler mBackgroundScheduler) {
-        return observable -> observable
+    public static <T> ObservableTransformer<T, T> applyScheduler(Scheduler mBackgroundScheduler) {
+        return upstream -> upstream
                 .subscribeOn(mBackgroundScheduler)
                 .observeOn(AndroidSchedulers.mainThread());
     }

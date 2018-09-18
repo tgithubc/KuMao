@@ -17,8 +17,8 @@ import com.tgithubc.kumao.util.RxMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
-import rx.Subscription;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 
 /**
@@ -44,11 +44,12 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
         observableList.add(executeBannerTask());
         observableList.add(executeHotSongListTask());
         observableList.add(executeRecommendSongArrayTask());
-        Subscription subscription = Observable
+        Disposable disposable = Observable
                 .concatDelayError(observableList)
                 .toList()
-                .subscribe(new FeaturedHttpSubscriber());
-        addSubscribe(subscription);
+                .toObservable()
+                .subscribeWith(new FeaturedHttpSubscriber());
+        addSubscribe(disposable);
     }
 
     /**

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.RadioArray;
 import com.tgithubc.kumao.bean.RecommendSongArray;
 import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.KeyWord;
@@ -22,7 +23,9 @@ import org.greendao.autogen.KeyWordDao;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+
 
 /**
  * Created by tc :)
@@ -84,6 +87,11 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
     }
 
     @Override
+    public Observable<RadioArray> getRadioList(String url, Map<String, String> maps) {
+        return null;
+    }
+
+    @Override
     public Observable<SearchResult> getSearchResult(String url, Map<String, String> maps) {
         // local do noting
         return null;
@@ -95,7 +103,7 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
             List<KeyWord> historyList =
                     mKeyWordDao.queryBuilder().orderDesc(KeyWordDao.Properties.SearchTime).build().list();
             subscriber.onNext(historyList);
-            subscriber.onCompleted();
+            subscriber.onComplete();
         });
     }
 
@@ -125,14 +133,14 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
     }
 
     private <T> Observable<T> createObservable(String url, Map<String, String> maps, int type) {
-        return Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+        return Observable.create((ObservableOnSubscribe<String>) subscriber -> {
             String cacheKey = maps == null ? url : url + maps.toString();
             String cache = ACache.get(KuMao.getContext()).getAsString(cacheKey);
             if (!TextUtils.isEmpty(cache)) {
                 subscriber.onNext(cache);
             } else {
                 // concat只有前一个 Observable 终止(onComplete) 后才会订阅下一个 Observable
-                subscriber.onCompleted();
+                subscriber.onComplete();
             }
         }).compose(RxHandler.handlerResult(type));
     }

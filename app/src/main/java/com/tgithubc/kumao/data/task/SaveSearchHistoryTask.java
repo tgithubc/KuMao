@@ -4,7 +4,8 @@ package com.tgithubc.kumao.data.task;
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.data.repository.RepositoryProvider;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by tc :)
@@ -16,7 +17,7 @@ public class SaveSearchHistoryTask extends Task<SaveSearchHistoryTask.RequestVal
         return Observable.create(subscriber -> {
             RepositoryProvider.getRepository().saveSearchHistory(requestValues.getParameter());
             subscriber.onNext(new EmptyResponseValue());
-            subscriber.onCompleted();
+            subscriber.onComplete();
         });
     }
 
