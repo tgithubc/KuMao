@@ -47,5 +47,5 @@ public interface KuMaoDataSource {
 
     Observable<RecommendSongArray> getRecommendSongArray(String url, Map<String, String> maps);
 
-    Observable<RadioArray> getRadioList(String url, Map<String, String> maps);
+    Observable<RadioArray> getRadioArray(String url, Map<String, String> maps);
 }

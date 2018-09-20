@@ -87,8 +87,8 @@ public class KuMaoLocalDataSource implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<RadioArray> getRadioList(String url, Map<String, String> maps) {
-        return null;
+    public Observable<RadioArray> getRadioArray(String url, Map<String, String> maps) {
+        return createObservable(url, maps, ParserFactory.PARSE_RADIO_ARRAY);
     }
 
     @Override

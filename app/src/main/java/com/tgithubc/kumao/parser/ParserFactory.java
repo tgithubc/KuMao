@@ -14,6 +14,7 @@ public class ParserFactory {
     public static final int PARSE_SONG_LIST_ARRARY = 7;
     public static final int PARSE_SONG_LIST_INFO = 8;
     public static final int PARSE_RECOMMEND_SONG_ARRAY = 9;
+    public static final int PARSE_RADIO_ARRAY = 10;
 
     public static IParser createParser(int type) {
         switch (type) {
@@ -35,6 +36,8 @@ public class ParserFactory {
                 return new SongListParser();
             case PARSE_RECOMMEND_SONG_ARRAY:
                 return new RecommendSongArrayParser();
+            case PARSE_RADIO_ARRAY:
+                return new RadioArraryParser();
         }
         return null;
     }

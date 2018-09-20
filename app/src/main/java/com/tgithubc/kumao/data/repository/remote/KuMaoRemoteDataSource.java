@@ -4,13 +4,13 @@ package com.tgithubc.kumao.data.repository.remote;
 import com.tgithubc.kumao.KuMao;
 import com.tgithubc.kumao.bean.Banner;
 import com.tgithubc.kumao.bean.Billboard;
+import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.RadioArray;
 import com.tgithubc.kumao.bean.RecommendSongArray;
-import com.tgithubc.kumao.bean.SongListArray;
-import com.tgithubc.kumao.bean.KeyWord;
 import com.tgithubc.kumao.bean.SearchResult;
 import com.tgithubc.kumao.bean.Song;
 import com.tgithubc.kumao.bean.SongList;
+import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.data.repository.KuMaoDataSource;
 import com.tgithubc.kumao.http.RetrofitManager;
 import com.tgithubc.kumao.parser.ParserFactory;
@@ -81,8 +81,8 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<RadioArray> getRadioList(String url, Map<String, String> maps) {
-        return null;
+    public Observable<RadioArray> getRadioArray(String url, Map<String, String> maps) {
+        return createObservable(url, maps, ParserFactory.PARSE_RADIO_ARRAY, 12 * ACache.TIME_HOUR);
     }
 
     @Override
@@ -117,7 +117,6 @@ public class KuMaoRemoteDataSource implements KuMaoDataSource {
                                                Map<String, String> maps,
                                                int type,
                                                int cacheTime) {
-
         return RetrofitManager.getInstance()
                 .executeGet(url, maps)
                 .doOnNext(data -> {

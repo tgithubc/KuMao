@@ -9,15 +9,12 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-
 
 /**
  * Created by tc :)
  */
 public class RxHandler {
-
 
     /*
     @SuppressWarnings("unchecked")
@@ -32,19 +29,16 @@ public class RxHandler {
     @SuppressWarnings("unchecked")
     public static <T> ObservableTransformer<String, T> handlerResult(int type) {
         return observable -> observable
-                .flatMap(new Function<String, Observable<T>>() {
-                    @Override
-                    public Observable<T> apply(@NonNull String s) throws Exception {
-                        IParser<T> parser = ParserFactory.createParser(type);
-                        if (parser != null) {
-                            try {
-                                return Observable.just(parser.parse(s));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                .flatMap((Function<String, Observable<T>>) s -> {
+                    IParser<T> parser = ParserFactory.createParser(type);
+                    if (parser != null) {
+                        try {
+                            return Observable.just(parser.parse(s));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        return Observable.error(new RuntimeException("Parser Error"));
                     }
+                    return Observable.error(new RuntimeException("Parser Error"));
                 });
     }
 

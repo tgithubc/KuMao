@@ -102,8 +102,11 @@ public class KuMaoRepository implements KuMaoDataSource {
     }
 
     @Override
-    public Observable<RadioArray> getRadioList(String url, Map<String, String> maps) {
-        return null;
+    public Observable<RadioArray> getRadioArray(String url, Map<String, String> maps) {
+        return Observable
+                .concat(mLocalDataSource.getRadioArray(url, maps), mRemoteDataSource.getRadioArray(url, maps))
+                .firstElement()
+                .toObservable();
     }
 
     @Override

@@ -34,8 +34,11 @@ class RadioParser implements IParser<Radio> {
     @NonNull
     public Radio getRadio(JSONObject resultObject) throws JSONException {
         Radio radio = new Radio();
-        radio.setName(resultObject.optString("name"));
-        radio.setName(resultObject.optString("channel"));
+        String name = resultObject.optString("name");
+        if (TextUtils.isEmpty(name)) {
+            name = resultObject.optString("cate_sname");
+        }
+        radio.setName(name);
         radio.setCateName(resultObject.optString("cate_sname"));
         radio.setRadioKey(resultObject.optString("ch_name"));
         radio.setPic(resultObject.optString("thumb"));

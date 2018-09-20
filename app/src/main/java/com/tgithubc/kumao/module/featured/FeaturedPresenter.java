@@ -5,10 +5,10 @@ import android.util.Log;
 import com.tgithubc.kumao.base.BasePresenter;
 import com.tgithubc.kumao.base.Task;
 import com.tgithubc.kumao.bean.BaseData;
-import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.Title;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.data.task.GetBannerTask;
+import com.tgithubc.kumao.data.task.GetRadioArrayTask;
 import com.tgithubc.kumao.data.task.GetRecommendSongArrayTask;
 import com.tgithubc.kumao.data.task.GetSongListArrayTask;
 import com.tgithubc.kumao.http.HttpSubscriber;
@@ -26,10 +26,10 @@ import io.reactivex.disposables.Disposable;
  * banner
  * 本地入口
  * 推荐歌单（全部歌单）
- * 推荐单曲？？
+ * 推荐单曲？？ 似乎能替换
  * 电台
  * 新专辑
- * 新歌
+ * 官方歌单也比较老
  * Created by tc :)
  */
 public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implements IFeaturedContract.P {
@@ -44,12 +44,21 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
         observableList.add(executeBannerTask());
         observableList.add(executeHotSongListTask());
         observableList.add(executeRecommendSongArrayTask());
+        observableList.add(executeRadioArrayTask());
         Disposable disposable = Observable
                 .concatDelayError(observableList)
                 .toList()
                 .toObservable()
                 .subscribeWith(new FeaturedHttpSubscriber());
         addSubscribe(disposable);
+    }
+
+    /**
+     * radio
+     */
+    private Observable<GetRadioArrayTask.ResponseValue> executeRadioArrayTask() {
+        Task.CommonRequestValue rq = new Task.CommonRequestValue(Constant.Api.URL_RADIO_ARRAY, null);
+        return new GetRadioArrayTask().execute(rq);
     }
 
     /**
@@ -99,28 +108,37 @@ public class FeaturedPresenter extends BasePresenter<IFeaturedContract.V> implem
 
         @Override
         public void onNext(List<Task.ResponseValue> response) {
-            for (Task.ResponseValue value : response) {
-                if (value.getResult() == null) {
-                    continue;
-                }
-                // 组装title数据
-                if (value instanceof GetSongListArrayTask.ResponseValue) {
-                    Title title = new Title();
-                    title.setTitle("推荐歌单");
-                    title.setAddMore(true);
-                    title.setType(Constant.UIType.TYPE_TITLE_MORE);
-                    mFeedData.add(title);
-                } else if (value instanceof GetRecommendSongArrayTask.ResponseValue) {
-                    Title title = new Title();
-                    title.setTitle("推荐单曲");
-                    title.setType(Constant.UIType.TYPE_TITLE_MORE);
-                    mFeedData.add(title);
-                }
-                mFeedData.add((BaseData) value.getResult());
-            }
-            Log.d(TAG, "mFeedData :" + mFeedData);
-            getView().showContent();
-            getView().showFeatureView(mFeedData);
+            handlerResponse(response);
         }
+    }
+
+    private void handlerResponse(List<Task.ResponseValue> response) {
+        for (Task.ResponseValue value : response) {
+            if (value.getResult() == null) {
+                continue;
+            }
+            // 组装title数据
+            if (value instanceof GetSongListArrayTask.ResponseValue) {
+                Title title = new Title();
+                title.setTitle("推荐歌单");
+                title.setAddMore(true);
+                title.setType(Constant.UIType.TYPE_TITLE_MORE);
+                mFeedData.add(title);
+            } else if (value instanceof GetRecommendSongArrayTask.ResponseValue) {
+                Title title = new Title();
+                title.setTitle("推荐单曲");
+                title.setType(Constant.UIType.TYPE_TITLE_MORE);
+                mFeedData.add(title);
+            } else if (value instanceof GetRadioArrayTask.ResponseValue) {
+                Title title = new Title();
+                title.setTitle("热门电台");
+                title.setType(Constant.UIType.TYPE_TITLE_MORE);
+                mFeedData.add(title);
+            }
+            mFeedData.add((BaseData) value.getResult());
+        }
+        Log.d(TAG, "mFeedData :" + mFeedData);
+        getView().showContent();
+        getView().showFeatureView(mFeedData);
     }
 }

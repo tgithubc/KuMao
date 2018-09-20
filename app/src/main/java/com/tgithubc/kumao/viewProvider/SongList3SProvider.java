@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -18,9 +17,8 @@ import com.tgithubc.fresco_wapper.ImageLoaderWrapper;
 import com.tgithubc.fresco_wapper.config.ImageLoadConfig;
 import com.tgithubc.fresco_wapper.listener.IDisplayImageListener;
 import com.tgithubc.kumao.R;
-import com.tgithubc.kumao.bean.BaseData;
-import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.bean.SongList;
+import com.tgithubc.kumao.bean.SongListArray;
 import com.tgithubc.kumao.constant.Constant;
 import com.tgithubc.kumao.fragment.FragmentOperation;
 import com.tgithubc.kumao.module.detailpage.songlist.SongListFragment;
@@ -52,7 +50,7 @@ public class SongList3SProvider extends BaseItemProvider<SongListArray, BaseView
 
     @Override
     public int layout() {
-        return R.layout.rv_item_3s_square;
+        return R.layout.rv_item_3s_container;
     }
 
     @Override
@@ -60,7 +58,7 @@ public class SongList3SProvider extends BaseItemProvider<SongListArray, BaseView
         RecyclerView recyclerView = helper.getView(R.id.square_3s_view);
         List<SongList> songLists = arrary.getSongLists();
         SongListAdapter adapter = new SongListAdapter(songLists);
-        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3, GridLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
     }
 

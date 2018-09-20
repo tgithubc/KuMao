@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              android:paddingTop="5dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/radio_pic"
+        android:layout_width="105dp"
+        android:layout_height="105dp"/>
+
+    <TextView
+        android:id="@+id/radio_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="2dp"/>
+</LinearLayout>

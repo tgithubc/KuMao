@@ -19,6 +19,7 @@ public class Constant {
         String URL_SONG_LIST_ARRARY = HOST + "method=baidu.ting.diy.gedan";
         String URL_SONG_LIST_INFO = HOST + "method=baidu.ting.diy.gedanInfo";
         String URL_RECOMMEND_SONG_ARRAY = HOST + "method=baidu.ting.song.getEditorRecommend";
+        String URL_RADIO_ARRAY = HOST + "method=baidu.ting.radio.getCategoryList";
 
         int BILLBOARD_TYPE_NEW = 1;
     }
@@ -33,6 +34,7 @@ public class Constant {
         int TYPE_TITLE_MORE = 1001;// title,更多
         int TYPE_SONG_LIST_3S = 1002;// 歌单3列
         int TYPE_RECOMMEND_SONG = 1003;// 推荐单曲
+        int TYPE_RADIO_3S = 1004;// 电台3列
 
         // 搜索结果页
         int TYPE_SEARCH_RESULT_ARTIST = 2000;// 搜索结果的歌手
